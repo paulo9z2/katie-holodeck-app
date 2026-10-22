@@ -11,13 +11,17 @@ namespace KatieHoloDeck.Core
     /// </summary>
     public static class AppInfo
     {
-        /// <summary>Versão pronta para exibição: <c>"v1.2.3"</c> (major.minor.build).</summary>
+        /// <summary>
+        /// Versão pronta para exibição: <c>"v1.2.3"</c> (major.minor.build) — ou string vazia
+        /// quando o assembly não declara versão. Sem fallback numérico: versão que não vem do
+        /// <c>.csproj</c> simplesmente não existe, e a UI mostra nada em vez de inventar.
+        /// </summary>
         public static readonly string VersionString = BuildVersionString();
 
         private static string BuildVersionString()
         {
             Version? v = Assembly.GetExecutingAssembly().GetName().Version;
-            return v == null ? "v0.0.0" : "v" + v.ToString(3);
+            return v == null ? string.Empty : "v" + v.ToString(3);
         }
     }
 }
