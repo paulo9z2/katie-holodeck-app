@@ -1,0 +1,144 @@
+<Application x:Class="KatieHoloDeck.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!-- Fase 3/4: dicionário Fluent (chips, title buttons, glifos MDL2, slider,
+                 scrollbar fina, ilhas flutuantes) — escrito e validado em bancada. -->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="FluentControls.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- ============================================================
+                 TOKENS K.A.T.I.E. (vivos em runtime)
+                 A Central de Configurações troca estes recursos (DynamicResource):
+                 acento, bordas, glows e vidro das ilhas mudam na hora, sem restart.
+                 ============================================================ -->
+
+            <!-- Cor de acento pura (usada também por DropShadowEffect.Color) -->
+            <Color x:Key="AccentColor">#FF00D9FF</Color>
+
+            <!-- Pincéis derivados do acento (alfas padronizados) -->
+            <SolidColorBrush x:Key="AccentBrush"       Color="#FF00D9FF"/>
+            <SolidColorBrush x:Key="AccentBrushDim"    Color="#5900D9FF"/>
+            <SolidColorBrush x:Key="AccentBrushMedium" Color="#8800D9FF"/>
+            <SolidColorBrush x:Key="AccentBrushFaint"  Color="#3300D9FF"/>
+            <SolidColorBrush x:Key="AccentBrushGhost"  Color="#1A00D9FF"/>
+            <SolidColorBrush x:Key="AccentBrushInk"    Color="#0D00D9FF"/>
+
+            <!-- Borda das ilhas flutuantes — hairline ciano @0.35 (doutrina do vidro, Fase A/v7) -->
+            <SolidColorBrush x:Key="AccentEdgeBrush"   Color="#5900D9FF"/>
+
+            <!-- Vidro das ilhas (doutrina do vidro, Fase A/v7): fill #0E1B2E @55-70% —
+                 abaixo de 75% para o grid de fundo e o backdrop Mica aparecerem ATRAVÉS
+                 do painel (nada de fill opaco/"cinza chapado"). Contraste dos labels
+                 (#6C85A8) sobre o blend mais escuro: ≥4.5:1 (medido em bancada). -->
+            <LinearGradientBrush x:Key="IslandGlass" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#660E1B2E" Offset="0"/>  <!-- 40% — Mica vaza -->
+                <GradientStop Color="#4D0E1B2E" Offset="1"/>  <!-- 30% — Mica vaza -->
+            </LinearGradientBrush>
+
+            <!-- Vidro do painel de Configurações (v9.2): quase opaco (#E6–#F2) para
+                 não vazar demais o fundo — mica-like, vaza LEVEMENTE. -->
+            <LinearGradientBrush x:Key="PanelGlassStrong" StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#F20E1B2E" Offset="0"/>  <!-- 95% -->
+                <GradientStop Color="#E60E1B2E" Offset="1"/>  <!-- 90% -->
+            </LinearGradientBrush>
+
+            <!-- Scrim do painel de Configurações -->
+            <!-- v9.3: scrim mais denso — com o blur real do AppContent o scrim dá profundidade
+                 sem matar a leitura do painel sólido por cima -->
+            <SolidColorBrush x:Key="ScrimBrush" Color="#F5060A12"/> <!-- v9.3.5: B3 (70%) vazava 30% do conteúdo atrás — sir reportou "fundo transparente"; F5 = mica quase opaca, mesma linguagem do fullscreen CoverAll -->
+
+            <!-- Tokens globais do tema da capa (defaults derivados do acento ciano) -->
+            <Color x:Key="ThemeSecondaryColor">#FF00FF88</Color>
+            <SolidColorBrush x:Key="ThemeSecondaryBrush" Color="#FF00FF88"/>
+            <SolidColorBrush x:Key="ThemeSecondaryDimBrush" Color="#5900FF88"/>
+            <SolidColorBrush x:Key="ThemeSecondaryFaintBrush" Color="#3300FF88"/>
+            <SolidColorBrush x:Key="ThemeSecondaryGhostBrush" Color="#1A00FF88"/>
+            <SolidColorBrush x:Key="ThemeTextStrongBrush" Color="#FFF3F4F4"/>
+            <SolidColorBrush x:Key="ThemeTextBrush" Color="#FFB3BBBD"/>
+            <SolidColorBrush x:Key="ThemeLabelBrush" Color="#FF8C999B"/>
+            <SolidColorBrush x:Key="ThemeTextDimBrush" Color="#FF556062"/>
+            <DrawingBrush x:Key="ThemeGridBrush" TileMode="Tile" Viewport="0,0,44,44" ViewportUnits="Absolute">
+              <DrawingBrush.Drawing>
+                <GeometryDrawing Geometry="M0,0 H44 M0,0 V44">
+                  <GeometryDrawing.Pen><Pen Brush="#FF0F384B" Thickness="1"/></GeometryDrawing.Pen>
+                </GeometryDrawing>
+              </DrawingBrush.Drawing>
+            </DrawingBrush>
+            <DrawingBrush x:Key="ThemeScanBrush" TileMode="Tile" Viewport="0,0,4,4" ViewportUnits="Absolute">
+              <DrawingBrush.Drawing>
+                <GeometryDrawing Geometry="M0,1 H4">
+                  <GeometryDrawing.Pen><Pen Brush="#FF0E3247" Thickness="1"/></GeometryDrawing.Pen>
+                </GeometryDrawing>
+              </DrawingBrush.Drawing>
+            </DrawingBrush>
+            <RadialGradientBrush x:Key="ThemeShellBrush" GradientOrigin="0.5,0.32" Center="0.5,0.4" RadiusX="0.78" RadiusY="0.95">
+              <GradientStop Color="#D00D2E43" Offset="0"/>
+              <GradientStop Color="#D8092030" Offset="0.55"/>
+              <GradientStop Color="#E0071723" Offset="1"/>
+            </RadialGradientBrush>
+            <RadialGradientBrush x:Key="ThemeVignetteBrush" Center="0.5,0.5" RadiusX="0.75" RadiusY="0.8">
+              <GradientStop Color="#00000000" Offset="0.55"/>
+              <GradientStop Color="#9902151E" Offset="1"/>
+            </RadialGradientBrush>
+            <SolidColorBrush x:Key="ThemeMediaGlassBrush" Color="#990E1B2E"/>
+            <SolidColorBrush x:Key="ThemeFieldGlassBrush" Color="#170B1E38"/>
+            <SolidColorBrush x:Key="ThemeBarTrackBrush" Color="#1400FF88"/>
+            <SolidColorBrush x:Key="ThemeCoverPlaceholderBrush" Color="#331E4E8C"/>
+            <SolidColorBrush x:Key="ThemeChipGlassBrush" Color="#22000C14"/>
+            <SolidColorBrush x:Key="ThemeChatExpandedBrush" Color="#380E1B2E"/>
+            <SolidColorBrush x:Key="ThemePanelSolidBrush" Color="#FF070C14"/>
+            <SolidColorBrush x:Key="ThemeFullscreenBrush" Color="#CC0A1322"/>
+            <SolidColorBrush x:Key="ThemeFullscreenOpaqueBrush" Color="#F50A1322"/>
+
+            <!-- F1 — aro de cristal (T2). Brancos NEUTROS: o vidro não tem cor (R13/R14).
+                 São Brushes vivos: o LivePalette reescreve o Color in-place (alpha fica aqui).
+                 O specular NÃO tem chave própria de propósito — é o AccentBrushFaint (0x33). -->
+            <SolidColorBrush x:Key="GlassEdgeBrush"  Color="#19FFFFFF"/>
+            <SolidColorBrush x:Key="GlassFacetBrush" Color="#1FFFFFFF"/>
+
+            <!-- Reator: gradientes vivos (ApplyAccent troca em runtime) -->
+            <LinearGradientBrush x:Key="ReactorRim" StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Color="#E600D9FF" Offset="0"/>
+                <GradientStop Color="#2600D9FF" Offset="0.55"/>
+                <GradientStop Color="#0F00D9FF" Offset="1"/>
+            </LinearGradientBrush>
+            <RadialGradientBrush x:Key="ReactorCoreFill" GradientOrigin="0.42,0.36" Center="0.5,0.5" RadiusX="0.65" RadiusY="0.65">
+                <GradientStop Color="#6600D9FF" Offset="0"/>
+                <GradientStop Color="#3300D9FF" Offset="0.55"/>
+                <GradientStop Color="#1200D9FF" Offset="1"/>
+            </RadialGradientBrush>
+            <RadialGradientBrush x:Key="ReactorOrbFill" GradientOrigin="0.38,0.32" Center="0.5,0.5" RadiusX="0.62" RadiusY="0.62">
+                <GradientStop Color="#E600D9FF" Offset="0"/>
+                <GradientStop Color="#8A00D9FF" Offset="0.5"/>
+                <GradientStop Color="#3800D9FF" Offset="1"/>
+            </RadialGradientBrush>
+            <RadialGradientBrush x:Key="ReactorHalo" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                <GradientStop Color="#1700D9FF" Offset="0"/>
+                <GradientStop Color="#0A00D9FF" Offset="0.6"/>
+                <GradientStop Color="#00000000" Offset="1"/>
+            </RadialGradientBrush>
+
+            <!-- v3: acento do reator um passo mais vivo (#00E5FF no ciano) — rings/ticks/arcos -->
+            <Color x:Key="ReactorAccentColor">#FF00E5FF</Color>
+            <SolidColorBrush x:Key="ReactorAccentBrush" Color="#FF00E5FF"/>
+            <SolidColorBrush x:Key="ReactorAccentDimBrush" Color="#5900E5FF"/>
+
+            <!-- Paleta legada (compatibilidade com janelas/controles que ainda usam a chave) -->
+            <SolidColorBrush x:Key="Cyan" Color="#FF00D9FF"/>
+            <SolidColorBrush x:Key="CyanDim" Color="#5900D9FF"/>
+            <SolidColorBrush x:Key="DangerRed" Color="#FFFF3B3B"/>
+            <SolidColorBrush x:Key="TextGrey" Color="#FF9FB0C8"/>
+            <SolidColorBrush x:Key="LabelGrey" Color="#FF6C85A8"/>
+            <DropShadowEffect x:Key="GlowCyan" Color="#00D9FF" BlurRadius="28" ShadowDepth="0" Opacity="0.9"/>
+            <DropShadowEffect x:Key="GlowCyanSoft" Color="#00D9FF" BlurRadius="14" ShadowDepth="0" Opacity="0.55"/>
+            <DropShadowEffect x:Key="GlowRed" Color="#FF3B3B" BlurRadius="18" ShadowDepth="0" Opacity="0.8"/>
+            <DropShadowEffect x:Key="GlowGreen" Color="#00FF88" BlurRadius="14" ShadowDepth="0" Opacity="0.7"/>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,9 @@
+# saída de build
+bin/
+obj/
+
+# estado de ferramentas/agentes
+.omo/
+.vs/
+*.user
+*.suo

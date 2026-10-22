@@ -1,0 +1,1202 @@
+[
+  {
+    "name": "APITests",
+    "path": "controls/dev/CommonStyles/APITests",
+    "sha": "a8e1c963f96a9fa435933d69f871270490f93bf7",
+    "size": 0,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/APITests?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/tree/main/controls/dev/CommonStyles/APITests",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/trees/a8e1c963f96a9fa435933d69f871270490f93bf7",
+    "download_url": null,
+    "type": "dir",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/APITests?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/trees/a8e1c963f96a9fa435933d69f871270490f93bf7",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/tree/main/controls/dev/CommonStyles/APITests"
+    }
+  },
+  {
+    "name": "AppBarButton_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/AppBarButton_themeresources.xaml",
+    "sha": "83055262b5b17b53c9fce21d55264a659c39f43d",
+    "size": 34132,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/AppBarButton_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/AppBarButton_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/83055262b5b17b53c9fce21d55264a659c39f43d",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/AppBarButton_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/AppBarButton_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/83055262b5b17b53c9fce21d55264a659c39f43d",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/AppBarButton_themeresources.xaml"
+    }
+  },
+  {
+    "name": "AppBarButton_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/AppBarButton_themeresources_perf2026.xaml",
+    "sha": "4449f5016ab5ac49dd9901e13f46b4f170624140",
+    "size": 32325,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/AppBarButton_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/AppBarButton_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/4449f5016ab5ac49dd9901e13f46b4f170624140",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/AppBarButton_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/AppBarButton_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/4449f5016ab5ac49dd9901e13f46b4f170624140",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/AppBarButton_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "AppBarSeparator_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/AppBarSeparator_themeresources.xaml",
+    "sha": "51801458b679a563d21471423f4ebb94f0b13ad0",
+    "size": 3510,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/AppBarSeparator_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/AppBarSeparator_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/51801458b679a563d21471423f4ebb94f0b13ad0",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/AppBarSeparator_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/AppBarSeparator_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/51801458b679a563d21471423f4ebb94f0b13ad0",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/AppBarSeparator_themeresources.xaml"
+    }
+  },
+  {
+    "name": "AppBarToggleButton_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/AppBarToggleButton_themeresources.xaml",
+    "sha": "2c3e6c5ad5aa3d6c4cd6fe1e3c8c5688b8e31f18",
+    "size": 50717,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/AppBarToggleButton_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/AppBarToggleButton_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/2c3e6c5ad5aa3d6c4cd6fe1e3c8c5688b8e31f18",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/AppBarToggleButton_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/AppBarToggleButton_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/2c3e6c5ad5aa3d6c4cd6fe1e3c8c5688b8e31f18",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/AppBarToggleButton_themeresources.xaml"
+    }
+  },
+  {
+    "name": "AppBarToggleButton_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/AppBarToggleButton_themeresources_perf2026.xaml",
+    "sha": "a7420f339171d12ac575be68c68036ac2561e349",
+    "size": 49088,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/AppBarToggleButton_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/AppBarToggleButton_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/a7420f339171d12ac575be68c68036ac2561e349",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/AppBarToggleButton_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/AppBarToggleButton_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/a7420f339171d12ac575be68c68036ac2561e349",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/AppBarToggleButton_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "Button_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/Button_themeresources.xaml",
+    "sha": "e63c32389e599c2277061d9ce29483516e6927a3",
+    "size": 32897,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Button_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Button_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/e63c32389e599c2277061d9ce29483516e6927a3",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/Button_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Button_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/e63c32389e599c2277061d9ce29483516e6927a3",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Button_themeresources.xaml"
+    }
+  },
+  {
+    "name": "Button_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/Button_themeresources_perf2026.xaml",
+    "sha": "fe3b8800da25e6486e21bbbf27852f132bcfa65f",
+    "size": 27767,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Button_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Button_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/fe3b8800da25e6486e21bbbf27852f132bcfa65f",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/Button_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Button_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/fe3b8800da25e6486e21bbbf27852f132bcfa65f",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Button_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "CalendarDatePicker_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/CalendarDatePicker_themeresources.xaml",
+    "sha": "37b0f815e83b11bbf3602486874015f505966373",
+    "size": 20874,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CalendarDatePicker_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CalendarDatePicker_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/37b0f815e83b11bbf3602486874015f505966373",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/CalendarDatePicker_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CalendarDatePicker_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/37b0f815e83b11bbf3602486874015f505966373",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CalendarDatePicker_themeresources.xaml"
+    }
+  },
+  {
+    "name": "CalendarDatePicker_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/CalendarDatePicker_themeresources_perf2026.xaml",
+    "sha": "d77d098f010e8d144a230eb2dbffdc5fffab7a51",
+    "size": 18276,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CalendarDatePicker_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CalendarDatePicker_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/d77d098f010e8d144a230eb2dbffdc5fffab7a51",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/CalendarDatePicker_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CalendarDatePicker_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/d77d098f010e8d144a230eb2dbffdc5fffab7a51",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CalendarDatePicker_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "CalendarView_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/CalendarView_themeresources.xaml",
+    "sha": "237f442197d73a203e59a2d6ba8c16f04f294a64",
+    "size": 106536,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CalendarView_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CalendarView_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/237f442197d73a203e59a2d6ba8c16f04f294a64",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/CalendarView_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CalendarView_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/237f442197d73a203e59a2d6ba8c16f04f294a64",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CalendarView_themeresources.xaml"
+    }
+  },
+  {
+    "name": "CalendarView_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/CalendarView_themeresources_perf2026.xaml",
+    "sha": "ddb4a6ccc426a0a6c7e85198dbbf75c6298445b2",
+    "size": 103677,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CalendarView_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CalendarView_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/ddb4a6ccc426a0a6c7e85198dbbf75c6298445b2",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/CalendarView_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CalendarView_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/ddb4a6ccc426a0a6c7e85198dbbf75c6298445b2",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CalendarView_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "CheckBox_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/CheckBox_themeresources.xaml",
+    "sha": "71e21d32b764c8b7fc6fe7312e7a6847a0fb5c89",
+    "size": 60651,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CheckBox_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CheckBox_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/71e21d32b764c8b7fc6fe7312e7a6847a0fb5c89",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/CheckBox_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CheckBox_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/71e21d32b764c8b7fc6fe7312e7a6847a0fb5c89",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CheckBox_themeresources.xaml"
+    }
+  },
+  {
+    "name": "CheckBox_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/CheckBox_themeresources_perf2026.xaml",
+    "sha": "eb2f5b418d306176e5fd0e2bd4e25a82900fecd1",
+    "size": 47498,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CheckBox_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CheckBox_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/eb2f5b418d306176e5fd0e2bd4e25a82900fecd1",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/CheckBox_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CheckBox_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/eb2f5b418d306176e5fd0e2bd4e25a82900fecd1",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CheckBox_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "CommandBar_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/CommandBar_themeresources.xaml",
+    "sha": "f524c6d543ea735b7b4e833294891eec448b8b5f",
+    "size": 93840,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CommandBar_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CommandBar_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/f524c6d543ea735b7b4e833294891eec448b8b5f",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/CommandBar_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CommandBar_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/f524c6d543ea735b7b4e833294891eec448b8b5f",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CommandBar_themeresources.xaml"
+    }
+  },
+  {
+    "name": "CommandBar_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/CommandBar_themeresources_perf2026.xaml",
+    "sha": "f524c6d543ea735b7b4e833294891eec448b8b5f",
+    "size": 93840,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CommandBar_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CommandBar_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/f524c6d543ea735b7b4e833294891eec448b8b5f",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/CommandBar_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CommandBar_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/f524c6d543ea735b7b4e833294891eec448b8b5f",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CommandBar_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "CommonStyles.vcxitems",
+    "path": "controls/dev/CommonStyles/CommonStyles.vcxitems",
+    "sha": "7d4a8825476d8ae83e4d77d99ed2a617fbc367fc",
+    "size": 12861,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CommonStyles.vcxitems?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CommonStyles.vcxitems",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/7d4a8825476d8ae83e4d77d99ed2a617fbc367fc",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/CommonStyles.vcxitems",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CommonStyles.vcxitems?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/7d4a8825476d8ae83e4d77d99ed2a617fbc367fc",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CommonStyles.vcxitems"
+    }
+  },
+  {
+    "name": "Common_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/Common_themeresources.xaml",
+    "sha": "4442cd93a301ffbb86de5248c4a99dc94d583e32",
+    "size": 4496,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Common_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Common_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/4442cd93a301ffbb86de5248c4a99dc94d583e32",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/Common_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Common_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/4442cd93a301ffbb86de5248c4a99dc94d583e32",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Common_themeresources.xaml"
+    }
+  },
+  {
+    "name": "Common_themeresources_any.xaml",
+    "path": "controls/dev/CommonStyles/Common_themeresources_any.xaml",
+    "sha": "ca07acb962a7c018a174bf28dcd0e945b13ddb4d",
+    "size": 55806,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Common_themeresources_any.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Common_themeresources_any.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/ca07acb962a7c018a174bf28dcd0e945b13ddb4d",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/Common_themeresources_any.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Common_themeresources_any.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/ca07acb962a7c018a174bf28dcd0e945b13ddb4d",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Common_themeresources_any.xaml"
+    }
+  },
+  {
+    "name": "ContentDialog_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/ContentDialog_themeresources.xaml",
+    "sha": "9cd8150fff8c216319e2d5515b538cfab5b397d5",
+    "size": 20018,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ContentDialog_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ContentDialog_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/9cd8150fff8c216319e2d5515b538cfab5b397d5",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ContentDialog_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ContentDialog_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/9cd8150fff8c216319e2d5515b538cfab5b397d5",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ContentDialog_themeresources.xaml"
+    }
+  },
+  {
+    "name": "CornerRadius_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/CornerRadius_themeresources.xaml",
+    "sha": "e1d58260df35408c904d58b318de4204d134ab98",
+    "size": 2563,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CornerRadius_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CornerRadius_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/e1d58260df35408c904d58b318de4204d134ab98",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/CornerRadius_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/CornerRadius_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/e1d58260df35408c904d58b318de4204d134ab98",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/CornerRadius_themeresources.xaml"
+    }
+  },
+  {
+    "name": "DatePicker_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/DatePicker_themeresources.xaml",
+    "sha": "8d19f3001019aa7f14ab05ea9a182d201420294b",
+    "size": 29202,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/DatePicker_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/DatePicker_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/8d19f3001019aa7f14ab05ea9a182d201420294b",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/DatePicker_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/DatePicker_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/8d19f3001019aa7f14ab05ea9a182d201420294b",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/DatePicker_themeresources.xaml"
+    }
+  },
+  {
+    "name": "DatePicker_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/DatePicker_themeresources_perf2026.xaml",
+    "sha": "2ac8bf44c92ef14ddceb53e953758b0e356d3d63",
+    "size": 26922,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/DatePicker_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/DatePicker_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/2ac8bf44c92ef14ddceb53e953758b0e356d3d63",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/DatePicker_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/DatePicker_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/2ac8bf44c92ef14ddceb53e953758b0e356d3d63",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/DatePicker_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "DateTimePickerFlyout_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/DateTimePickerFlyout_themeresources.xaml",
+    "sha": "78caa8f6766e699493eaeadb72e5cf27bfe943e5",
+    "size": 23122,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/DateTimePickerFlyout_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/DateTimePickerFlyout_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/78caa8f6766e699493eaeadb72e5cf27bfe943e5",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/DateTimePickerFlyout_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/DateTimePickerFlyout_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/78caa8f6766e699493eaeadb72e5cf27bfe943e5",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/DateTimePickerFlyout_themeresources.xaml"
+    }
+  },
+  {
+    "name": "DateTimePickerFlyout_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/DateTimePickerFlyout_themeresources_perf2026.xaml",
+    "sha": "d6e08d6d0e87025c7929577d8692204bf257c862",
+    "size": 20126,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/DateTimePickerFlyout_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/DateTimePickerFlyout_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/d6e08d6d0e87025c7929577d8692204bf257c862",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/DateTimePickerFlyout_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/DateTimePickerFlyout_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/d6e08d6d0e87025c7929577d8692204bf257c862",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/DateTimePickerFlyout_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "Deprecated_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/Deprecated_themeresources.xaml",
+    "sha": "41220302b8cedb941eb3e0f1ce5a813de9a3b8bc",
+    "size": 23056,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Deprecated_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Deprecated_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/41220302b8cedb941eb3e0f1ce5a813de9a3b8bc",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/Deprecated_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Deprecated_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/41220302b8cedb941eb3e0f1ce5a813de9a3b8bc",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Deprecated_themeresources.xaml"
+    }
+  },
+  {
+    "name": "Deprecated_themeresources_any.xaml",
+    "path": "controls/dev/CommonStyles/Deprecated_themeresources_any.xaml",
+    "sha": "ae2f5b2c238724c06b203b0086664a841fb478d5",
+    "size": 17462,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Deprecated_themeresources_any.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Deprecated_themeresources_any.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/ae2f5b2c238724c06b203b0086664a841fb478d5",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/Deprecated_themeresources_any.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Deprecated_themeresources_any.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/ae2f5b2c238724c06b203b0086664a841fb478d5",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Deprecated_themeresources_any.xaml"
+    }
+  },
+  {
+    "name": "FlipViewItem_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/FlipViewItem_themeresources.xaml",
+    "sha": "1ba7d04940b1da14bdd6533ddc3a0fe42b61df73",
+    "size": 2212,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/FlipViewItem_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/FlipViewItem_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/1ba7d04940b1da14bdd6533ddc3a0fe42b61df73",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/FlipViewItem_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/FlipViewItem_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/1ba7d04940b1da14bdd6533ddc3a0fe42b61df73",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/FlipViewItem_themeresources.xaml"
+    }
+  },
+  {
+    "name": "FlipView_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/FlipView_themeresources.xaml",
+    "sha": "c9aa9048d624eb962393451b2501e4f9c37c12fc",
+    "size": 30069,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/FlipView_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/FlipView_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/c9aa9048d624eb962393451b2501e4f9c37c12fc",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/FlipView_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/FlipView_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/c9aa9048d624eb962393451b2501e4f9c37c12fc",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/FlipView_themeresources.xaml"
+    }
+  },
+  {
+    "name": "FlipView_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/FlipView_themeresources_perf2026.xaml",
+    "sha": "70fa1e378a2b8a8dd50d85bb9cf47a64ff23456e",
+    "size": 25954,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/FlipView_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/FlipView_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/70fa1e378a2b8a8dd50d85bb9cf47a64ff23456e",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/FlipView_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/FlipView_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/70fa1e378a2b8a8dd50d85bb9cf47a64ff23456e",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/FlipView_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "FlyoutPresenter_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/FlyoutPresenter_themeresources.xaml",
+    "sha": "621bf7d16825ae37cdd0b0ad05b7b5a49ddcd4c4",
+    "size": 4254,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/FlyoutPresenter_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/FlyoutPresenter_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/621bf7d16825ae37cdd0b0ad05b7b5a49ddcd4c4",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/FlyoutPresenter_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/FlyoutPresenter_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/621bf7d16825ae37cdd0b0ad05b7b5a49ddcd4c4",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/FlyoutPresenter_themeresources.xaml"
+    }
+  },
+  {
+    "name": "GridViewItem_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/GridViewItem_themeresources.xaml",
+    "sha": "a4ca9accccc27d9f0e7fdcfbddc2a5b8e306360d",
+    "size": 19789,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/GridViewItem_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/GridViewItem_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/a4ca9accccc27d9f0e7fdcfbddc2a5b8e306360d",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/GridViewItem_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/GridViewItem_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/a4ca9accccc27d9f0e7fdcfbddc2a5b8e306360d",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/GridViewItem_themeresources.xaml"
+    }
+  },
+  {
+    "name": "HyperlinkButton_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/HyperlinkButton_themeresources.xaml",
+    "sha": "93b5efd391803a229e63e55c315e5675fef4362e",
+    "size": 10537,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/HyperlinkButton_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/HyperlinkButton_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/93b5efd391803a229e63e55c315e5675fef4362e",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/HyperlinkButton_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/HyperlinkButton_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/93b5efd391803a229e63e55c315e5675fef4362e",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/HyperlinkButton_themeresources.xaml"
+    }
+  },
+  {
+    "name": "HyperlinkButton_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/HyperlinkButton_themeresources_perf2026.xaml",
+    "sha": "3861ddde4574c2519b0e4f64d296db5d2dd2b5d5",
+    "size": 8989,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/HyperlinkButton_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/HyperlinkButton_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/3861ddde4574c2519b0e4f64d296db5d2dd2b5d5",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/HyperlinkButton_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/HyperlinkButton_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/3861ddde4574c2519b0e4f64d296db5d2dd2b5d5",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/HyperlinkButton_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "Hyperlink_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/Hyperlink_themeresources.xaml",
+    "sha": "9755333d16e487361eb56d335d2190d4ed234610",
+    "size": 1640,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Hyperlink_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Hyperlink_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/9755333d16e487361eb56d335d2190d4ed234610",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/Hyperlink_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Hyperlink_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/9755333d16e487361eb56d335d2190d4ed234610",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Hyperlink_themeresources.xaml"
+    }
+  },
+  {
+    "name": "InkToolbar_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/InkToolbar_themeresources.xaml",
+    "sha": "4da63b3109c3c7b395f39215b117e79d999d2f71",
+    "size": 137193,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/InkToolbar_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/InkToolbar_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/4da63b3109c3c7b395f39215b117e79d999d2f71",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/InkToolbar_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/InkToolbar_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/4da63b3109c3c7b395f39215b117e79d999d2f71",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/InkToolbar_themeresources.xaml"
+    }
+  },
+  {
+    "name": "InteractionTests",
+    "path": "controls/dev/CommonStyles/InteractionTests",
+    "sha": "d00e2e69b9791d6e14d3be7e82dbfda7abeea5fb",
+    "size": 0,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/InteractionTests?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/tree/main/controls/dev/CommonStyles/InteractionTests",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/trees/d00e2e69b9791d6e14d3be7e82dbfda7abeea5fb",
+    "download_url": null,
+    "type": "dir",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/InteractionTests?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/trees/d00e2e69b9791d6e14d3be7e82dbfda7abeea5fb",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/tree/main/controls/dev/CommonStyles/InteractionTests"
+    }
+  },
+  {
+    "name": "ListBox_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/ListBox_themeresources.xaml",
+    "sha": "df9ca8dfe48b7cd4487b24b4f7954c7a74e683f8",
+    "size": 19366,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ListBox_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ListBox_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/df9ca8dfe48b7cd4487b24b4f7954c7a74e683f8",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ListBox_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ListBox_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/df9ca8dfe48b7cd4487b24b4f7954c7a74e683f8",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ListBox_themeresources.xaml"
+    }
+  },
+  {
+    "name": "ListBox_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/ListBox_themeresources_perf2026.xaml",
+    "sha": "fdb492252a281a886ec041b23231ed8a3b3df9b0",
+    "size": 17178,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ListBox_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ListBox_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/fdb492252a281a886ec041b23231ed8a3b3df9b0",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ListBox_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ListBox_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/fdb492252a281a886ec041b23231ed8a3b3df9b0",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ListBox_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "ListViewItem_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/ListViewItem_themeresources.xaml",
+    "sha": "b292e8fa9aa1f6024d16b8a5eb452e4427d45bda",
+    "size": 63908,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ListViewItem_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ListViewItem_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/b292e8fa9aa1f6024d16b8a5eb452e4427d45bda",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ListViewItem_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ListViewItem_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/b292e8fa9aa1f6024d16b8a5eb452e4427d45bda",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ListViewItem_themeresources.xaml"
+    }
+  },
+  {
+    "name": "ListViewItem_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/ListViewItem_themeresources_perf2026.xaml",
+    "sha": "c02c81ecb25fb3d1fdeadb903b1043ba81d61fed",
+    "size": 59137,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ListViewItem_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ListViewItem_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/c02c81ecb25fb3d1fdeadb903b1043ba81d61fed",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ListViewItem_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ListViewItem_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/c02c81ecb25fb3d1fdeadb903b1043ba81d61fed",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ListViewItem_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "MediaTransportControls_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/MediaTransportControls_themeresources.xaml",
+    "sha": "701793b0b20ef45b95bb90695cc8b43f1102486b",
+    "size": 30528,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/MediaTransportControls_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/MediaTransportControls_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/701793b0b20ef45b95bb90695cc8b43f1102486b",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/MediaTransportControls_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/MediaTransportControls_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/701793b0b20ef45b95bb90695cc8b43f1102486b",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/MediaTransportControls_themeresources.xaml"
+    }
+  },
+  {
+    "name": "MediaTransportControls_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/MediaTransportControls_themeresources_perf2026.xaml",
+    "sha": "1477669b21bf39173d01a7c9a5ecf9a504a21d3f",
+    "size": 30432,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/MediaTransportControls_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/MediaTransportControls_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/1477669b21bf39173d01a7c9a5ecf9a504a21d3f",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/MediaTransportControls_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/MediaTransportControls_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/1477669b21bf39173d01a7c9a5ecf9a504a21d3f",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/MediaTransportControls_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "MenuFlyout_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/MenuFlyout_themeresources.xaml",
+    "sha": "6f9f3fd322583d2d537dc30c439e62accf1efbd4",
+    "size": 91737,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/MenuFlyout_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/MenuFlyout_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/6f9f3fd322583d2d537dc30c439e62accf1efbd4",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/MenuFlyout_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/MenuFlyout_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/6f9f3fd322583d2d537dc30c439e62accf1efbd4",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/MenuFlyout_themeresources.xaml"
+    }
+  },
+  {
+    "name": "MenuFlyout_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/MenuFlyout_themeresources_perf2026.xaml",
+    "sha": "f5cfea5b8bd4b3bccb8a24c8f4fbc165c1cc69b9",
+    "size": 90581,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/MenuFlyout_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/MenuFlyout_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/f5cfea5b8bd4b3bccb8a24c8f4fbc165c1cc69b9",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/MenuFlyout_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/MenuFlyout_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/f5cfea5b8bd4b3bccb8a24c8f4fbc165c1cc69b9",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/MenuFlyout_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "PasswordBox_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/PasswordBox_themeresources.xaml",
+    "sha": "ec52d3f52cdda9002a858000b359ac5752c8eb22",
+    "size": 17742,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/PasswordBox_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/PasswordBox_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/ec52d3f52cdda9002a858000b359ac5752c8eb22",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/PasswordBox_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/PasswordBox_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/ec52d3f52cdda9002a858000b359ac5752c8eb22",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/PasswordBox_themeresources.xaml"
+    }
+  },
+  {
+    "name": "PasswordBox_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/PasswordBox_themeresources_perf2026.xaml",
+    "sha": "5f16f602447844697a17c22f2bf6c3c8d93c4a9c",
+    "size": 12592,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/PasswordBox_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/PasswordBox_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/5f16f602447844697a17c22f2bf6c3c8d93c4a9c",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/PasswordBox_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/PasswordBox_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/5f16f602447844697a17c22f2bf6c3c8d93c4a9c",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/PasswordBox_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "Pivot_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/Pivot_themeresources.xaml",
+    "sha": "f7d9c7673be13474e4884fd19f0d64605ee3b68b",
+    "size": 50517,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Pivot_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Pivot_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/f7d9c7673be13474e4884fd19f0d64605ee3b68b",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/Pivot_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Pivot_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/f7d9c7673be13474e4884fd19f0d64605ee3b68b",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Pivot_themeresources.xaml"
+    }
+  },
+  {
+    "name": "Pivot_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/Pivot_themeresources_perf2026.xaml",
+    "sha": "451b1e76e338efa81d53ebecad9967a373e980f7",
+    "size": 43962,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Pivot_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Pivot_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/451b1e76e338efa81d53ebecad9967a373e980f7",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/Pivot_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Pivot_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/451b1e76e338efa81d53ebecad9967a373e980f7",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Pivot_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "RadioButton_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/RadioButton_themeresources.xaml",
+    "sha": "223a28385186f36a4629d354928e5fb705ab10b3",
+    "size": 38385,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/RadioButton_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/RadioButton_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/223a28385186f36a4629d354928e5fb705ab10b3",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/RadioButton_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/RadioButton_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/223a28385186f36a4629d354928e5fb705ab10b3",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/RadioButton_themeresources.xaml"
+    }
+  },
+  {
+    "name": "RadioButton_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/RadioButton_themeresources_perf2026.xaml",
+    "sha": "4c4a5ee95296a0709da0c131ae3e00cbcbb4e112",
+    "size": 32497,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/RadioButton_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/RadioButton_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/4c4a5ee95296a0709da0c131ae3e00cbcbb4e112",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/RadioButton_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/RadioButton_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/4c4a5ee95296a0709da0c131ae3e00cbcbb4e112",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/RadioButton_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "RepeatButton_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/RepeatButton_themeresources.xaml",
+    "sha": "80add1b94686ed1e408ce05afde9d02249b5e229",
+    "size": 13178,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/RepeatButton_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/RepeatButton_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/80add1b94686ed1e408ce05afde9d02249b5e229",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/RepeatButton_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/RepeatButton_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/80add1b94686ed1e408ce05afde9d02249b5e229",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/RepeatButton_themeresources.xaml"
+    }
+  },
+  {
+    "name": "RepeatButton_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/RepeatButton_themeresources_perf2026.xaml",
+    "sha": "c04f3dfef67ba0d30bf989f045c21c83da601d88",
+    "size": 11630,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/RepeatButton_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/RepeatButton_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/c04f3dfef67ba0d30bf989f045c21c83da601d88",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/RepeatButton_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/RepeatButton_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/c04f3dfef67ba0d30bf989f045c21c83da601d88",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/RepeatButton_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "RichEditBox_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/RichEditBox_themeresources.xaml",
+    "sha": "2fe5d6ca4d5413639e1c415652f9b6833c1af6d9",
+    "size": 9698,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/RichEditBox_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/RichEditBox_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/2fe5d6ca4d5413639e1c415652f9b6833c1af6d9",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/RichEditBox_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/RichEditBox_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/2fe5d6ca4d5413639e1c415652f9b6833c1af6d9",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/RichEditBox_themeresources.xaml"
+    }
+  },
+  {
+    "name": "RichEditBox_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/RichEditBox_themeresources_perf2026.xaml",
+    "sha": "df9a8c35346d5f9d37ccd3b546bbab24c31d8787",
+    "size": 7260,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/RichEditBox_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/RichEditBox_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/df9a8c35346d5f9d37ccd3b546bbab24c31d8787",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/RichEditBox_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/RichEditBox_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/df9a8c35346d5f9d37ccd3b546bbab24c31d8787",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/RichEditBox_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "ScrollBar_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/ScrollBar_themeresources.xaml",
+    "sha": "6aaa54e2b229039c3021a0a0b2f4d7a3deaec517",
+    "size": 74478,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ScrollBar_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ScrollBar_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/6aaa54e2b229039c3021a0a0b2f4d7a3deaec517",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ScrollBar_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ScrollBar_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/6aaa54e2b229039c3021a0a0b2f4d7a3deaec517",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ScrollBar_themeresources.xaml"
+    }
+  },
+  {
+    "name": "ScrollBar_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/ScrollBar_themeresources_perf2026.xaml",
+    "sha": "c8af791f98cb8ef0c457bb6c30ff23f0fa54e658",
+    "size": 77924,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ScrollBar_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ScrollBar_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/c8af791f98cb8ef0c457bb6c30ff23f0fa54e658",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ScrollBar_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ScrollBar_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/c8af791f98cb8ef0c457bb6c30ff23f0fa54e658",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ScrollBar_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "ScrollViewer_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/ScrollViewer_themeresources.xaml",
+    "sha": "800d5040a5e73c28b75c5c5d2f4af40c7a48256b",
+    "size": 15370,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ScrollViewer_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ScrollViewer_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/800d5040a5e73c28b75c5c5d2f4af40c7a48256b",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ScrollViewer_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ScrollViewer_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/800d5040a5e73c28b75c5c5d2f4af40c7a48256b",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ScrollViewer_themeresources.xaml"
+    }
+  },
+  {
+    "name": "ScrollViewer_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/ScrollViewer_themeresources_perf2026.xaml",
+    "sha": "7098acb117b5f0d703e9c2455f5d5d2994c436e1",
+    "size": 15752,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ScrollViewer_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ScrollViewer_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/7098acb117b5f0d703e9c2455f5d5d2994c436e1",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ScrollViewer_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ScrollViewer_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/7098acb117b5f0d703e9c2455f5d5d2994c436e1",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ScrollViewer_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "Slider_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/Slider_themeresources.xaml",
+    "sha": "3804392c5c54081dcc64a1c533812f9b07a4155d",
+    "size": 41406,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Slider_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Slider_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/3804392c5c54081dcc64a1c533812f9b07a4155d",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/Slider_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Slider_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/3804392c5c54081dcc64a1c533812f9b07a4155d",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Slider_themeresources.xaml"
+    }
+  },
+  {
+    "name": "Slider_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/Slider_themeresources_perf2026.xaml",
+    "sha": "28d6b6d33d9341a7e0e285de259665b6a7f4ca3e",
+    "size": 35640,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Slider_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Slider_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/28d6b6d33d9341a7e0e285de259665b6a7f4ca3e",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/Slider_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/Slider_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/28d6b6d33d9341a7e0e285de259665b6a7f4ca3e",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/Slider_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "TabularSurfaces_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/TabularSurfaces_themeresources.xaml",
+    "sha": "fc59baedaed1cc7dd566d7d3a7b918399bc84053",
+    "size": 30941,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TabularSurfaces_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TabularSurfaces_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/fc59baedaed1cc7dd566d7d3a7b918399bc84053",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/TabularSurfaces_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TabularSurfaces_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/fc59baedaed1cc7dd566d7d3a7b918399bc84053",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TabularSurfaces_themeresources.xaml"
+    }
+  },
+  {
+    "name": "TestUI",
+    "path": "controls/dev/CommonStyles/TestUI",
+    "sha": "ab72efce16105743eecf0123f77f04ca5cd39406",
+    "size": 0,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TestUI?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/tree/main/controls/dev/CommonStyles/TestUI",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/trees/ab72efce16105743eecf0123f77f04ca5cd39406",
+    "download_url": null,
+    "type": "dir",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TestUI?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/trees/ab72efce16105743eecf0123f77f04ca5cd39406",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/tree/main/controls/dev/CommonStyles/TestUI"
+    }
+  },
+  {
+    "name": "TextBlock_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/TextBlock_themeresources.xaml",
+    "sha": "08cbcf9cc6a9146b7d192f1f294b949dd2841cfd",
+    "size": 3527,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TextBlock_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TextBlock_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/08cbcf9cc6a9146b7d192f1f294b949dd2841cfd",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/TextBlock_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TextBlock_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/08cbcf9cc6a9146b7d192f1f294b949dd2841cfd",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TextBlock_themeresources.xaml"
+    }
+  },
+  {
+    "name": "TextBlock_themeresources_v2.5.xaml",
+    "path": "controls/dev/CommonStyles/TextBlock_themeresources_v2.5.xaml",
+    "sha": "97aa103a4fbe0cc761b1c8f2046de3d186ca1b89",
+    "size": 1280,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TextBlock_themeresources_v2.5.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TextBlock_themeresources_v2.5.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/97aa103a4fbe0cc761b1c8f2046de3d186ca1b89",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/TextBlock_themeresources_v2.5.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TextBlock_themeresources_v2.5.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/97aa103a4fbe0cc761b1c8f2046de3d186ca1b89",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TextBlock_themeresources_v2.5.xaml"
+    }
+  },
+  {
+    "name": "TextBox_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/TextBox_themeresources.xaml",
+    "sha": "6934b646465eb602218f2ebf950268ac689ea33c",
+    "size": 31255,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TextBox_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TextBox_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/6934b646465eb602218f2ebf950268ac689ea33c",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/TextBox_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TextBox_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/6934b646465eb602218f2ebf950268ac689ea33c",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TextBox_themeresources.xaml"
+    }
+  },
+  {
+    "name": "TextBox_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/TextBox_themeresources_perf2026.xaml",
+    "sha": "8baf383f0b693f6705704d70beeafe96ad66e532",
+    "size": 27281,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TextBox_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TextBox_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/8baf383f0b693f6705704d70beeafe96ad66e532",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/TextBox_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TextBox_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/8baf383f0b693f6705704d70beeafe96ad66e532",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TextBox_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "TextControlsCommon_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/TextControlsCommon_themeresources.xaml",
+    "sha": "61aef55c8eb6cac334a714173048acecef757307",
+    "size": 529,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TextControlsCommon_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TextControlsCommon_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/61aef55c8eb6cac334a714173048acecef757307",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/TextControlsCommon_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TextControlsCommon_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/61aef55c8eb6cac334a714173048acecef757307",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TextControlsCommon_themeresources.xaml"
+    }
+  },
+  {
+    "name": "TimePicker_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/TimePicker_themeresources.xaml",
+    "sha": "2cfb8a7df11925a858a9c877c0886c2ccc3231bf",
+    "size": 29127,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TimePicker_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TimePicker_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/2cfb8a7df11925a858a9c877c0886c2ccc3231bf",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/TimePicker_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TimePicker_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/2cfb8a7df11925a858a9c877c0886c2ccc3231bf",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TimePicker_themeresources.xaml"
+    }
+  },
+  {
+    "name": "TimePicker_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/TimePicker_themeresources_perf2026.xaml",
+    "sha": "9c1d6ba50c49f52648bca4e950d28aeb5ab33d55",
+    "size": 26847,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TimePicker_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TimePicker_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/9c1d6ba50c49f52648bca4e950d28aeb5ab33d55",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/TimePicker_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/TimePicker_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/9c1d6ba50c49f52648bca4e950d28aeb5ab33d55",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/TimePicker_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "ToggleButton_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/ToggleButton_themeresources.xaml",
+    "sha": "868646a15b5a5062046b1edcc003f44288793b52",
+    "size": 34580,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ToggleButton_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ToggleButton_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/868646a15b5a5062046b1edcc003f44288793b52",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ToggleButton_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ToggleButton_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/868646a15b5a5062046b1edcc003f44288793b52",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ToggleButton_themeresources.xaml"
+    }
+  },
+  {
+    "name": "ToggleButton_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/ToggleButton_themeresources_perf2026.xaml",
+    "sha": "6fb99a6aaf28a8067ec1dbd078d38b507b479030",
+    "size": 28370,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ToggleButton_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ToggleButton_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/6fb99a6aaf28a8067ec1dbd078d38b507b479030",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ToggleButton_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ToggleButton_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/6fb99a6aaf28a8067ec1dbd078d38b507b479030",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ToggleButton_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "ToggleSwitch_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/ToggleSwitch_themeresources.xaml",
+    "sha": "50f290fbe053170d943f390d78bb4f8d6ba48140",
+    "size": 51348,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ToggleSwitch_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ToggleSwitch_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/50f290fbe053170d943f390d78bb4f8d6ba48140",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ToggleSwitch_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ToggleSwitch_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/50f290fbe053170d943f390d78bb4f8d6ba48140",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ToggleSwitch_themeresources.xaml"
+    }
+  },
+  {
+    "name": "ToggleSwitch_themeresources_perf2026.xaml",
+    "path": "controls/dev/CommonStyles/ToggleSwitch_themeresources_perf2026.xaml",
+    "sha": "09daa82259a14070ea12d243ae0080e9e7c3d9da",
+    "size": 47086,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ToggleSwitch_themeresources_perf2026.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ToggleSwitch_themeresources_perf2026.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/09daa82259a14070ea12d243ae0080e9e7c3d9da",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ToggleSwitch_themeresources_perf2026.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ToggleSwitch_themeresources_perf2026.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/09daa82259a14070ea12d243ae0080e9e7c3d9da",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ToggleSwitch_themeresources_perf2026.xaml"
+    }
+  },
+  {
+    "name": "ToolTip_themeresources.xaml",
+    "path": "controls/dev/CommonStyles/ToolTip_themeresources.xaml",
+    "sha": "281d1efcf02c33f81b32fd04e2c691da9173a323",
+    "size": 5732,
+    "url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ToolTip_themeresources.xaml?ref=main",
+    "html_url": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ToolTip_themeresources.xaml",
+    "git_url": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/281d1efcf02c33f81b32fd04e2c691da9173a323",
+    "download_url": "https://raw.githubusercontent.com/microsoft/microsoft-ui-xaml/main/controls/dev/CommonStyles/ToolTip_themeresources.xaml",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/contents/controls/dev/CommonStyles/ToolTip_themeresources.xaml?ref=main",
+      "git": "https://api.github.com/repos/microsoft/microsoft-ui-xaml/git/blobs/281d1efcf02c33f81b32fd04e2c691da9173a323",
+      "html": "https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/CommonStyles/ToolTip_themeresources.xaml"
+    }
+  }
+]

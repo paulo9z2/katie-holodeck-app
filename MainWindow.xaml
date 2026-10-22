@@ -1,0 +1,681 @@
+﻿<Window x:Class="KatieHoloDeck.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:KatieHoloDeck"
+        Title="KATIE Holodeck"
+        WindowStyle="SingleBorderWindow"
+        Background="Transparent"
+        ResizeMode="CanResize"
+        ShowInTaskbar="True"
+        WindowStartupLocation="CenterScreen"
+        Width="1280" Height="800"
+        MinWidth="1080" MinHeight="700"
+        PreviewKeyDown="Window_PreviewKeyDown">
+        <!-- Fase 4.5: RenderTransform local da janela p/ animação de abertura (fade+scale).
+             Local (não em Style) pelo achado de bancada: sub-propriedade de Freezable só
+             anima sem exceção quando o valor é LOCAL no elemento. -->
+        <Window.RenderTransform>
+            <ScaleTransform x:Name="WindowScale" ScaleX="1" ScaleY="1"/>
+        </Window.RenderTransform>
+
+    <!-- Fase 1: AllowsTransparency removido (janela layered QUEBRA Mica, wpfui #576).
+         WindowStyle.SingleBorderWindow + WindowChrome assume drag e devolve Aero Snap.
+         v8 (hang): GlassFrameThickness -1 (glass estendido full-window — caminho legado do
+         DWM, per-pixel hit-test) era o resquício final do combo layered/glass nesta janela;
+         trocado por 0. O Mica continua vindo do DWMWA_SYSTEMBACKDROP_TYPE (attr 38) e a
+         janela desenha tudo sozinha — o frame padrão (SingleBorderWindow) segue intacto. -->
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="58"
+                      ResizeBorderThickness="6"
+                      GlassFrameThickness="-1"
+                      CornerRadius="0"
+                      UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <!-- botão sem chrome (ponto do logo) -->
+        <ControlTemplate x:Key="BareButtonTemplate" TargetType="Button">
+            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </ControlTemplate>
+
+        <!-- foco visível do ponto do logo (anel de acento) -->
+        <Style x:Key="RoundFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="-3" RadiusX="7" RadiusY="7" StrokeThickness="1.2"
+                                   Stroke="{DynamicResource AccentBrush}" Opacity="0.8" SnapsToDevicePixels="True"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- rótulo de seção dos painéis -->
+        <Style x:Key="PanelLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI Variable Text"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeLabelBrush}"/>
+        </Style>
+
+        <!-- leitura mono (telemetria/relógio) -->
+        <Style x:Key="ReadoutStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}"/>
+        </Style>
+    </Window.Resources>
+
+    <!-- APP REAL: casca com fundo holográfico, chrome customizado -->
+    <Border x:Name="AppShell" CornerRadius="8" BorderBrush="{DynamicResource AccentBrushGhost}" BorderThickness="1.2" ClipToBounds="True" local:Chamfer.Size="22" local:TechFrame.Enabled="True" Background="{DynamicResource ThemeShellBrush}">
+        <Grid>
+<Grid x:Name="AppContent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="58"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="44"/>
+                </Grid.RowDefinitions>                <!-- ===== CAMADAS DE FUNDO ===== -->
+                <!-- v3 (nitidez/densidade): grid VISÍVEL (contraste baixo, linhas 1px) sobre base densa -->
+                <Rectangle Grid.Row="0" Grid.RowSpan="3" x:Name="GridLayer" Opacity="0.5" IsHitTestVisible="False"
+                           Fill="{DynamicResource ThemeGridBrush}"/>
+                <Rectangle Grid.Row="0" Grid.RowSpan="3" x:Name="ScanLayer" Opacity="0.4" IsHitTestVisible="False"
+                           Fill="{DynamicResource ThemeScanBrush}"/>
+                <Rectangle Grid.Row="0" Grid.RowSpan="3" IsHitTestVisible="False"
+                           Fill="{DynamicResource ThemeVignetteBrush}"/>
+
+            
+
+                <!-- ===== TITLE BAR ===== -->
+                <Border Grid.Row="0" BorderBrush="{DynamicResource AccentBrushGhost}" BorderThickness="0,0,0,1">
+                    <Grid Margin="22,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <!-- ponto do logo = botão de Configurações (acessível: Tab + Enter/Espaço, tooltip) -->
+                            <Button x:Name="SettingsBtn" Width="24" Height="24" Margin="-7,0,3,0"
+                                    Background="Transparent" BorderThickness="0" Padding="0"
+                                    Cursor="Hand" Click="SettingsBtn_Click"
+                                    MouseEnter="SettingsBtn_MouseEnter" MouseLeave="SettingsBtn_MouseLeave"
+                                    ToolTip="Configurações"
+                                    AutomationProperties.Name="Abrir Configurações"
+                                    Template="{StaticResource BareButtonTemplate}"
+                                    FocusVisualStyle="{StaticResource RoundFocusVisual}"
+                                    WindowChrome.IsHitTestVisibleInChrome="True">
+                                <Ellipse x:Name="BrandDot" Width="10" Height="10" Fill="{DynamicResource AccentBrush}">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect x:Name="BrandDotGlow" Color="{DynamicResource AccentColor}"
+                                                          BlurRadius="10" ShadowDepth="0" Opacity="0.9"/>
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                            </Button>
+                            <TextBlock Text="K.A.T.I.E." FontFamily="Segoe UI Variable Display" FontSize="20" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource ThemeTextStrongBrush}" VerticalAlignment="Center">
+                                <TextBlock.Effect><DropShadowEffect Color="{DynamicResource AccentColor}" BlurRadius="18" ShadowDepth="0" Opacity="0.75"/></TextBlock.Effect>
+                            </TextBlock>
+                            <TextBlock Text="holodeck" FontFamily="Segoe UI Variable Text" FontSize="12" Foreground="{DynamicResource ThemeLabelBrush}" VerticalAlignment="Bottom" Margin="8,0,0,3"/>
+                        </StackPanel>
+                        <TextBlock x:Name="StatusLine" Text="K.A.T.I.E." FontFamily="pack://application:,,,/KatieHoloDeck;component/Assets/Fonts/Orbitron.ttf#Orbitron" FontSize="15"
+                                   Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.9"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock x:Name="ClockText" Text="--:--:--" FontFamily="Consolas" FontSize="13"
+                                       Foreground="{DynamicResource ThemeTextBrush}" VerticalAlignment="Center" Margin="0,0,18,0"/>
+                            <Border Style="{StaticResource TitleButtonStyle}" Background="{DynamicResource AccentBrushInk}" BorderBrush="{DynamicResource AccentBrushFaint}"
+                                    WindowChrome.IsHitTestVisibleInChrome="True"
+                                    MouseLeftButtonDown="TitleBtn_Stop" MouseLeftButtonUp="MinBtn_Click">
+                                <Border.Effect><DropShadowEffect Color="{DynamicResource AccentColor}" BlurRadius="10" ShadowDepth="0" Opacity="0"/></Border.Effect>
+                                <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
+                                <!-- hover = HoverOverlayStyle (anima Opacity; nunca .Color de brush do tema) -->
+                                <Grid>
+                                    <Border Style="{StaticResource HoverOverlayStyle}" Background="#3300D9FF" CornerRadius="6"/>
+                                    <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE921;" FontSize="11"
+                                               Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="MaxBtn" Style="{StaticResource TitleButtonStyle}" Background="{DynamicResource AccentBrushInk}" BorderBrush="{DynamicResource AccentBrushFaint}"
+                                    Margin="8,0,0,0" WindowChrome.IsHitTestVisibleInChrome="True"
+                                    MouseLeftButtonDown="TitleBtn_Stop" MouseLeftButtonUp="MaxBtn_Click">
+                                <Border.Effect><DropShadowEffect Color="{DynamicResource AccentColor}" BlurRadius="10" ShadowDepth="0" Opacity="0"/></Border.Effect>
+                                <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
+                                <Grid>
+                                    <Border Style="{StaticResource HoverOverlayStyle}" Background="#3300D9FF" CornerRadius="6"/>
+                                    <TextBlock x:Name="MaxBtnIcon" Style="{StaticResource GlyphTextStyle}" Text="&#xE922;"
+                                               Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                            <Border Style="{StaticResource TitleCloseButtonStyle}" Background="#33FF3B3B" BorderBrush="#66FF3B3B"
+                                    Margin="8,0,0,0" WindowChrome.IsHitTestVisibleInChrome="True"
+                                    MouseLeftButtonDown="TitleBtn_Stop" MouseLeftButtonUp="CloseBtn_Click">
+                                <Border.Effect><DropShadowEffect Color="#FF3B3B" BlurRadius="10" ShadowDepth="0" Opacity="0"/></Border.Effect>
+                                <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
+                                <Grid>
+                                    <Border Style="{StaticResource HoverOverlayStyle}" Background="#66FF3B3B" CornerRadius="6"/>
+                                    <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE8BB;" FontSize="11"
+                                               Foreground="#FFFF3B3B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- ===== MAIN: 3 COLUNAS (ilhas flutuantes) ===== -->
+                <Grid Grid.Row="1" Margin="24,16,24,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="236"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="350"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- ESQUERDA: TELEMETRIA (ilha) -->
+                    <Border x:Name="IslandTelemetry" Grid.Column="0" Style="{StaticResource FloatingIslandStyle}"
+                            BorderBrush="{DynamicResource PanelEdgeLiveBrush}" Margin="0,6,16,0"
+                            local:Chamfer.Size="18" CornerRadius="0" local:TechFrame.Enabled="True">
+                        <Grid>
+                            <Rectangle Fill="{DynamicResource SurfaceTintBrush}" IsHitTestVisible="False"/>
+                            <StackPanel VerticalAlignment="Top">
+                            <TextBlock Text="◈ TELEMETRIA" Style="{StaticResource PanelLabelStyle}" Margin="0,0,0,10"/>
+                            <TextBlock x:Name="CpuLabel" Text="CPU  --%" Style="{StaticResource ReadoutStyle}" Margin="0,0,0,4"/>
+                            <ProgressBar x:Name="CpuBar" Height="5" Minimum="0" Maximum="100"
+                                         Style="{StaticResource FluentProgressBarStyle}"
+                                         Foreground="{DynamicResource AccentBrush}"/>
+                            <StackPanel x:Name="GpuRow">
+                                <TextBlock x:Name="GpuLabel" Text="GPU  --%" Style="{StaticResource ReadoutStyle}" Margin="0,10,0,4"/>
+                                <ProgressBar x:Name="GpuBar" Height="5" Minimum="0" Maximum="100"
+                                             Style="{StaticResource FluentProgressBarStyle}"
+                                             Foreground="{DynamicResource AccentBrush}"/>
+                            </StackPanel>
+                            <TextBlock x:Name="RamLabel" Text="RAM  --%" Style="{StaticResource ReadoutStyle}" Margin="0,10,0,4"/>
+                            <ProgressBar x:Name="RamBar" Height="5" Minimum="0" Maximum="100"
+                                         Style="{StaticResource FluentProgressBarStyle}"
+                                         Foreground="{DynamicResource AccentBrush}"/>
+                            <StackPanel x:Name="NetRow">
+                                <TextBlock x:Name="NetLabel" Text="NET  ↓ -- ↑ --" Style="{StaticResource ReadoutStyle}"
+                                           FontSize="11" Margin="0,10,0,0"/>
+                            </StackPanel>
+
+                            <Rectangle Height="1" Fill="{DynamicResource AccentBrushGhost}" Margin="0,14,0,12"/>
+                            <TextBlock Text="◈ ESTADO" Style="{StaticResource PanelLabelStyle}" Margin="0,0,0,8"/>
+                            <TextBlock x:Name="ModeLabel" Text="MODE  idle" Style="{StaticResource ReadoutStyle}"
+                                       Foreground="{DynamicResource AccentBrush}"/>
+
+                            <Rectangle Height="1" Fill="{DynamicResource AccentBrushGhost}" Margin="0,14,0,12"/>
+                            <TextBlock Text="◈ ATIVIDADE" Style="{StaticResource PanelLabelStyle}" Margin="0,0,0,8"/>
+                            <TextBlock x:Name="GameLabel" Text="nenhum jogo detectado" FontFamily="Segoe UI Variable Text"
+                                       FontSize="11" Foreground="{DynamicResource ThemeTextDimBrush}" TextWrapping="Wrap"/>
+                            <TextBlock x:Name="GameSinceLabel" FontFamily="Segoe UI Variable Text" FontSize="9"
+                                       Foreground="{DynamicResource ThemeTextDimBrush}" Margin="0,3,0,0" Visibility="Collapsed"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- CENTRO: REATOR + CHIPS -->
+                    <Grid x:Name="CenterColumn" Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <!-- REATOR (redesign v2): anéis concêntricos com gradiente de luz, coroa de
+                             pontos, ticks radiais, arcos segmentados e núcleo esférico com especular.
+                             Linguagem: FUI/HUD (HUDS+GUIS) — camadas, pesos variados, glow contido.
+                             Rotação: rotors do RenderTick (velocidades lentas e cruzadas). -->
+                        <!-- REATOR 3D INTERATIVO (v3): o reator v2 (aprovado) agora vive em DUAS
+                             camadas 2D projetadas como textura viva em planos 3D nativos
+                             (Viewport2DVisual3D) — parallax tilt segue o mouse (≤8°) e o scroll
+                             dá zoom 0.8–1.3x. Rota: Viewport3D (zero NuGet, GPU acelera a
+                             projeção; o visual aprovado fica intacto, só ganha perspectiva). -->
+                        <local:MusicWheel x:Name="MusicWheelView" Grid.Row="0" Width="540" Height="540"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" Panel.ZIndex="0"/>
+                        <Grid x:Name="ReactorHost" Grid.Row="0" Width="460" Height="460" Background="Transparent" Panel.ZIndex="1"
+                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                              MouseMove="ReactorHost_MouseMove" MouseLeave="ReactorHost_MouseLeave"
+                              PreviewMouseWheel="ReactorHost_PreviewMouseWheel" MouseLeftButtonDown="ReactorHost_MouseLeftButtonDown">
+                            <Viewport3D>
+                                <Viewport3D.Camera>
+                                    <PerspectiveCamera x:Name="ReactorCamera" Position="0,0,802" LookDirection="0,0,-1" UpDirection="0,1,0" FieldOfView="32"/>
+                                </Viewport3D.Camera>
+                                <ModelVisual3D>
+                                    <ModelVisual3D.Content>
+                                        <AmbientLight Color="#FFFFFFFF"/>
+                                    </ModelVisual3D.Content>
+                                </ModelVisual3D>
+
+                                <!-- camada 1: anéis / ticks / arcos (plano z=0) -->
+                                <Viewport2DVisual3D>
+                                    <Viewport2DVisual3D.Geometry>
+                                        <MeshGeometry3D Positions="-210,-210,0 210,-210,0 210,210,0 -210,210,0"
+                                                        TriangleIndices="0 1 2 0 2 3"
+                                                        TextureCoordinates="0,1 1,1 1,0 0,0"/>
+                                    </Viewport2DVisual3D.Geometry>
+                                    <Viewport2DVisual3D.Material>
+                                        <DiffuseMaterial Brush="White" Viewport2DVisual3D.IsVisualHostMaterial="True"/>
+                                    </Viewport2DVisual3D.Material>
+                                    <Viewport2DVisual3D.Visual>
+                                        <Canvas Width="420" Height="420">
+                                            <Ellipse x:Name="RingOuter" Canvas.Left="10" Canvas.Top="10" Width="400" Height="400"
+                                                     StrokeThickness="1" Stroke="{DynamicResource ReactorRim}" Fill="Transparent" Opacity="0.8"/>
+                                            <Ellipse x:Name="ReactorBeads" Canvas.Left="2" Canvas.Top="2" Width="416" Height="416"
+                                                     StrokeThickness="5" StrokeDashArray="0.01 3.62" StrokeDashCap="Round"
+                                                     Stroke="{DynamicResource ReactorAccentDimBrush}" Fill="Transparent" Opacity="0.75"/>
+                                            <Path x:Name="ReactorTicks" Stroke="{DynamicResource ReactorAccentBrush}" StrokeThickness="1" Opacity="0.38"/>
+                                            <Ellipse x:Name="RingOuterDash" Canvas.Left="38" Canvas.Top="38" Width="344" Height="344"
+                                                     StrokeThickness="1.3" StrokeDashArray="3 7" Stroke="{DynamicResource ReactorAccentBrush}"
+                                                     Fill="Transparent" Opacity="0.45"/>
+                                            <Path x:Name="ArcDim" Data="M 360.5,231.1 A 152,152 0 0 1 116.4,329.8"
+                                                  Stroke="{DynamicResource ReactorAccentDimBrush}" StrokeThickness="1"
+                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                                  Fill="Transparent" Opacity="0.8"/>
+                                            <Path x:Name="ArcBright" Data="M 108.3,322.9 A 152,152 0 0 1 60.3,236.4"
+                                                  Stroke="{DynamicResource ReactorAccentBrush}" StrokeThickness="2"
+                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                                  Fill="Transparent" Opacity="0.95">
+                                                <Path.Effect><DropShadowEffect Color="{DynamicResource ReactorAccentColor}" BlurRadius="8" ShadowDepth="0" Opacity="0.65"/></Path.Effect>
+                                            </Path>
+                                            <Ellipse x:Name="RingMid" Canvas.Left="70" Canvas.Top="70" Width="280" Height="280"
+                                                     StrokeThickness="1.2" Stroke="{DynamicResource ReactorRim}" Fill="Transparent" Opacity="0.9"/>
+                                            <Ellipse x:Name="RingInner" Canvas.Left="92" Canvas.Top="92" Width="236" Height="236"
+                                                     StrokeThickness="1.1" StrokeDashArray="0.5 4.5" Stroke="{DynamicResource ReactorAccentBrush}"
+                                                     Fill="Transparent" Opacity="0.5"/>
+                                            <Path x:Name="AccentArc" Data="M 301,52.4 A 182,182 0 0 1 390.2,184.7"
+                                                  Stroke="{DynamicResource ThemeSecondaryBrush}" StrokeThickness="2.4"
+                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                                  Fill="Transparent" Opacity="0.8">
+                                                <Path.Effect><DropShadowEffect Color="{DynamicResource ThemeSecondaryColor}" BlurRadius="7" ShadowDepth="0" Opacity="0.55"/></Path.Effect>
+                                            </Path>
+                                        </Canvas>
+                                    </Viewport2DVisual3D.Visual>
+                                </Viewport2DVisual3D>
+
+                                <!-- camada 2: núcleo (plano z=+22 → parallax por cima) -->
+                                <Viewport2DVisual3D>
+                                    <Viewport2DVisual3D.Geometry>
+                                        <MeshGeometry3D Positions="-204.2,-204.2,22 204.2,-204.2,22 204.2,204.2,22 -204.2,204.2,22"
+                                                        TriangleIndices="0 1 2 0 2 3"
+                                                        TextureCoordinates="0,1 1,1 1,0 0,0"/>
+                                    </Viewport2DVisual3D.Geometry>
+                                    <Viewport2DVisual3D.Material>
+                                        <DiffuseMaterial Brush="White" Viewport2DVisual3D.IsVisualHostMaterial="True"/>
+                                    </Viewport2DVisual3D.Material>
+                                    <Viewport2DVisual3D.Visual>
+                                        <Canvas Width="420" Height="420">
+                                            <Ellipse x:Name="CoreHalo" Canvas.Left="100" Canvas.Top="100" Width="220" Height="220"
+                                                     Fill="{DynamicResource ReactorHalo}"/>
+                                            <Ellipse x:Name="CoreShell" Canvas.Left="132" Canvas.Top="132" Width="156" Height="156"
+                                                     Fill="{DynamicResource ReactorCoreFill}" Stroke="{DynamicResource ReactorRim}"
+                                                     StrokeThickness="1.2" Opacity="0.9"/>
+                                            <Ellipse x:Name="Core" Canvas.Left="145" Canvas.Top="145" Width="130" Height="130"
+                                                     Fill="{DynamicResource ReactorCoreFill}" Stroke="{DynamicResource ReactorRim}" StrokeThickness="1.6">
+                                                <Ellipse.Effect><DropShadowEffect x:Name="CoreGlow" Color="{DynamicResource ReactorAccentColor}" BlurRadius="40" ShadowDepth="0" Opacity="0.9"/></Ellipse.Effect>
+                                            </Ellipse>
+                                            <Ellipse x:Name="CoreRim" Canvas.Left="158" Canvas.Top="158" Width="104" Height="104"
+                                                     StrokeThickness="0.9" StrokeDashArray="1 4" Stroke="{DynamicResource ReactorAccentBrush}"
+                                                     Fill="Transparent" Opacity="0.5"/>
+                                            <Ellipse x:Name="MidOrb" Canvas.Left="170" Canvas.Top="170" Width="80" Height="80"
+                                                     Fill="{DynamicResource ReactorOrbFill}">
+                                                <Ellipse.Effect><DropShadowEffect Color="{DynamicResource ReactorAccentColor}" BlurRadius="26" ShadowDepth="0" Opacity="0.8"/></Ellipse.Effect>
+                                            </Ellipse>
+                                            <Ellipse Canvas.Left="182" Canvas.Top="183" Width="30" Height="20" Fill="#30FFFFFF">
+                                                <Ellipse.RenderTransform><RotateTransform Angle="-24"/></Ellipse.RenderTransform>
+                                                <Ellipse.Effect><DropShadowEffect Color="#B3FFFFFF" BlurRadius="10" ShadowDepth="0" Opacity="0.5"/></Ellipse.Effect>
+                                            </Ellipse>
+                                            <!-- ===== REATOR v2 (T1): WIREFRAME — meridianos como elipses com ScaleX=|cos λ| ===== -->
+                                            <Canvas x:Name="WireFrame" Width="130" Height="130" Canvas.Left="145" Canvas.Top="145" Opacity="0.55">
+                                                <Ellipse Canvas.Left="0" Canvas.Top="0" Width="130" Height="130" Stroke="{DynamicResource ThemeSecondaryBrush}" StrokeThickness="0.8" Fill="Transparent"/>
+                                                <Ellipse x:Name="Merid30L" Canvas.Left="8.7" Canvas.Top="0" Width="112.6" Height="130" Stroke="{DynamicResource ThemeSecondaryBrush}" StrokeThickness="0.7" Fill="Transparent" Opacity="0.8"/>
+                                                <Ellipse x:Name="Merid60L" Canvas.Left="32.5" Canvas.Top="0" Width="65" Height="130" Stroke="{DynamicResource ThemeSecondaryBrush}" StrokeThickness="0.6" Fill="Transparent" Opacity="0.6"/>
+                                                <Ellipse x:Name="Merid60R" Canvas.Left="32.5" Canvas.Top="0" Width="65" Height="130" Stroke="{DynamicResource ThemeSecondaryBrush}" StrokeThickness="0.6" Fill="Transparent" Opacity="0.6" RenderTransformOrigin="0.5,0.5">
+                                                    <Ellipse.RenderTransform><ScaleTransform ScaleX="-1"/></Ellipse.RenderTransform>
+                                                </Ellipse>
+                                                <!-- equador + latitudes tilt (T2) -->
+                                                <Ellipse Canvas.Left="0" Canvas.Top="58" Width="130" Height="14" Stroke="{DynamicResource ReactorAccentBrush}" StrokeThickness="0.7" Fill="Transparent" Opacity="0.75"/>
+                                            </Canvas>
+                                            <!-- ===== REATOR v2 (T3): GLOW TRICOLOR — azul fundo + verde meio + ciano borda ===== -->
+                                            <Ellipse x:Name="GlowLayerBlue" Canvas.Left="110" Canvas.Top="110" Width="200" Height="200" Fill="Transparent">
+                                                <Ellipse.Effect><DropShadowEffect Color="{DynamicResource AccentColor}" BlurRadius="60" ShadowDepth="0" Opacity="0.35"/></Ellipse.Effect>
+                                            </Ellipse>
+                                            <Ellipse x:Name="GlowLayerGreen" Canvas.Left="125" Canvas.Top="125" Width="170" Height="170" Fill="Transparent">
+                                                <Ellipse.Effect><DropShadowEffect Color="{DynamicResource ThemeSecondaryColor}" BlurRadius="34" ShadowDepth="0" Opacity="0.28"/></Ellipse.Effect>
+                                            </Ellipse>
+                                            <Ellipse x:Name="GlowLayerCyan" Canvas.Left="140" Canvas.Top="140" Width="140" Height="140" Fill="#001D2B3A">
+                                                <Ellipse.Effect><DropShadowEffect Color="{DynamicResource ReactorAccentColor}" BlurRadius="18" ShadowDepth="0" Opacity="0.30"/></Ellipse.Effect>
+                                            </Ellipse>
+                                            <!-- ===== REATOR v2 (T4): SWEEP — banda de luz viajando no anel-médio (OpacityMask) ===== -->
+                                            <Ellipse x:Name="SweepRing" Canvas.Left="80" Canvas.Top="80" Width="260" Height="260"
+                                                     StrokeThickness="2.5" Stroke="{DynamicResource ReactorAccentBrush}" Fill="Transparent" Opacity="0.85">
+                                                <Ellipse.OpacityMask>
+                                                    <LinearGradientBrush x:Name="SweepMask" StartPoint="0,0" EndPoint="1,0">
+                                                        <GradientStop Color="#00FFFFFF" Offset="0"/>
+                                                        <GradientStop Color="#00FFFFFF" Offset="0.35"/>
+                                                        <GradientStop Color="#FFFFFFFF" Offset="0.5"/>
+                                                        <GradientStop Color="#00FFFFFF" Offset="0.65"/>
+                                                        <GradientStop Color="#00FFFFFF" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Ellipse.OpacityMask>
+                                            </Ellipse>
+                                            <Ellipse x:Name="StatusDot" Canvas.Left="200" Canvas.Top="200" Width="20" Height="20" Fill="#FF00FF88">
+                                                <Ellipse.Effect><DropShadowEffect x:Name="StatusDotGlow" Color="#00FF88" BlurRadius="12" ShadowDepth="0" Opacity="0.8"/></Ellipse.Effect>
+                                            </Ellipse>
+                                        </Canvas>
+                                    </Viewport2DVisual3D.Visual>
+                                </Viewport2DVisual3D>
+                            </Viewport3D>
+                        </Grid>
+
+                        <!-- CHIPS (hover fade + glow + press 0.97 — valores locais obrigatórios) -->
+                        <StackPanel x:Name="ChipPanel" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" Margin="0,0,0,6">
+                            <Border x:Name="ChipAgenda" Style="{StaticResource ChipButtonStyle}"
+                                    Background="{DynamicResource ThemeChipGlassBrush}" BorderBrush="{DynamicResource AccentBrush}"
+                                    Margin="0,0,10,0" MouseLeftButtonUp="Chip_Click" local:Chamfer.Size="8" CornerRadius="0" Padding="0">
+                                <Border.Effect><DropShadowEffect Color="{DynamicResource AccentColor}" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/></Border.Effect>
+                                <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
+                                <Grid>
+                                    <Border Style="{StaticResource HoverOverlayStyle}" Background="#3300D9FF" CornerRadius="0"/>
+                                    <StackPanel Orientation="Horizontal" Margin="14,7">
+                                        <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE787;" FontSize="13"
+                                                   Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                                        <TextBlock Text="agenda" FontFamily="Segoe UI Variable Text" FontSize="12" Foreground="{DynamicResource ThemeTextStrongBrush}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="ChipEmails" Style="{StaticResource ChipButtonDangerStyle}"
+                                    Background="{DynamicResource ThemeChipGlassBrush}" BorderBrush="#FFFF3B3B"
+                                    Margin="0,0,10,0" MouseLeftButtonUp="Chip_Click" local:Chamfer.Size="8" CornerRadius="0" Padding="0">
+                                <Border.Effect><DropShadowEffect Color="#FF3B3B" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/></Border.Effect>
+                                <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
+                                <Grid>
+                                    <Border Style="{StaticResource HoverOverlayStyle}" Background="#33FF3B3B" CornerRadius="0"/>
+                                    <StackPanel Orientation="Horizontal" Margin="14,7">
+                                        <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE715;" FontSize="13"
+                                                   Foreground="#FFFF3B3B" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                                        <TextBlock Text="e-mails" FontFamily="Segoe UI Variable Text" FontSize="12" Foreground="{DynamicResource ThemeTextStrongBrush}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                            <Border x:Name="ChipMusic" Style="{StaticResource ChipButtonMusicStyle}"
+                                    Background="{DynamicResource ThemeChipGlassBrush}" BorderBrush="{DynamicResource ThemeSecondaryBrush}"
+                                    MouseLeftButtonUp="Chip_Click" local:Chamfer.Size="8" CornerRadius="0" Padding="0">
+                                <Border.Effect><DropShadowEffect Color="{DynamicResource ThemeSecondaryColor}" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/></Border.Effect>
+                                <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
+                                <Grid>
+                                    <Border Style="{StaticResource HoverOverlayStyle}" Background="#3300FF88" CornerRadius="0"/>
+                                    <StackPanel Orientation="Horizontal" Margin="14,7">
+                                        <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xEC4F;" FontSize="13"
+                                                   Foreground="{DynamicResource ThemeSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                                        <TextBlock Text="música" FontFamily="Segoe UI Variable Text" FontSize="12" Foreground="{DynamicResource ThemeTextStrongBrush}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- PAINEL INLINE MÚSICA (cartão flutuante; abre com subida+escala+fade).
+                             Fase A/v7: vidro #0E1B2E @60% (Mica vaza pelo grid — sem fill opaco).
+                             F1: o fill é um Path OCTOGONAL (Chamfer.Octagon) — o Border não pinta
+                             retângulo; aro de cristal no Glass (toggle, default OFF). -->
+                        <Border x:Name="MediaPanel" Grid.Row="2" Height="0" ClipToBounds="True" Opacity="0"
+                                CornerRadius="14" Background="{x:Null}" BorderBrush="{DynamicResource ThemeSecondaryFaintBrush}" BorderThickness="0"
+                                Margin="10,10,10,2" RenderTransformOrigin="0.5,1" local:Chamfer.Size="12" local:TechFrame.Enabled="True" local:Glass.Ring="True">
+                            <Border.Effect><DropShadowEffect Color="#000000" BlurRadius="20" ShadowDepth="3" Direction="270" Opacity="0.45"/></Border.Effect>
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <TranslateTransform x:Name="MediaTranslate" Y="0"/>
+                                    <ScaleTransform x:Name="MediaScale" ScaleX="1" ScaleY="1"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <Grid>
+                            <!-- F1-PAINT: SEM FallbackStroke. Esta superfície TEM chanfro
+                                 (Chamfer.Size=12), e o ChamferAdorner já desenha o contorno
+                                 octogonal (1,2 px) na silhueta real. Com o FallbackStroke
+                                 sobrava um segundo traço de 1 px a 0,5 px por dentro =
+                                 contorno DUPLO (borda grossa e suja). Agora: vidro OFF →
+                                 só o traço octogonal (1 linha); vidro ON → só o aro neutro. -->
+                            <Path local:Glass.Face="ThemeMediaGlassBrush"
+                                  Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                  IsHitTestVisible="False"/>
+                            <Grid Margin="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Rectangle x:Name="InlineCover" Grid.Column="0" Width="56" Height="56" RadiusX="8" RadiusY="8" Fill="{DynamicResource ThemeCoverPlaceholderBrush}"/>
+                                <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                    <!-- v9.7 P2 (escopo): selo origem também no título inline (grid = trim preservado);
+                                         Foreground via ThemeTextStrongBrush p/ tema da capa (merge OC) -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="InlineTitle" Text="Nada tocando" FontFamily="Segoe UI Variable Text" FontSize="12" Foreground="{DynamicResource ThemeTextStrongBrush}" TextTrimming="CharacterEllipsis"/>
+                                        <Image x:Name="InlineSourceIcon" Grid.Column="1" Width="14" Height="14" Margin="6,0,0,0" VerticalAlignment="Center" Stretch="Uniform" Opacity="0" Visibility="Collapsed" Cursor="Hand" MouseLeftButtonDown="SourceBadge_Click"/>
+                                    </Grid>
+                                    <TextBlock x:Name="InlineArtist" Text="—" FontFamily="Segoe UI Variable Text" FontSize="10" Foreground="{DynamicResource ThemeLabelBrush}" TextTrimming="CharacterEllipsis"/>
+                                    <Grid Margin="0,6,0,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="InlinePos" Text="0:00" FontFamily="Consolas" FontSize="8" Foreground="{DynamicResource ThemeTextDimBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                        <Border x:Name="InlineTrack" Grid.Column="1" Height="3" CornerRadius="1.5" Background="{DynamicResource ThemeBarTrackBrush}" VerticalAlignment="Center">
+                                            <Border x:Name="InlineFill" Height="3" CornerRadius="1.5" Background="{DynamicResource ThemeSecondaryBrush}" HorizontalAlignment="Left" Width="0"/>
+                                        </Border>
+                                        <TextBlock Grid.Column="2" x:Name="InlineDur" Text="0:00" FontFamily="Consolas" FontSize="8" Foreground="{DynamicResource ThemeTextDimBrush}" VerticalAlignment="Center" Margin="6,0,0,0"/>
+                                    </Grid>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Border Width="24" Height="20" CornerRadius="5" Background="{DynamicResource AccentBrushGhost}" BorderBrush="{DynamicResource ThemeSecondaryFaintBrush}" BorderThickness="1" Margin="0,0,6,0" Cursor="Hand" MouseLeftButtonDown="InlinePrev_Click">
+                                            <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE892;" FontSize="10" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <Border Width="28" Height="22" CornerRadius="6" Background="{DynamicResource ThemeSecondaryFaintBrush}" BorderBrush="{DynamicResource ThemeSecondaryBrush}" BorderThickness="1" Cursor="Hand" MouseLeftButtonDown="InlinePlay_Click">
+                                            <TextBlock x:Name="InlinePlayIcon" Style="{StaticResource GlyphTextStyle}" Text="&#xE769;" FontSize="11" Foreground="{DynamicResource ThemeSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <Border Width="24" Height="20" CornerRadius="5" Background="{DynamicResource AccentBrushGhost}" BorderBrush="{DynamicResource ThemeSecondaryFaintBrush}" BorderThickness="1" Margin="6,0,0,0" Cursor="Hand" MouseLeftButtonDown="InlineNext_Click">
+                                            <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE893;" FontSize="10" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                    <Button x:Name="FsBtn" Width="30" Height="24" Cursor="Hand" ToolTip="modo música fullscreen"
+                                            Click="FsBtn_Click" AutomationProperties.Name="modo música fullscreen">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="FsBtnBg" CornerRadius="7" Background="{DynamicResource AccentBrushGhost}" BorderBrush="{DynamicResource AccentEdgeBrush}" BorderThickness="1">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="FsBtnBg" Property="Background" Value="{DynamicResource AccentBrushFaint}"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed" Value="True">
+                                                        <Setter TargetName="FsBtnBg" Property="Background" Value="{DynamicResource AccentBrushFaint}"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                        <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE740;" FontSize="11"
+                                                   Foreground="{DynamicResource AccentBrush}"/>
+                                    </Button>
+                                    <!-- F1: 30×30 fica SEM chanfro novo (T3 proíbe canto 2× em <34px):
+                                         silhueta arredondada nativa + aro de cristal. Com vidro ON o
+                                         fill vira AccentBrushFaint "frosted" e o stroke de acento some
+                                         (FallbackStroke) — R14: nada de acento no aro. -->
+                                    <Border x:Name="UndockBtn" Width="30" Height="30" CornerRadius="8" Background="{x:Null}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="0"
+                                            Margin="0,6,0,0"
+                                            Cursor="Hand" ToolTip="desancorar player flutuante" MouseLeftButtonDown="UndockBtn_Click"
+                                            local:Glass.Ring="True">
+                                        <Grid>
+                                            <Path local:Glass.Face="AccentBrushFaint" local:Glass.FaceFrosted="ThemeFieldGlassBrush"
+                                                  local:Glass.FallbackStroke="AccentBrush"
+                                                  Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                  IsHitTestVisible="False"/>
+                                            <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE8A7;" FontSize="13"
+                                                       Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border x:Name="MediaCloseBtn" Width="30" Height="24" CornerRadius="7" Background="#14FF3B3B" BorderBrush="#40FF3B3B" BorderThickness="1"
+                                            Margin="0,6,0,0" Cursor="Hand" ToolTip="fechar painel (Esc)" MouseLeftButtonUp="MediaCloseBtn_Click">
+                                        <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE8BB;" FontSize="11"
+                                                   Foreground="#FFFF3B3B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- DIREITA: CONVERSA (ilha; compositor DENTRO do cartão) -->
+                    <Border x:Name="IslandChat" Grid.Column="2" Style="{StaticResource FloatingIslandStyle}"
+                            BorderBrush="{DynamicResource PanelEdgeLiveBrush}" Margin="16,-4,0,0" Padding="12,12,12,10"
+                            local:Chamfer.Size="18" CornerRadius="0" local:TechFrame.Enabled="True">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Rectangle Grid.RowSpan="3" Fill="{DynamicResource SurfaceTintBrush}" IsHitTestVisible="False"/>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="◈ CONVERSA" Style="{StaticResource PanelLabelStyle}"/>
+                                <!-- v7 FASE B: botão expandir — o chat cresce cobrindo a área do reator -->
+                                <Border x:Name="ChatExpandBtn" Grid.Column="1" CornerRadius="6" Padding="7,4" Cursor="Hand"
+                                        Background="#00000000" BorderBrush="{DynamicResource AccentBrushGhost}" BorderThickness="1"
+                                        MouseLeftButtonUp="ChatExpandBtn_Click" ToolTip="expandir conversa (ESC volta)">
+                                    <TextBlock x:Name="ChatExpandIcon" Style="{StaticResource GlyphTextStyle}" Text="&#xE740;" FontSize="11"
+                                               Foreground="{DynamicResource AccentBrushDim}" VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                            <ScrollViewer x:Name="ChatScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,8,0,6">
+                                <ScrollViewer.Resources>
+                                    <Style TargetType="ScrollBar" BasedOn="{StaticResource ThinScrollBarStyle}"/>
+                                </ScrollViewer.Resources>
+                                <StackPanel x:Name="ChatPanel"/>
+                            </ScrollViewer>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Border x:Name="ChatInputBorder" Grid.Column="0" CornerRadius="8" Background="{DynamicResource ThemeFieldGlassBrush}"
+                                        BorderBrush="{DynamicResource AccentBrushFaint}" BorderThickness="1">
+                                    <Grid>
+                                        <TextBlock x:Name="ChatPlaceholder" Text="digita uma mensagem…"
+                                                   FontFamily="Segoe UI Variable Text" FontSize="12"
+                                                   Foreground="{DynamicResource ThemeTextDimBrush}" Margin="11,0,10,0"
+                                                   VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                        <TextBox x:Name="CmdInput" Style="{StaticResource FluentTextBoxStyle}" Padding="10,8"
+                                                 FontFamily="Segoe UI Variable Text" FontSize="12.5" Foreground="{DynamicResource ThemeTextStrongBrush}"
+                                                 KeyDown="CmdInput_KeyDown" TextChanged="CmdInput_TextChanged"/>
+                                    </Grid>
+                                </Border>
+                                <Border x:Name="SendBtn" Grid.Column="1" Style="{StaticResource ChipButtonStyle}"
+                                        CornerRadius="8" Padding="0" Margin="8,0,0,0"
+                                        Background="{DynamicResource ThemeChipGlassBrush}" BorderBrush="{DynamicResource AccentBrushDim}"
+                                        MouseLeftButtonUp="SendBtn_Click">
+                                    <Border.Effect><DropShadowEffect Color="{DynamicResource AccentColor}" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/></Border.Effect>
+                                    <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
+                                    <Grid>
+                                        <Border Style="{StaticResource HoverOverlayStyle}" Background="#3300D9FF" CornerRadius="8"/>
+                                        <StackPanel Orientation="Horizontal" Margin="14,9">
+                                            <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE724;" FontSize="12"
+                                                       Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                                            <TextBlock Text="enviar" FontFamily="Segoe UI Variable Text" FontSize="12"
+                                                       Foreground="{DynamicResource AccentBrush}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!-- ===== BOTTOM BAR ===== -->
+                <Border Grid.Row="2" BorderBrush="{DynamicResource AccentBrushGhost}" BorderThickness="0,1,0,0">
+                    <Grid Margin="24,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Ellipse Width="7" Height="7" Fill="{DynamicResource ThemeSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,8,0">
+                                <Ellipse.Effect><DropShadowEffect Color="{DynamicResource ThemeSecondaryColor}" BlurRadius="8" ShadowDepth="0" Opacity="0.8"/></Ellipse.Effect>
+                            </Ellipse>
+                            <TextBlock x:Name="HintText" Text="KATIE Holodeck · digite no chat à direita · música no chip abaixo do reator"
+                                       FontFamily="Segoe UI Variable Text" FontSize="10" Foreground="{DynamicResource ThemeLabelBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+
+<!-- modo música FULLSCREEN v9.3 — cobre a JANELA INTEIRA (spec 18/10: sobrepõe o
+                     aplicativo todo, conteúdo atrás desfocado/mica); irmão do AppContent no
+                     grid raiz (Z50) pra ficar NÍTIDO sobre o blur; letra LRC embaixo (karaokê).
+                     MotionEnabled rege a animação de expandir. -->
+                <Grid x:Name="FullscreenMusic" Panel.ZIndex="50" Visibility="Collapsed" Opacity="0"
+                      Background="{DynamicResource ThemeFullscreenBrush}" RenderTransformOrigin="0.5,0.5" local:TechFrame.Enabled="True">
+                    <Grid.RenderTransform><ScaleTransform x:Name="FullscreenScale" ScaleX="0.98" ScaleY="0.98"/></Grid.RenderTransform>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- topo: capa + título -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,26,0,8">
+                        <Rectangle x:Name="FsCover" Width="86" Height="86" RadiusX="10" RadiusY="10" Fill="{DynamicResource ThemeCoverPlaceholderBrush}"/>
+                        <StackPanel Margin="16,0,0,0" VerticalAlignment="Center" MaxWidth="430">
+                            <!-- v9.7 P2 (escopo): selo origem também no título do fullscreen;
+                                 Foreground via ThemeTextStrongBrush p/ tema da capa (merge OC) -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="FsTitle" Text="Nada tocando" FontFamily="Segoe UI Variable Display" FontSize="21"
+                                           FontWeight="SemiBold" Foreground="{DynamicResource ThemeTextStrongBrush}" TextTrimming="CharacterEllipsis"/>
+                                <Image x:Name="FsSourceIcon" Grid.Column="1" Width="18" Height="18" Margin="8,0,0,0" VerticalAlignment="Center" Stretch="Uniform" Opacity="0" Visibility="Collapsed" Cursor="Hand" MouseLeftButtonDown="SourceBadge_Click"/>
+                            </Grid>
+                            <TextBlock x:Name="FsArtist" Text="—" FontFamily="Segoe UI Variable Text" FontSize="13"
+                                       Foreground="{DynamicResource ThemeTextBrush}" TextTrimming="CharacterEllipsis" Margin="0,3,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- letra LRC (karaokê: atual destacada, vizinhas esmaecidas) -->
+                    <ScrollViewer x:Name="FsLyricsScroll" Grid.Row="1" VerticalScrollBarVisibility="Hidden" Margin="40,4">
+                        <StackPanel x:Name="FsLyricsPanel" VerticalAlignment="Center" Margin="0,24"/>
+                    </ScrollViewer>
+
+                    <!-- controles -->
+                    <StackPanel x:Name="BottomBar" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,6,0,16">
+                        <TextBlock x:Name="FsPos" Text="0:00" FontFamily="Consolas" FontSize="10" Foreground="{DynamicResource ThemeTextDimBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <Border Width="30" Height="24" CornerRadius="7" Background="{DynamicResource AccentBrushGhost}" BorderBrush="{DynamicResource ThemeSecondaryFaintBrush}" BorderThickness="1"
+                                Cursor="Hand" MouseLeftButtonDown="FsPrev_Click" AutomationProperties.Name="fullscreen anterior">
+                            <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE892;" FontSize="11" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <Border Width="36" Height="26" CornerRadius="7" Background="{DynamicResource ThemeSecondaryFaintBrush}" BorderBrush="{DynamicResource ThemeSecondaryBrush}" BorderThickness="1" Margin="8,0,0,0"
+                                Cursor="Hand" MouseLeftButtonDown="FsPlay_Click" AutomationProperties.Name="fullscreen play pausa">
+                            <TextBlock x:Name="FsPlayIcon" Style="{StaticResource GlyphTextStyle}" Text="&#xE769;" FontSize="12" Foreground="{DynamicResource ThemeSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <Border Width="30" Height="24" CornerRadius="7" Background="{DynamicResource AccentBrushGhost}" BorderBrush="{DynamicResource ThemeSecondaryFaintBrush}" BorderThickness="1" Margin="8,0,0,0"
+                                Cursor="Hand" MouseLeftButtonDown="FsNext_Click" AutomationProperties.Name="fullscreen próxima">
+                            <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE893;" FontSize="11" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock x:Name="FsDur" Text="0:00" FontFamily="Consolas" FontSize="10" Foreground="{DynamicResource ThemeTextDimBrush}" VerticalAlignment="Center" Margin="10,0,18,0"/>
+                        <Border Width="30" Height="24" CornerRadius="7" Background="{DynamicResource AccentBrushGhost}" BorderBrush="{DynamicResource AccentEdgeBrush}" BorderThickness="1"
+                                Cursor="Hand" ToolTip="voltar ao painel (Esc)" MouseLeftButtonUp="FsBtn_Click" AutomationProperties.Name="sair do fullscreen">
+                            <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE73C;" FontSize="11" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+<!-- ===== CONFIGURAÇÕES (painel flutuante sobre o conteúdo) ===== -->
+            <Grid x:Name="SettingsHost" Visibility="Collapsed" Panel.ZIndex="100">
+                <Border x:Name="SettingsScrim" Background="{DynamicResource ScrimBrush}" Opacity="0" MouseLeftButtonUp="SettingsScrim_Click"/>
+                <Grid x:Name="SettingsCenter" HorizontalAlignment="Center" VerticalAlignment="Center"
+                      RenderTransformOrigin="0.5,0.5" Background="Transparent">
+                    <Grid.RenderTransform>
+                        <!-- v9.2: escala na entrada deslocava a moldura (AdornerLayer não segue
+                             RenderTransform) — mantido identidade; entrada agora é só fade. -->
+                        <ScaleTransform x:Name="SettingsScale" ScaleX="1" ScaleY="1"/>
+                    </Grid.RenderTransform>
+                    <local:SettingsPanel x:Name="SettingsUI" Width="920" Height="580" Opacity="0"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

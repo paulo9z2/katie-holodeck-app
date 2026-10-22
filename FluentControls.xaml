@@ -1,0 +1,801 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+    ==============================================================================
+    KatieHoloDeck · FluentControls.xaml — estilos "Fluent Glass" (v1.2 · 11/10/2026)
+    (v1.2: + FloatingIslandStyle — cartões "ilha flutuante"; resto = v1.1 validado em bancada)
+    ==============================================================================
+    WPF puro (.NET 8, net8.0-windows10.0.19041) · ZERO NuGet · zero WinUI/UWP.
+    Nada de VisualStateManager / x:Bind / BitmapIcon / RelativePanel — só
+    Style.Triggers, EventTrigger, EnterActions/ExitActions e Storyboard de WPF.
+
+    Merge no App.xaml (manual, por conta do app):
+        <Application.Resources>
+          <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+              <ResourceDictionary Source="FluentControls.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            ... (paleta Cyan/CyanDim/DangerRed/... existente fica como está) ...
+          </ResourceDictionary>
+        </Application.Resources>
+    |nota| x:Shared (usado nas fábricas) só existe em XAML COMPILADO — carregar este
+    arquivo "solto" via XamlReader falha de propósito. O merge acima compila normal.
+
+    ──────────────────────────────────────────────────────────────────────────────
+    ARQUITETURA (importante — medido em bancada no .NET 8, não é teoria):
+    O WPF CONGELA os Freezables (Brush/Effect/Transform) que chegam pelos SETTERS
+    de um Style, e animar sub-propriedade de valor "vindo de style" LANÇA EXCEÇÃO
+    em runtime (o app cai no primeiro hover). Valor LOCAL no próprio elemento, ao
+    contrário, é sempre animável (congelado ou não).
+    POR ISSO estes estilos NÃO definem Background / Effect / RenderTransform.
+    Cada Border que usar um destes estilos DEVE trazer, localmente:
+
+      1) Background = SolidColorBrush    (base do chip: #22000C14)   → hover fill
+      2) <Border.Effect> DropShadowEffect (glow do acento)           → hover glow
+      3) <Border.RenderTransform> <ScaleTransform/> </...>           → press 0.97
+         (opcional: sem ele o press só não escala — não quebra nada)
+
+    |CRÍTICO| sem (1) ou (2), o primeiro hover lança InvalidOperationException.
+    Os exemplos "uso:" de cada estilo abaixo já vêm completos — copie inteiros.
+
+    As fábricas FC.* (x:Shared="False") servem para dar o valor local sem repetir
+    literal, ex.: Background="{StaticResource FC.ChipFill}" — USO NO ELEMENTO.
+    NUNCA coloque fábrica/brush dentro de Style setter (recongela e volta a cair).
+
+    Métricas Fluent: hover 120 ms · press 83 ms · radius 3/6/18 · AA no texto.
+    Paleta: ciano #FF00D9FF · verde #FF00FF88 · vermelho #FFFF3B3B · texto
+    #FFF2F6FF / #FF9FB0C8 · labels #FF6C85A8 · muted #FF40546E · chip #22000C14.
+
+    Glifos em XAML SEMPRE como entidade numérica: Text="&#xE768;" (nunca \uXXXX).
+    Cheat-sheet verificado em docs/GLYPHS_MDL2.md.
+
+    Inventário de chaves (públicas):
+      ChipButtonStyle · ChipButtonDangerStyle · ChipButtonMusicStyle
+      TitleButtonStyle · TitleCloseButtonStyle · GlyphTextStyle
+      FluentTextBoxStyle · FluentSliderStyle · FluentProgressBarStyle
+      ThinScrollBarStyle
+    Fábricas (uso no elemento): FC.*  — inventário no fim do arquivo.
+    ==============================================================================
+    -->
+
+    <!--
+    ======================================================================
+    FÁBRICAS — x:Shared="False" = 1 instância NOVA por elemento que consultar.
+    Uso recomendado: no PRÓPRIO elemento, ex.
+        Background="{StaticResource FC.ChipFill}"
+        Effect="{StaticResource FC.ChipGlowCyan}"
+        RenderTransform="{StaticResource FC.PressTransform}"
+    (fora de Style setter — ver ARQUITETURA acima)
+    ======================================================================
+    -->
+
+    <!-- fundo base dos chips -->
+    <SolidColorBrush x:Key="FC.ChipFill" x:Shared="False" Color="#22000C14"/>
+    <!-- fundos base dos title buttons -->
+    <SolidColorBrush x:Key="FC.TitleFillCyan" x:Shared="False" Color="#1100D9FF"/>
+    <SolidColorBrush x:Key="FC.TitleFillRed" x:Shared="False" Color="#33FF3B3B"/>
+    <!-- transform do press (identidade; o gatilho anima ScaleX/Y até 0.97) -->
+    <ScaleTransform x:Key="FC.PressTransform" x:Shared="False" ScaleX="1" ScaleY="1"/>
+    <!-- glows dos chips (base .45 = mesmo valor atual do app) -->
+    <DropShadowEffect x:Key="FC.ChipGlowCyan" x:Shared="False" Color="#00D9FF" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/>
+    <DropShadowEffect x:Key="FC.ChipGlowRed" x:Shared="False" Color="#FF3B3B" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/>
+    <DropShadowEffect x:Key="FC.ChipGlowGreen" x:Shared="False" Color="#00FF88" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/>
+    <!-- glows dos title buttons (idle invisível, hover acende) -->
+    <DropShadowEffect x:Key="FC.TitleGlowCyan" x:Shared="False" Color="#00D9FF" BlurRadius="10" ShadowDepth="0" Opacity="0"/>
+    <DropShadowEffect x:Key="FC.TitleGlowRed" x:Shared="False" Color="#FF3B3B" BlurRadius="10" ShadowDepth="0" Opacity="0"/>
+
+    <!-- bordas estáticas (não animadas — seguras em qualquer lugar) -->
+    <SolidColorBrush x:Key="FC.BorderCyan" Color="#FF00D9FF"/>
+    <SolidColorBrush x:Key="FC.BorderRed" Color="#FFFF3B3B"/>
+    <SolidColorBrush x:Key="FC.BorderGreen" Color="#FF00FF88"/>
+    <SolidColorBrush x:Key="FC.TitleBorderCyan" Color="#3300D9FF"/>
+    <SolidColorBrush x:Key="FC.TitleBorderRed" Color="#66FF3B3B"/>
+
+    <!-- ======================================================================
+         CHIP BUTTON — base compartilhada (sem hover; acento vem nas variantes)
+         → cursor hand · cantos 18 · press 1 → 0.97 em 83 ms · reset de segurança
+           (MouseLeftButtonUp / saída com botão pressionado)
+         |prereq| este estilo anima (UIElement.RenderTransform).(ScaleTransform.*)
+           no press: declare <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
+           no elemento (ou RenderTransform="{StaticResource FC.PressTransform}").
+           Sem transform: press não escala (silencioso, sem crash).
+         ====================================================================== -->
+    <Style x:Key="ChipButtonBaseStyle" TargetType="Border">
+        <Setter Property="Padding" Value="14,7"/>
+        <Setter Property="CornerRadius" Value="18"/>
+        <Setter Property="BorderThickness" Value="1.4"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Style.Triggers>
+            <!-- press (Border não tem IsPressed): MouseLeftButtonDown/Up -->
+            <EventTrigger RoutedEvent="MouseLeftButtonDown">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                         To="0.97" Duration="0:0:0.083" AccelerationRatio="0.2" DecelerationRatio="0.8"/>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                         To="0.97" Duration="0:0:0.083" AccelerationRatio="0.2" DecelerationRatio="0.8"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="MouseLeftButtonUp">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                         To="1" Duration="0:0:0.083" AccelerationRatio="0.2" DecelerationRatio="0.8"/>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                         To="1" Duration="0:0:0.083" AccelerationRatio="0.2" DecelerationRatio="0.8"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <!-- segurança: soltou fora / saiu com o botão pressionado → volta a 1 -->
+            <Trigger Property="IsMouseOver" Value="False">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                             To="1" Duration="0:0:0.083"/>
+                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                             To="1" Duration="0:0:0.083"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--
+         CHIP BUTTON — variante CIANO (padrão: agenda, enviar, ações neutras)
+         hover: overlay #3300D9FF (HoverOverlayStyle anima Opacity) · glow 0.45 → 0.85
+         uso:
+           <Border Style="{StaticResource ChipButtonStyle}"
+                   Background="#22000C14" BorderBrush="#FF00D9FF"
+                   MouseLeftButtonUp="Chip_Click">
+             <Border.Effect>
+               <DropShadowEffect Color="#00D9FF" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/>
+             </Border.Effect>
+             <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
+             <StackPanel Orientation="Horizontal"> ...glifo + label... </StackPanel>
+           </Border>
+         |prereq| Background e Effect locais são OBRIGATÓRIOS (ver ARQUITETURA).
+         Para o fill/saída baterem 100%, mantenha a base #22000C14.
+         ====================================================================== -->
+    <!--
+         HOVER OVERLAY — camada separada de hover (review Codex P1)
+         Por que: os brushes de Background vêm da paleta do tema, que pode estar CONGELADA
+         (Freezable congelado = (SolidColorBrush.Color) não pode ser animado). Em vez de animar
+         .Color, o hover pinta um filho deste estilo e anima só OPACITY.
+         uso: primeiro filho de um Grid dentro do Border clicável; Background = cor do hover.
+           <Border Style="{StaticResource ChipButtonStyle}" ... Padding="0">
+             <Grid>
+               <Border Style="{StaticResource HoverOverlayStyle}"
+                       Background="#3300D9FF" CornerRadius="0"/>
+               <StackPanel Margin="14,7"> ...conteúdo... </StackPanel>
+             </Grid>
+           </Border>
+         → IsHitTestVisible=False: não rouba clique do Border · raio = o mesmo do chip
+         ====================================================================== -->
+    <Style x:Key="HoverOverlayStyle" TargetType="Border">
+        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Setter Property="Opacity" Value="0"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"
+                         Value="True">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             To="1" Duration="0:0:0.12" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             To="0" Duration="0:0:0.16" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ChipButtonStyle" TargetType="Border" BasedOn="{StaticResource ChipButtonBaseStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                             To="0.85" Duration="0:0:0.12" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                             To="0.45" Duration="0:0:0.16" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--
+         CHIP BUTTON — variante VERMELHA (e-mails / ações destrutivas)
+         hover: overlay #33FF3B3B (HoverOverlayStyle anima Opacity) · glow vermelho 0.45 → 0.85
+         uso: igual ChipButtonStyle, trocando:
+           BorderBrush="#FFFF3B3B" e DropShadowEffect Color="#FF3B3B"
+         ====================================================================== -->
+    <Style x:Key="ChipButtonDangerStyle" TargetType="Border" BasedOn="{StaticResource ChipButtonBaseStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                             To="0.85" Duration="0:0:0.12" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                             To="0.45" Duration="0:0:0.16" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--
+         CHIP BUTTON — variante VERDE (música / player)
+         hover: overlay #3300FF88 (HoverOverlayStyle anima Opacity) · glow verde 0.45 → 0.85
+         uso: igual ChipButtonStyle, trocando:
+           BorderBrush="#FF00FF88" e DropShadowEffect Color="#00FF88"
+         ====================================================================== -->
+    <Style x:Key="ChipButtonMusicStyle" TargetType="Border" BasedOn="{StaticResource ChipButtonBaseStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                             To="0.85" Duration="0:0:0.12" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                             To="0.45" Duration="0:0:0.16" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--
+         TITLE BUTTON — min/max da title bar (34×26 · r6 · acento ciano)
+         hover: overlay transparente → #3300D9FF fade-in 120 ms · glow 0 → 0.7
+         uso:
+           <Border Style="{StaticResource TitleButtonStyle}"
+                   Background="#1100D9FF" BorderBrush="#3300D9FF"
+                   MouseLeftButtonDown="TitleBtn_Stop" MouseLeftButtonUp="MinBtn_Click">
+             <Border.Effect>
+               <DropShadowEffect Color="#00D9FF" BlurRadius="10" ShadowDepth="0" Opacity="0"/>
+             </Border.Effect>
+             <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
+             <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE921;"
+                        Foreground="#FF9FB0C8"/>
+           </Border>
+         |prereq| Background e Effect locais são OBRIGATÓRIOS (ver ARQUITETURA).
+         ====================================================================== -->
+    <Style x:Key="TitleButtonStyle" TargetType="Border" BasedOn="{StaticResource ChipButtonBaseStyle}">
+        <Setter Property="Width" Value="34"/>
+        <Setter Property="Height" Value="26"/>
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                             To="0.7" Duration="0:0:0.12" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                             To="0" Duration="0:0:0.16" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--
+         TITLE BUTTON — fechar (34×26 · r6 · hover vermelho mais forte)
+         hover: overlay transparente → #66FF3B3B fade-in 120 ms · glow vermelho 0 → 0.9
+         uso: igual TitleButtonStyle, trocando:
+           Background="#33FF3B3B" BorderBrush="#66FF3B3B" e
+           DropShadowEffect Color="#FF3B3B"
+         ====================================================================== -->
+    <Style x:Key="TitleCloseButtonStyle" TargetType="Border" BasedOn="{StaticResource ChipButtonBaseStyle}">
+        <Setter Property="Width" Value="34"/>
+        <Setter Property="Height" Value="26"/>
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                             To="0.9" Duration="0:0:0.12" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.Opacity)"
+                                             To="0" Duration="0:0:0.16" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--
+         GLYPH TEXT — glifos Segoe MDL2 Assets (NÃO Fluent Icons — não instalada)
+         uso: <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE768;"
+                          Foreground="#FF9FB0C8" VerticalAlignment="Center"/>
+         → 12 px · Foreground herda do pai quando não setado (numa janela escura sem
+           Foreground no root o herdeiro é preto — nos chips, sete explícito)
+         → codepoints validados em docs/GLYPHS_MDL2.md
+         ====================================================================== -->
+    <Style x:Key="GlyphTextStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <!--
+         TEXT BOX — input "glass" sem chrome própria
+         uso: <Border Background="#170B1E38" BorderBrush="#3300D9FF"
+                      CornerRadius="8" BorderThickness="1">
+                <TextBox Style="{StaticResource FluentTextBoxStyle}" .../>
+              </Border>
+         → fundo transparente · caret ciano · seleção ciano 40% · sem borda
+         → focus: linha ciano de 1 px no rodapé do próprio TextBox (fade 120 ms)
+         |limitação| acender a BORDA do Border pai no focus não dá em XAML puro
+           (o estilo não enxerga o pai) — isso pede code-behind/attached property:
+           ex. no GotFocus/LostFocus do TextBox, animar BorderBrush do pai.
+         ====================================================================== -->
+    <Style x:Key="FluentTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CaretBrush" Value="#FF00D9FF"/>
+        <Setter Property="SelectionBrush" Value="#6600D9FF"/>
+        <Setter Property="SelectionOpacity" Value="0.4"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="Segoe UI Variable Text"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid>
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
+                                      Margin="{TemplateBinding Padding}"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden"/>
+                        <Border x:Name="PART_FocusUnderline" Height="1" VerticalAlignment="Bottom"
+                                Background="#FF00D9FF" Opacity="0" SnapsToDevicePixels="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PART_FocusUnderline"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0.85" Duration="0:0:0.12" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PART_FocusUnderline"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0" Duration="0:0:0.16" AccelerationRatio="0.3" DecelerationRatio="0.7"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ======================================================================
+         SLIDER — parts (helpers internos)
+         ====================================================================== -->
+
+    <!-- repeat button horizontal (track): 4 px, centrado -->
+    <Style x:Key="FC.SliderRepeatButtonH" TargetType="RepeatButton">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border Height="4" CornerRadius="2" VerticalAlignment="Center"
+                            Background="{TemplateBinding Background}" SnapsToDevicePixels="True"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- repeat button vertical (track): 4 px, centrado -->
+    <Style x:Key="FC.SliderRepeatButtonV" TargetType="RepeatButton">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border Width="4" CornerRadius="2" HorizontalAlignment="Center"
+                            Background="{TemplateBinding Background}" SnapsToDevicePixels="True"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- thumb: círculo 12 px ciano com glow (geometria pura, zero imagem) -->
+    <Style x:Key="FC.SliderThumb" TargetType="Thumb">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Grid Background="Transparent">
+                        <Ellipse x:Name="ThumbDot" Width="12" Height="12"
+                                 Fill="{TemplateBinding Foreground}">
+                            <Ellipse.Effect>
+                                <DropShadowEffect Color="#00D9FF" BlurRadius="10" ShadowDepth="0" Opacity="0.75"/>
+                            </Ellipse.Effect>
+                        </Ellipse>
+                        <Ellipse x:Name="ThumbShine" Width="12" Height="12" Fill="#FFF2F6FF" Opacity="0"/>
+                        <Ellipse x:Name="ThumbRing" Width="16" Height="16"
+                                 Stroke="{TemplateBinding Foreground}" StrokeThickness="1.2" Opacity="0"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ThumbShine" Property="Opacity" Value="0.3"/>
+                        </Trigger>
+                        <Trigger Property="IsDragging" Value="True">
+                            <Setter TargetName="ThumbShine" Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="ThumbRing" Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- template horizontal: trilho 4 px + fill + thumb com halo -->
+    <ControlTemplate x:Key="FC.SliderTemplateH" TargetType="Slider">
+        <Grid>
+            <Border Height="4" CornerRadius="2" VerticalAlignment="Center"
+                    Background="{TemplateBinding Background}" SnapsToDevicePixels="True"/>
+            <Track x:Name="PART_Track" VerticalAlignment="Center">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton Command="{x:Static Slider.DecreaseLarge}"
+                                  Style="{StaticResource FC.SliderRepeatButtonH}"
+                                  Background="{TemplateBinding Foreground}"/>
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                    <Thumb Style="{StaticResource FC.SliderThumb}"/>
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton Command="{x:Static Slider.IncreaseLarge}"
+                                  Style="{StaticResource FC.SliderRepeatButtonH}"
+                                  Background="Transparent"/>
+                </Track.IncreaseRepeatButton>
+            </Track>
+        </Grid>
+    </ControlTemplate>
+
+    <!-- template vertical (mesmas parts; min embaixo, max em cima — padrão WPF) -->
+    <ControlTemplate x:Key="FC.SliderTemplateV" TargetType="Slider">
+        <Grid>
+            <Border Width="4" CornerRadius="2" HorizontalAlignment="Center"
+                    Background="{TemplateBinding Background}" SnapsToDevicePixels="True"/>
+            <Track x:Name="PART_Track" HorizontalAlignment="Center">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton Command="{x:Static Slider.DecreaseLarge}"
+                                  Style="{StaticResource FC.SliderRepeatButtonV}"
+                                  Background="{TemplateBinding Foreground}"/>
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                    <Thumb Style="{StaticResource FC.SliderThumb}"/>
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton Command="{x:Static Slider.IncreaseLarge}"
+                                  Style="{StaticResource FC.SliderRepeatButtonV}"
+                                  Background="Transparent"/>
+                </Track.IncreaseRepeatButton>
+            </Track>
+        </Grid>
+    </ControlTemplate>
+
+    <!--
+         SLIDER — trilho fino 4 px arredondado · thumb círculo 12 px ciano com glow
+         uso: <Slider Style="{StaticResource FluentSliderStyle}" Minimum="0" Maximum="100"/>
+         → drag fluido · clique no trilho move o thumb (MoveToPoint, estilo WinUI)
+         → cores seguem Foreground (thumb/fill) e Background (trilho) do Slider —
+           ex. verde no player: Foreground="#FF00FF88" Background="#1400FF88"
+         → focus de teclado = anel no thumb (FocusVisualStyle padrão removido)
+         ====================================================================== -->
+    <Style x:Key="FluentSliderStyle" TargetType="Slider">
+        <Setter Property="Foreground" Value="#FF00D9FF"/>
+        <Setter Property="Background" Value="#1400D9FF"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="IsMoveToPointEnabled" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="Template" Value="{StaticResource FC.SliderTemplateH}"/>
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Vertical">
+                <Setter Property="Template" Value="{StaticResource FC.SliderTemplateV}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--
+         PROGRESS BAR — telemetria (CPU/GPU/RAM): trilho 4 px, sem borda
+         uso: <ProgressBar Style="{StaticResource FluentProgressBarStyle}"
+                           Height="4" Minimum="0" Maximum="100" Value="{Binding Cpu}"/>
+         → fundo #0D00D9FF · fill ciano (Foreground) · CornerRadius 2 fixo
+           (não dá p/ calcular metade da altura em XAML puro — se mudar Height,
+           derive um estilo com o CornerRadius novo)
+         |limitação| IsIndeterminate não é tratado (o app usa só determinate);
+           se precisar, animar o PART_Indicator num template próprio.
+         ====================================================================== -->
+    <Style x:Key="FluentProgressBarStyle" TargetType="ProgressBar">
+        <Setter Property="Height" Value="4"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="#0D00D9FF"/>
+        <Setter Property="Foreground" Value="#FF00D9FF"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Border x:Name="PART_Track" Background="{TemplateBinding Background}"
+                            CornerRadius="2" SnapsToDevicePixels="True">
+                        <Border x:Name="PART_Indicator" Background="{TemplateBinding Foreground}"
+                                CornerRadius="2" HorizontalAlignment="Left" SnapsToDevicePixels="True"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ======================================================================
+         SCROLLBAR — parts (helpers internos)
+         ====================================================================== -->
+
+    <!-- botão de página invisível (sem chrome, sem setas) -->
+    <Style x:Key="FC.ScrollRepeatButton" TargetType="RepeatButton">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border Background="Transparent"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- thumb fino arredondado, cinza-azulado translúcido (hover/drag clareia) -->
+    <Style x:Key="FC.ScrollThumb" TargetType="Thumb">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="MinHeight" Value="24"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Border x:Name="ThumbBar" Background="#A640546E" CornerRadius="3"/>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ThumbBar" Property="Background" Value="#CC6C85A8"/>
+                        </Trigger>
+                        <Trigger Property="IsDragging" Value="True">
+                            <Setter TargetName="ThumbBar" Property="Background" Value="#E09FB0C8"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--
+         THIN SCROLLBAR — vertical · 6 px · sem setas · track transparente
+         valor 0 no TOPO (convenção de scroll do WPF)
+         uso (o dicionário não cria estilo implícito — aplique por perto):
+           <ScrollViewer VerticalScrollBarVisibility="Auto">
+             <ScrollViewer.Resources>
+               <Style TargetType="ScrollBar" BasedOn="{StaticResource ThinScrollBarStyle}"/>
+             </ScrollViewer.Resources>
+             ...
+         |nota| vertical apenas (chat/console do app). Barra horizontal exige
+           template próprio (Track Orientation=Horizontal + MinWidth no thumb).
+         ====================================================================== -->
+    <Style x:Key="ThinScrollBarStyle" TargetType="ScrollBar">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollBar">
+                    <Grid Width="6" Background="Transparent" SnapsToDevicePixels="True">
+                        <Track x:Name="PART_Track" Orientation="Vertical" IsDirectionReversed="True">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Command="{x:Static ScrollBar.PageUpCommand}"
+                                              Style="{StaticResource FC.ScrollRepeatButton}"/>
+                            </Track.DecreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb Style="{StaticResource FC.ScrollThumb}"/>
+                            </Track.Thumb>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Command="{x:Static ScrollBar.PageDownCommand}"
+                                              Style="{StaticResource FC.ScrollRepeatButton}"/>
+                            </Track.IncreaseRepeatButton>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--
+         FLOATING ISLAND — cartão "ilha flutuante" (telemetria, conversa, player)
+         uso: <Border x:Name="IslandChat" Style="{StaticResource FloatingIslandStyle}">…</Border>
+         → vidro escuro translúcido + borda de acento + elevação (sombra preta suave)
+         → profundidade 2.5D: sombra + respiro + borda; SEM blur de janela (barato)
+         → IslandGlass / AccentEdgeBrush são DynamicResource: a troca de acento nas
+           Configurações reflete na hora, sem restart.
+         → perfis "Reduzido"/"Sem animações": o app troca a Effect por um preset leve
+           (aqui fica o preset "Completo": blur 24 · depth 3 · opacidade 0.5).
+         ====================================================================== -->
+    <Style x:Key="FloatingIslandStyle" TargetType="Border">
+        <!-- v7 iter6: FLAT tech — sem sombra de elevação (achatado), moldura hairline -->
+        <Setter Property="Background" Value="{DynamicResource IslandGlass}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource AccentEdgeBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Padding" Value="14"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <!--
+         COMBOBOX Fluent (v9.5.0) — usado nas Configurações > Música.
+         uso: <ComboBox Style="{StaticResource FluentComboBoxStyle}">
+                <ComboBoxItem Content="Max" Tag="max"/>
+              </ComboBox>
+         → vidro escuro, hairline viva, popup sólido; cores seguem o acento vivo.
+         ====================================================================== -->
+    <Style x:Key="FluentComboBoxItemStyle" TargetType="ComboBoxItem">
+        <Setter Property="Foreground" Value="#FF9FB0C8"/>
+        <Setter Property="FontFamily" Value="Segoe UI Variable Text"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Padding" Value="10,6"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border x:Name="B" CornerRadius="4" Background="Transparent" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="B" Property="Background" Value="{DynamicResource AccentBrushGhost}"/>
+                            <Setter Property="Foreground" Value="#FFF2F6FF"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="B" Property="Background" Value="{DynamicResource AccentBrushFaint}"/>
+                            <Setter Property="Foreground" Value="#FFF2F6FF"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FluentComboBoxStyle" TargetType="ComboBox">
+        <Setter Property="Foreground" Value="#FFF2F6FF"/>
+        <Setter Property="FontFamily" Value="Segoe UI Variable Text"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource FluentComboBoxItemStyle}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <Border x:Name="B" CornerRadius="6" Background="#170B1E38"
+                                BorderBrush="{DynamicResource AccentBrushFaint}" BorderThickness="1"/>
+                        <ToggleButton Focusable="False" ClickMode="Press"
+                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                            <ToggleButton.Template>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Border Background="Transparent"/>
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                        </ToggleButton>
+                        <ContentPresenter Margin="10,6,30,6" IsHitTestVisible="False"
+                                          Content="{TemplateBinding SelectionBoxItem}"
+                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                          VerticalAlignment="Center"/>
+                        <Path Data="M 0 0 L 4 4 L 8 0" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1.4"
+                              HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                        <Popup IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom"
+                               AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
+                            <Border Background="#FA070C14" BorderBrush="{DynamicResource AccentBrushFaint}"
+                                    BorderThickness="1" CornerRadius="6" Margin="0,4,0,0"
+                                    MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ScrollViewer MaxHeight="180">
+                                    <ItemsPresenter/>
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="B" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ======================================================================
+         INVENTÁRIO (para conferência rápida)
+         Públicos: ChipButtonStyle · ChipButtonDangerStyle · ChipButtonMusicStyle
+                   TitleButtonStyle · TitleCloseButtonStyle · GlyphTextStyle
+                   FluentTextBoxStyle · FluentSliderStyle · FluentProgressBarStyle
+                   ThinScrollBarStyle · FloatingIslandStyle
+         Fábricas (uso no ELEMENTO, nunca em Style setter):
+                   FC.ChipFill · FC.TitleFillCyan · FC.TitleFillRed
+                   FC.PressTransform
+                   FC.ChipGlowCyan · FC.ChipGlowRed · FC.ChipGlowGreen
+                   FC.TitleGlowCyan · FC.TitleGlowRed
+                   FC.BorderCyan · FC.BorderRed · FC.BorderGreen
+                   FC.TitleBorderCyan · FC.TitleBorderRed
+         Internos de template: FC.SliderRepeatButtonH/V · FC.SliderThumb
+                   FC.SliderTemplateH/V · FC.ScrollRepeatButton · FC.ScrollThumb
+         ====================================================================== -->
+
+</ResourceDictionary>
