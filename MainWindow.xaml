@@ -382,7 +382,7 @@
                         <!-- CHIPS (hover fade + glow + press 0.97 — valores locais obrigatórios) -->
                         <StackPanel x:Name="ChipPanel" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" Margin="0,0,0,6">
                             <Border x:Name="ChipAgenda" Style="{StaticResource ChipButtonStyle}"
-                                    Background="{DynamicResource ThemeChipGlassBrush}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="0" Padding="0"
+                                    Background="{x:Null}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="0" Padding="0"
                                     Margin="0,0,10,0" MouseLeftButtonUp="Chip_Click" local:Chamfer.Size="8" CornerRadius="0"
                                     local:Glass.Ring="True">
                                 <Border.Effect><DropShadowEffect Color="{DynamicResource AccentColor}" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/></Border.Effect>
@@ -402,7 +402,7 @@
                                 </Grid>
                             </Border>
                             <Border x:Name="ChipEmails" Style="{StaticResource ChipButtonDangerStyle}"
-                                    Background="{DynamicResource ThemeChipGlassBrush}" BorderBrush="#FFFF3B3B" BorderThickness="0" Padding="0"
+                                    Background="{x:Null}" BorderBrush="#FFFF3B3B" BorderThickness="0" Padding="0"
                                     Margin="0,0,10,0" MouseLeftButtonUp="Chip_Click" local:Chamfer.Size="8" CornerRadius="0"
                                     local:Glass.Ring="True">
                                 <Border.Effect><DropShadowEffect Color="#FF3B3B" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/></Border.Effect>
@@ -422,7 +422,7 @@
                                 </Grid>
                             </Border>
                             <Border x:Name="ChipMusic" Style="{StaticResource ChipButtonMusicStyle}"
-                                    Background="{DynamicResource ThemeChipGlassBrush}" BorderBrush="{DynamicResource ThemeSecondaryBrush}" BorderThickness="0" Padding="0"
+                                    Background="{x:Null}" BorderBrush="{DynamicResource ThemeSecondaryBrush}" BorderThickness="0" Padding="0"
                                     MouseLeftButtonUp="Chip_Click" local:Chamfer.Size="8" CornerRadius="0"
                                     local:Glass.Ring="True">
                                 <Border.Effect><DropShadowEffect Color="{DynamicResource ThemeSecondaryColor}" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/></Border.Effect>
