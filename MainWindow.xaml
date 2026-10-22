@@ -674,16 +674,26 @@
                      grid raiz (Z50) pra ficar NÍTIDO sobre o blur; letra LRC embaixo (karaokê).
                      MotionEnabled rege a animação de expandir. -->
                 <Grid x:Name="FullscreenMusic" Panel.ZIndex="50" Visibility="Collapsed" Opacity="0"
-                      Background="{DynamicResource ThemeFullscreenBrush}" RenderTransformOrigin="0.5,0.5" local:TechFrame.Enabled="True">
-                    <Grid.RenderTransform><ScaleTransform x:Name="FullscreenScale" ScaleX="0.98" ScaleY="0.98"/></Grid.RenderTransform>
+                      Background="{DynamicResource ThemeFullscreenBrush}" local:TechFrame.Enabled="True">
+                    <!-- F2.5: a escala de 2% da entrada SAIU (decisão consolidada) — fica só o fade. -->
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- topo: capa + título -->
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,26,0,8">
+                    <!-- topo: capa + título — F2.5: host glass (padrão F2B: Path Face + Glass.Ring).
+                         Paridade ±1px: Padding 16,13,16,8 + Margin 0,13,0,0 = conteúdo a 26 DIP do
+                         topo e linha de 120 DIP (igual ao antigo Margin 0,26,0,8 com capa 86). -->
+                    <Border Grid.Row="0" HorizontalAlignment="Center"
+                            Padding="16,13,16,8" Margin="0,13,0,0"
+                            Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0"
+                            local:Chamfer.Size="16" CornerRadius="0" local:Glass.Ring="True">
+                        <Grid Background="Transparent">
+                            <Path local:Glass.Face="ThemeMediaGlassBrush"
+                                  Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                  IsHitTestVisible="False"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Rectangle x:Name="FsCover" Width="86" Height="86" RadiusX="10" RadiusY="10" Fill="{DynamicResource ThemeCoverPlaceholderBrush}"/>
                         <StackPanel Margin="16,0,0,0" VerticalAlignment="Center" MaxWidth="430">
                             <!-- v9.7 P2 (escopo): selo origem também no título do fullscreen;
@@ -701,15 +711,44 @@
                                        Foreground="{DynamicResource ThemeTextBrush}" TextTrimming="CharacterEllipsis" Margin="0,3,0,0"/>
                         </StackPanel>
                     </StackPanel>
+                        </Grid>
+                    </Border>
 
                     <!-- letra LRC (karaokê: atual destacada, vizinhas esmaecidas) -->
-                    <ScrollViewer x:Name="FsLyricsScroll" Grid.Row="1" VerticalScrollBarVisibility="Hidden" Margin="40,4">
-                        <StackPanel x:Name="FsLyricsPanel" VerticalAlignment="Center" Margin="0,24"/>
-                    </ScrollViewer>
+                    <Grid Grid.Row="1">
+                        <!-- F2.5: face de LEITURA atrás do LRC. Centro opaco (ThemePanelSolidBrush) e
+                             fade só nas bordas via OpacityMask — a máscara fica NA FACE, nunca nas
+                             letras: o texto segue ClearType puro (V1: vidro nunca atrás de LRC). -->
+                        <Border Margin="24,0" CornerRadius="18"
+                                Background="{DynamicResource ThemePanelSolidBrush}"
+                                IsHitTestVisible="False">
+                            <Border.OpacityMask>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#00FFFFFF" Offset="0"/>
+                                    <GradientStop Color="#FFFFFFFF" Offset="0.16"/>
+                                    <GradientStop Color="#FFFFFFFF" Offset="0.84"/>
+                                    <GradientStop Color="#00FFFFFF" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.OpacityMask>
+                        </Border>
+                        <ScrollViewer x:Name="FsLyricsScroll" VerticalScrollBarVisibility="Hidden" Margin="40,4">
+                            <StackPanel x:Name="FsLyricsPanel" VerticalAlignment="Center" Margin="0,24"/>
+                        </ScrollViewer>
+                    </Grid>
 
-                    <!-- controles -->
-                    <StackPanel x:Name="BottomBar" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,6,0,16">
-                        <TextBlock x:Name="FsPos" Text="0:00" FontFamily="Consolas" FontSize="10" Foreground="{DynamicResource ThemeTextDimBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <!-- controles — F2.5: host glass (Path Face + Glass.Ring), mesmo padrão do topo.
+                         Paridade ±1px: Padding 14,6,14,10 + Margin 0,0,0,6 = conteúdo a 6 DIP e
+                         linha de 48 DIP (igual ao antigo Margin 0,6,0,16 com play de 26). -->
+                    <Border Grid.Row="2" HorizontalAlignment="Center"
+                            Padding="14,6,14,10" Margin="0,0,0,6"
+                            Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0"
+                            local:Chamfer.Size="16" CornerRadius="0" local:Glass.Ring="True">
+                        <Grid Background="Transparent">
+                            <Path local:Glass.Face="ThemeMediaGlassBrush"
+                                  Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                  IsHitTestVisible="False"/>
+                    <StackPanel x:Name="BottomBar" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock x:Name="FsPos" Text="0:00" FontFamily="Consolas" FontSize="10" Foreground="{DynamicResource ThemeLabelBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
                         <Border Width="30" Height="24" CornerRadius="7" Background="{DynamicResource AccentBrushGhost}" BorderBrush="{DynamicResource ThemeSecondaryFaintBrush}" BorderThickness="1"
                                 Cursor="Hand" MouseLeftButtonDown="FsPrev_Click" AutomationProperties.Name="fullscreen anterior">
                             <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE892;" FontSize="11" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -722,12 +761,14 @@
                                 Cursor="Hand" MouseLeftButtonDown="FsNext_Click" AutomationProperties.Name="fullscreen próxima">
                             <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE893;" FontSize="11" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
-                        <TextBlock x:Name="FsDur" Text="0:00" FontFamily="Consolas" FontSize="10" Foreground="{DynamicResource ThemeTextDimBrush}" VerticalAlignment="Center" Margin="10,0,18,0"/>
+                        <TextBlock x:Name="FsDur" Text="0:00" FontFamily="Consolas" FontSize="10" Foreground="{DynamicResource ThemeLabelBrush}" VerticalAlignment="Center" Margin="10,0,18,0"/>
                         <Border Width="30" Height="24" CornerRadius="7" Background="{DynamicResource AccentBrushGhost}" BorderBrush="{DynamicResource AccentEdgeBrush}" BorderThickness="1"
                                 Cursor="Hand" ToolTip="voltar ao painel (Esc)" MouseLeftButtonUp="FsBtn_Click" AutomationProperties.Name="sair do fullscreen">
                             <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE73C;" FontSize="11" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </StackPanel>
+                        </Grid>
+                    </Border>
                 </Grid>
 
 <!-- ===== CONFIGURAÇÕES (painel flutuante sobre o conteúdo) ===== -->

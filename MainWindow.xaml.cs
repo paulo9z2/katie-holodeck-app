@@ -45,9 +45,9 @@ namespace KatieHoloDeck
         private bool _fsPlaying;
         private double _fsScrollTarget, _fsScrollCurrent;
         private readonly DispatcherTimer _lyricsTimer = new() { Interval = TimeSpan.FromMilliseconds(250) };
-        private static readonly Brush FsLineActive = FrozenFsBrush(Color.FromRgb(0xF2, 0xF6, 0xFF));
-        private static readonly Brush FsLineNear = FrozenFsBrush(Color.FromRgb(0x9F, 0xB0, 0xC8));
-        private static readonly Brush FsLineFar = FrozenFsBrush(Color.FromRgb(0x40, 0x54, 0x6E));
+        private static readonly Brush FsLineActive = FrozenFsBrush(Color.FromRgb(0xF3, 0xF4, 0xF4));
+        private static readonly Brush FsLineNear = FrozenFsBrush(Color.FromRgb(0xB3, 0xBB, 0xBD));
+        private static readonly Brush FsLineFar = FrozenFsBrush(Color.FromRgb(0x8C, 0x99, 0x9B));
 
         private static Brush FrozenFsBrush(Color c)
         {
@@ -131,6 +131,7 @@ namespace KatieHoloDeck
         // ===== Passe Fluent (efeitos / entrada / ponto do logo) =====
         private double _motionScale = 1.0;   // 1.0 completo · 0.5 reduzido · 0 parado
         private double _glowScale = 1.0;     // amplitude do breathe/glow
+        private bool _reactorPaused;         // F2.5: reator congelado sob o fullscreen (Z50)
         private ScaleTransform? _coreScale;  // cache do transform do core (zero new/frame)
         private double _wireAngle;  // reator v2: fase do spin dos meridianos
         private double _sweepT;     // reator v2: posição da banda de sweep
@@ -494,7 +495,7 @@ namespace KatieHoloDeck
         private void RenderTick(object? s, EventArgs e)
         {
             double m = _motionScale;
-            if (_settings.Reactor.IdleMotion)
+            if (_settings.Reactor.IdleMotion && !_reactorPaused)
             {
                 foreach (var r in _rotors)
                     r.Rot.Angle = (r.Rot.Angle + m * r.DegPerSec / 60.0) % 360;
@@ -509,7 +510,7 @@ namespace KatieHoloDeck
             // ===== pulso do core: SÓ quando "vivo" (hover/foco/falando/pensando) =====
             // idle real e parado: sem heartbeat, sem respiração — o reator responde
             // a input/estado, não fica "respirando" sozinho no standby.
-            bool coreAlive = _settings.Reactor.IdleMotion
+            bool coreAlive = _settings.Reactor.IdleMotion && !_reactorPaused
                              && (_mode == "thinking" || _mode == "speaking" || _talkGlow > 0.01
                                  || _dotHover || _fsMusicOpen);
             if (coreAlive)
@@ -751,6 +752,20 @@ namespace KatieHoloDeck
         private void ApplyReactorPrefs(AppSettings s)
         {
             if (!s.Reactor.IdleMotion)
+            {
+                _breath = 0;
+                _corePulsePhase = 0;
+            }
+        }
+
+        /// <summary>F2.5: pausa o reator enquanto o fullscreen (Z50) cobre o AppContent borrado.
+        /// Reusa EXATAMENTE o repouso do IdleMotion-off (anéis param no ângulo atual, core
+        /// volta a 1.0 e heartbeat zerado) — nenhum mecanismo novo de compositor.</summary>
+        private void SetReactorPaused(bool paused)
+        {
+            if (_reactorPaused == paused) return;
+            _reactorPaused = paused;
+            if (paused)
             {
                 _breath = 0;
                 _corePulsePhase = 0;
@@ -1884,6 +1899,12 @@ namespace KatieHoloDeck
             SetFsBackdropBlur(true);
             if (_chatExpanded) SetChatExpanded(false, instant: !MotionEnabled); // um modo foco por vez
             TechFrame.Refresh(FullscreenMusic);
+            // F2.5: reator fora de vista (atrás do Z50 + blur) não gasta frames — congela no
+            // mesmo ponto em que o IdleMotion-off já congela (anéis no ângulo atual, core em
+            // repouso). Descongela no Exit.
+            SetReactorPaused(true);
+            // F2.5: adorners da subárvore do fullscreen (chanfros dos novos hosts) voltam nítidos.
+            SetSubtreeAdornersVisible(FullscreenMusic, true);
 
             SyncLyricsForCurrentTrack();
 
@@ -1891,17 +1912,12 @@ namespace KatieHoloDeck
             {
                 FullscreenMusic.BeginAnimation(OpacityProperty, null);
                 FullscreenMusic.Opacity = 1;
-                FullscreenScale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
-                FullscreenScale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
-                FullscreenScale.ScaleX = FullscreenScale.ScaleY = 1;
             }
             else
             {
                 var ease = new CubicEase { EasingMode = EasingMode.EaseOut };
                 var dur = TimeSpan.FromMilliseconds(220);
                 FullscreenMusic.BeginAnimation(OpacityProperty, new DoubleAnimation(1, dur) { EasingFunction = ease });
-                FullscreenScale.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(1, dur) { EasingFunction = ease });
-                FullscreenScale.BeginAnimation(ScaleTransform.ScaleYProperty, new DoubleAnimation(1, dur) { EasingFunction = ease });
             }
 
             _fsScrollCurrent = _fsScrollTarget = 0;
@@ -1912,19 +1928,20 @@ namespace KatieHoloDeck
         {
             if (!_fsMusicOpen) return;
             TechFrame.Clear(FullscreenMusic);
+            // F2.5: colapsa os adorners da subárvore ANTES do fade — Adorner não herda Opacity
+            // (lição v9.3.4/v9.3.6) e ficaria "órfão" nítido por cima do painel sumindo.
+            SetSubtreeAdornersVisible(FullscreenMusic, false);
             // v9.3-fix (Codex P2): blur composto — Configurações pode seguir aberta
             SetBackdropBlur(_settingsOpen ? 10 : 0);
             _fsMusicOpen = false;
             _lyricsTimer.Stop();
+            SetReactorPaused(false);
 
             if (!MotionEnabled)
             {
                 FullscreenMusic.Visibility = Visibility.Collapsed;
                 FullscreenMusic.BeginAnimation(OpacityProperty, null);
                 FullscreenMusic.Opacity = 0;
-                FullscreenScale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
-                FullscreenScale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
-                FullscreenScale.ScaleX = FullscreenScale.ScaleY = 0.98;
                 return;
             }
 
@@ -1936,13 +1953,8 @@ namespace KatieHoloDeck
                 FullscreenMusic.Visibility = Visibility.Collapsed;
                 FullscreenMusic.BeginAnimation(OpacityProperty, null);
                 FullscreenMusic.Opacity = 0;
-                FullscreenScale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
-                FullscreenScale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
-                FullscreenScale.ScaleX = FullscreenScale.ScaleY = 0.98;
             };
             FullscreenMusic.BeginAnimation(OpacityProperty, fade);
-            FullscreenScale.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(0.985, dur) { EasingFunction = ease });
-            FullscreenScale.BeginAnimation(ScaleTransform.ScaleYProperty, new DoubleAnimation(0.985, dur) { EasingFunction = ease });
         }
 
         private void FsPrev_Click(object sender, MouseButtonEventArgs e) => _ = _media.PreviousAsync();
@@ -1981,12 +1993,15 @@ namespace KatieHoloDeck
                             Text = l.Text,
                             FontFamily = new FontFamily("Segoe UI Variable Text"),
                             FontSize = 16,
-                            Foreground = ThemedBrush("ThemeTextDimBrush", FsLineFar),
+                            FontWeight = FontWeights.Normal, // F2.5: peso uniforme — ênfase é scale/opacity (sem reflow)
+                            Foreground = ThemedBrush("ThemeLabelBrush", FsLineFar),
                             HorizontalAlignment = HorizontalAlignment.Center,
                             TextAlignment = TextAlignment.Center,
                             TextWrapping = TextWrapping.Wrap,
                             MaxWidth = 560,
-                            Margin = new Thickness(0, 7, 0, 7)
+                            Margin = new Thickness(0, 7, 0, 7),
+                            RenderTransformOrigin = new Point(0.5, 0.5),
+                            RenderTransform = new ScaleTransform(1, 1)
                         };
                         FsLyricsPanel.Children.Add(tb);
                         _fsLineBlocks.Add(tb);
@@ -2005,7 +2020,8 @@ namespace KatieHoloDeck
             Text = text,
             FontFamily = new FontFamily("Segoe UI Variable Text"),
             FontSize = 13,
-            Foreground = ThemedBrush("ThemeTextDimBrush", FsLineFar),
+            // F2.5: 13px sobre a face de leitura também é texto pequeno → 4,5:1 (ThemeLabelBrush).
+            Foreground = ThemedBrush("ThemeLabelBrush", FsLineFar),
             HorizontalAlignment = HorizontalAlignment.Center,
             TextAlignment = TextAlignment.Center,
             Margin = new Thickness(0, 10, 0, 10)
@@ -2031,10 +2047,8 @@ namespace KatieHoloDeck
                 _fsLyricIndex = idx;
                 for (int i = 0; i < _fsLineBlocks.Count; i++)
                 {
-                    var tb = _fsLineBlocks[i];
-                    if (i == idx) { tb.Foreground = ThemedBrush("ThemeTextStrongBrush", FsLineActive); tb.FontSize = 19; tb.FontWeight = FontWeights.SemiBold; }
-                    else if (Math.Abs(i - idx) == 1) { tb.Foreground = ThemedBrush("ThemeTextBrush", FsLineNear); tb.FontSize = 16; tb.FontWeight = FontWeights.Normal; }
-                    else { tb.Foreground = ThemedBrush("ThemeTextDimBrush", FsLineFar); tb.FontSize = 15; tb.FontWeight = FontWeights.Normal; }
+                    int state = i == idx ? 0 : Math.Abs(i - idx) == 1 ? 1 : 2;
+                    SetLineEmphasis(_fsLineBlocks[i], state);
                 }
                 try
                 {
@@ -2048,6 +2062,39 @@ namespace KatieHoloDeck
             }
 
             if (!MotionEnabled) UpdateFsScroll(0); // salto direto (sem animação)
+        }
+
+        /// <summary>F2.5 — ênfase da linha por RGB + opacidade + escala 1,06× (ativa), NUNCA por
+        /// FontSize/peso: mudar métrica reflui o painel inteiro a cada 250 ms. A escala é
+        /// transform-only (bitmap do próprio texto), sem Effect e sem re-layout.
+        /// state: 0 = ativa · 1 = vizinha · 2 = distante. Estado fica em Tag para não
+        /// reiniciar animação de linha que não mudou.</summary>
+        private void SetLineEmphasis(TextBlock tb, int state)
+        {
+            if (tb.Tag is int prev && prev == state) return;
+            tb.Tag = state;
+            tb.Foreground = state switch
+            {
+                0 => ThemedBrush("ThemeTextStrongBrush", FsLineActive),
+                1 => ThemedBrush("ThemeTextBrush", FsLineNear),
+                _ => ThemedBrush("ThemeLabelBrush", FsLineFar)
+            };
+            tb.Opacity = state == 0 ? 1.0 : 0.92;
+            if (tb.RenderTransform is not ScaleTransform st) return;
+            double target = state == 0 ? 1.06 : 1.0;
+            if (MotionEnabled)
+            {
+                var ease = new CubicEase { EasingMode = EasingMode.EaseOut };
+                var dur = TimeSpan.FromMilliseconds(180);
+                st.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(target, dur) { EasingFunction = ease });
+                st.BeginAnimation(ScaleTransform.ScaleYProperty, new DoubleAnimation(target, dur) { EasingFunction = ease });
+            }
+            else
+            {
+                st.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+                st.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+                st.ScaleX = st.ScaleY = target;
+            }
         }
 
         /// <summary>Lerp do scroll (chamado a 60fps pelo RenderTick quando MotionEnabled; dt=0 → salto).</summary>
