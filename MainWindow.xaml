@@ -163,45 +163,62 @@
                         <ColumnDefinition Width="350"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- ESQUERDA: TELEMETRIA (ilha) -->
+                    <!-- ESQUERDA: TELEMETRIA (ilha)
+                         F2.2 — padrão de host (§5.2): o Border NÃO pinta (Padding 0,
+                         Background nulo, BorderThickness 0); o fill é o Path octogonal em
+                         sangria e o aro é o Glass. O padding antigo (14) virou margem do
+                         Grid interno — o conteúdo é o mesmo, pixel a pixel. -->
                     <Border x:Name="IslandTelemetry" Grid.Column="0" Style="{StaticResource FloatingIslandStyle}"
                             BorderBrush="{DynamicResource PanelEdgeLiveBrush}" Margin="0,6,16,0"
-                            local:Chamfer.Size="18" CornerRadius="0" local:TechFrame.Enabled="True">
+                            Padding="0" Background="{x:Null}" BorderThickness="0"
+                            local:Chamfer.Size="18" CornerRadius="0" local:TechFrame.Enabled="True"
+                            local:Glass.Ring="True">
                         <Grid>
-                            <Rectangle Fill="{DynamicResource SurfaceTintBrush}" IsHitTestVisible="False"/>
-                            <StackPanel VerticalAlignment="Top">
-                            <TextBlock Text="◈ TELEMETRIA" Style="{StaticResource PanelLabelStyle}" Margin="0,0,0,10"/>
-                            <TextBlock x:Name="CpuLabel" Text="CPU  --%" Style="{StaticResource ReadoutStyle}" Margin="0,0,0,4"/>
-                            <ProgressBar x:Name="CpuBar" Height="5" Minimum="0" Maximum="100"
-                                         Style="{StaticResource FluentProgressBarStyle}"
-                                         Foreground="{DynamicResource AccentBrush}"/>
-                            <StackPanel x:Name="GpuRow">
-                                <TextBlock x:Name="GpuLabel" Text="GPU  --%" Style="{StaticResource ReadoutStyle}" Margin="0,10,0,4"/>
-                                <ProgressBar x:Name="GpuBar" Height="5" Minimum="0" Maximum="100"
+                            <!-- F2.2: ÚNICO fill da ilha (vidro OFF e ON). Fill trocado só via
+                                 Glass.SetFace — nunca Border.Background. -->
+                            <Path x:Name="TelemetryFace" local:Glass.Face="IslandGlass"
+                                  Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                  IsHitTestVisible="False"/>
+                            <!-- 15 = padding 14 + o 1 px do BorderThickness que saiu: o conteúdo
+                                 fica EXATAMENTE onde estava; só o fill ganha a sangria.
+                                 Background=Transparent preserva o hit-test que o Border fazia. -->
+                            <Grid Margin="15" Background="Transparent">
+                                <Rectangle Fill="{DynamicResource SurfaceTintBrush}" IsHitTestVisible="False"
+                                           local:Glass.DimWhenGlass="True"/>
+                                <StackPanel VerticalAlignment="Top">
+                                <TextBlock Text="◈ TELEMETRIA" Style="{StaticResource PanelLabelStyle}" Margin="0,0,0,10"/>
+                                <TextBlock x:Name="CpuLabel" Text="CPU  --%" Style="{StaticResource ReadoutStyle}" Margin="0,0,0,4"/>
+                                <ProgressBar x:Name="CpuBar" Height="5" Minimum="0" Maximum="100"
                                              Style="{StaticResource FluentProgressBarStyle}"
                                              Foreground="{DynamicResource AccentBrush}"/>
-                            </StackPanel>
-                            <TextBlock x:Name="RamLabel" Text="RAM  --%" Style="{StaticResource ReadoutStyle}" Margin="0,10,0,4"/>
-                            <ProgressBar x:Name="RamBar" Height="5" Minimum="0" Maximum="100"
-                                         Style="{StaticResource FluentProgressBarStyle}"
-                                         Foreground="{DynamicResource AccentBrush}"/>
-                            <StackPanel x:Name="NetRow">
-                                <TextBlock x:Name="NetLabel" Text="NET  ↓ -- ↑ --" Style="{StaticResource ReadoutStyle}"
-                                           FontSize="11" Margin="0,10,0,0"/>
-                            </StackPanel>
+                                <StackPanel x:Name="GpuRow">
+                                    <TextBlock x:Name="GpuLabel" Text="GPU  --%" Style="{StaticResource ReadoutStyle}" Margin="0,10,0,4"/>
+                                    <ProgressBar x:Name="GpuBar" Height="5" Minimum="0" Maximum="100"
+                                                 Style="{StaticResource FluentProgressBarStyle}"
+                                                 Foreground="{DynamicResource AccentBrush}"/>
+                                </StackPanel>
+                                <TextBlock x:Name="RamLabel" Text="RAM  --%" Style="{StaticResource ReadoutStyle}" Margin="0,10,0,4"/>
+                                <ProgressBar x:Name="RamBar" Height="5" Minimum="0" Maximum="100"
+                                             Style="{StaticResource FluentProgressBarStyle}"
+                                             Foreground="{DynamicResource AccentBrush}"/>
+                                <StackPanel x:Name="NetRow">
+                                    <TextBlock x:Name="NetLabel" Text="NET  ↓ -- ↑ --" Style="{StaticResource ReadoutStyle}"
+                                               FontSize="11" Margin="0,10,0,0"/>
+                                </StackPanel>
 
-                            <Rectangle Height="1" Fill="{DynamicResource AccentBrushGhost}" Margin="0,14,0,12"/>
-                            <TextBlock Text="◈ ESTADO" Style="{StaticResource PanelLabelStyle}" Margin="0,0,0,8"/>
-                            <TextBlock x:Name="ModeLabel" Text="MODE  idle" Style="{StaticResource ReadoutStyle}"
-                                       Foreground="{DynamicResource AccentBrush}"/>
+                                <Rectangle Height="1" Fill="{DynamicResource AccentBrushGhost}" Margin="0,14,0,12"/>
+                                <TextBlock Text="◈ ESTADO" Style="{StaticResource PanelLabelStyle}" Margin="0,0,0,8"/>
+                                <TextBlock x:Name="ModeLabel" Text="MODE  idle" Style="{StaticResource ReadoutStyle}"
+                                           Foreground="{DynamicResource AccentBrush}"/>
 
-                            <Rectangle Height="1" Fill="{DynamicResource AccentBrushGhost}" Margin="0,14,0,12"/>
-                            <TextBlock Text="◈ ATIVIDADE" Style="{StaticResource PanelLabelStyle}" Margin="0,0,0,8"/>
-                            <TextBlock x:Name="GameLabel" Text="nenhum jogo detectado" FontFamily="Segoe UI Variable Text"
-                                       FontSize="11" Foreground="{DynamicResource ThemeTextDimBrush}" TextWrapping="Wrap"/>
-                            <TextBlock x:Name="GameSinceLabel" FontFamily="Segoe UI Variable Text" FontSize="9"
-                                       Foreground="{DynamicResource ThemeTextDimBrush}" Margin="0,3,0,0" Visibility="Collapsed"/>
-                            </StackPanel>
+                                <Rectangle Height="1" Fill="{DynamicResource AccentBrushGhost}" Margin="0,14,0,12"/>
+                                <TextBlock Text="◈ ATIVIDADE" Style="{StaticResource PanelLabelStyle}" Margin="0,0,0,8"/>
+                                <TextBlock x:Name="GameLabel" Text="nenhum jogo detectado" FontFamily="Segoe UI Variable Text"
+                                           FontSize="11" Foreground="{DynamicResource ThemeTextDimBrush}" TextWrapping="Wrap"/>
+                                <TextBlock x:Name="GameSinceLabel" FontFamily="Segoe UI Variable Text" FontSize="9"
+                                           Foreground="{DynamicResource ThemeTextDimBrush}" Margin="0,3,0,0" Visibility="Collapsed"/>
+                                </StackPanel>
+                            </Grid>
                         </Grid>
                     </Border>
 
@@ -520,17 +537,32 @@
                         </Border>
                     </Grid>
 
-                    <!-- DIREITA: CONVERSA (ilha; compositor DENTRO do cartão) -->
+                    <!-- DIREITA: CONVERSA (ilha; compositor DENTRO do cartão)
+                         F2.3 — mesmo host da F2.2. O fill mora no Path (ChatFace) e o estado
+                         expandido troca a FACE via Glass.SetFace, nunca Border.Background:
+                         é o que mata o Background=null que prendia o vidro @60%. -->
                     <Border x:Name="IslandChat" Grid.Column="2" Style="{StaticResource FloatingIslandStyle}"
-                            BorderBrush="{DynamicResource PanelEdgeLiveBrush}" Margin="16,-4,0,0" Padding="12,12,12,10"
-                            local:Chamfer.Size="18" CornerRadius="0" local:TechFrame.Enabled="True">
+                            BorderBrush="{DynamicResource PanelEdgeLiveBrush}" Margin="16,-4,0,0"
+                            Padding="0" Background="{x:Null}" BorderThickness="0"
+                            local:Chamfer.Size="18" CornerRadius="0" local:TechFrame.Enabled="True"
+                            local:Glass.Ring="True">
                         <Grid>
+                            <!-- F2.3: fill único da ilha. Compacta = IslandGlass; expandida =
+                                 ThemeChatExpandedBrush (Glass.SetFace no code-behind). -->
+                            <Path x:Name="ChatFace" local:Glass.Face="IslandGlass"
+                                  Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                  IsHitTestVisible="False"/>
+                            <!-- 13,13,13,11 = padding 12,12,12,10 + o 1 px da moldura que saiu:
+                                 conteúdo na mesma posição, fill em sangria. Transparent mantém
+                                 o hit-test (o Border não pinta mais, então não captura o mouse). -->
+                            <Grid Margin="13,13,13,11" Background="Transparent">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Rectangle Grid.RowSpan="3" Fill="{DynamicResource SurfaceTintBrush}" IsHitTestVisible="False"/>
+                            <Rectangle Grid.RowSpan="3" Fill="{DynamicResource SurfaceTintBrush}" IsHitTestVisible="False"
+                                       local:Glass.DimWhenGlass="True"/>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -584,6 +616,7 @@
                                         </StackPanel>
                                     </Grid>
                                 </Border>
+                            </Grid>
                             </Grid>
                         </Grid>
                     </Border>

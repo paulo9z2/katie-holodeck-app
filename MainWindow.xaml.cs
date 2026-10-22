@@ -1770,8 +1770,10 @@ namespace KatieHoloDeck
                 // cobre SÓ o reator e o espaço do chat (colunas 1-2): telemetria fica intacta
                 Grid.SetColumn(IslandChat, 1);
                 Grid.SetColumnSpan(IslandChat, 2);
-                // vidro Mica-like: alpha BAIXO (0x38) — grid + reator esmaecido vazam por trás
-                IslandChat.SetResourceReference(Border.BackgroundProperty, "ThemeChatExpandedBrush");
+                // F2.3: vidro Mica-like do estado expandido agora é o FILL DA FACE (o Path é o
+                // único pintor da ilha desde a F2.3) — nada de Border.Background: o valor local
+                // no Border brigava com o Style e era a raiz do bug do null no recolher.
+                Glass.SetFace(ChatFace, "ThemeChatExpandedBrush");
 
                 // v9.3.7: chat expansível ganha VÉU DE BLUR local. O backdrop-blur das Settings
                 // (SetBackdropBlur) cobre o AppContent inteiro e borraria o PRÓPRIO chat — aqui o
@@ -1812,7 +1814,11 @@ namespace KatieHoloDeck
                 Panel.SetZIndex(IslandChat, fsOpen ? 60 : 0);
                 Grid.SetColumn(IslandChat, ChatCompactCol);
                 Grid.SetColumnSpan(IslandChat, 1);
-                IslandChat.Background = null; // restaura o vidro @60% do FloatingIslandStyle (Fase A)
+                // F2.3: restaura o fill DEFAULT da ilha compacta na PRÓPRIA face. Não existe
+                // "Background = null" (o Border não pinta mais) e Glass.SetFace(null/"") também
+                // não serve: com chave vazia o ApplyFace retorna cedo e o Path fica com o último
+                // Fill (a face presa que o gate proíbe). A chave declarada no XAML é a volta.
+                Glass.SetFace(ChatFace, "IslandGlass");
 
                 // v9.3.7: retira o véu com guard (padrão v9.3.2-fix/Codex P2: reabrir no meio do
                 // fade-out não pode soltar o Effect); chanfros voltam SÓ depois que o blur saiu.
