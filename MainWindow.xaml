@@ -382,45 +382,63 @@
                         <!-- CHIPS (hover fade + glow + press 0.97 — valores locais obrigatórios) -->
                         <StackPanel x:Name="ChipPanel" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" Margin="0,0,0,6">
                             <Border x:Name="ChipAgenda" Style="{StaticResource ChipButtonStyle}"
-                                    Background="{DynamicResource ThemeChipGlassBrush}" BorderBrush="{DynamicResource AccentBrush}"
-                                    Margin="0,0,10,0" MouseLeftButtonUp="Chip_Click" local:Chamfer.Size="8" CornerRadius="0" Padding="0">
+                                    Background="{DynamicResource ThemeChipGlassBrush}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="0" Padding="0"
+                                    Margin="0,0,10,0" MouseLeftButtonUp="Chip_Click" local:Chamfer.Size="8" CornerRadius="0"
+                                    local:Glass.Ring="True">
                                 <Border.Effect><DropShadowEffect Color="{DynamicResource AccentColor}" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/></Border.Effect>
                                 <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
-                                <Grid>
-                                    <Border Style="{StaticResource HoverOverlayStyle}" Background="#3300D9FF" CornerRadius="0"/>
-                                    <StackPanel Orientation="Horizontal" Margin="14,7">
-                                        <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE787;" FontSize="13"
-                                                   Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center" Margin="0,0,7,0"/>
-                                        <TextBlock Text="agenda" FontFamily="Segoe UI Variable Text" FontSize="12" Foreground="{DynamicResource ThemeTextStrongBrush}"/>
-                                    </StackPanel>
+                                <Grid Background="Transparent">
+                                    <Path local:Glass.Face="ThemeChipGlassBrush" local:Glass.FaceFrosted="IslandGlass"
+                                          Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                          IsHitTestVisible="False"/>
+                                    <Grid Margin="1.4">
+                                        <Border Style="{StaticResource HoverOverlayStyle}" Background="#3300D9FF" CornerRadius="0"/>
+                                        <StackPanel Orientation="Horizontal" Margin="14,7">
+                                            <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE787;" FontSize="13"
+                                                       Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                                            <TextBlock Text="agenda" FontFamily="Segoe UI Variable Text" FontSize="12" Foreground="{DynamicResource ThemeTextStrongBrush}"/>
+                                        </StackPanel>
+                                    </Grid>
                                 </Grid>
                             </Border>
                             <Border x:Name="ChipEmails" Style="{StaticResource ChipButtonDangerStyle}"
-                                    Background="{DynamicResource ThemeChipGlassBrush}" BorderBrush="#FFFF3B3B"
-                                    Margin="0,0,10,0" MouseLeftButtonUp="Chip_Click" local:Chamfer.Size="8" CornerRadius="0" Padding="0">
+                                    Background="{DynamicResource ThemeChipGlassBrush}" BorderBrush="#FFFF3B3B" BorderThickness="0" Padding="0"
+                                    Margin="0,0,10,0" MouseLeftButtonUp="Chip_Click" local:Chamfer.Size="8" CornerRadius="0"
+                                    local:Glass.Ring="True">
                                 <Border.Effect><DropShadowEffect Color="#FF3B3B" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/></Border.Effect>
                                 <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
-                                <Grid>
-                                    <Border Style="{StaticResource HoverOverlayStyle}" Background="#33FF3B3B" CornerRadius="0"/>
-                                    <StackPanel Orientation="Horizontal" Margin="14,7">
-                                        <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE715;" FontSize="13"
-                                                   Foreground="#FFFF3B3B" VerticalAlignment="Center" Margin="0,0,7,0"/>
-                                        <TextBlock Text="e-mails" FontFamily="Segoe UI Variable Text" FontSize="12" Foreground="{DynamicResource ThemeTextStrongBrush}"/>
-                                    </StackPanel>
+                                <Grid Background="Transparent">
+                                    <Path local:Glass.Face="ThemeChipGlassBrush" local:Glass.FaceFrosted="IslandGlass"
+                                          Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                          IsHitTestVisible="False"/>
+                                    <Grid Margin="1.4">
+                                        <Border Style="{StaticResource HoverOverlayStyle}" Background="#33FF3B3B" CornerRadius="0"/>
+                                        <StackPanel Orientation="Horizontal" Margin="14,7">
+                                            <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xE715;" FontSize="13"
+                                                       Foreground="#FFFF3B3B" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                                            <TextBlock Text="e-mails" FontFamily="Segoe UI Variable Text" FontSize="12" Foreground="{DynamicResource ThemeTextStrongBrush}"/>
+                                        </StackPanel>
+                                    </Grid>
                                 </Grid>
                             </Border>
                             <Border x:Name="ChipMusic" Style="{StaticResource ChipButtonMusicStyle}"
-                                    Background="{DynamicResource ThemeChipGlassBrush}" BorderBrush="{DynamicResource ThemeSecondaryBrush}"
-                                    MouseLeftButtonUp="Chip_Click" local:Chamfer.Size="8" CornerRadius="0" Padding="0">
+                                    Background="{DynamicResource ThemeChipGlassBrush}" BorderBrush="{DynamicResource ThemeSecondaryBrush}" BorderThickness="0" Padding="0"
+                                    MouseLeftButtonUp="Chip_Click" local:Chamfer.Size="8" CornerRadius="0"
+                                    local:Glass.Ring="True">
                                 <Border.Effect><DropShadowEffect Color="{DynamicResource ThemeSecondaryColor}" BlurRadius="12" ShadowDepth="0" Opacity="0.45"/></Border.Effect>
                                 <Border.RenderTransform><ScaleTransform/></Border.RenderTransform>
-                                <Grid>
-                                    <Border Style="{StaticResource HoverOverlayStyle}" Background="#3300FF88" CornerRadius="0"/>
-                                    <StackPanel Orientation="Horizontal" Margin="14,7">
-                                        <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xEC4F;" FontSize="13"
-                                                   Foreground="{DynamicResource ThemeSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,7,0"/>
-                                        <TextBlock Text="música" FontFamily="Segoe UI Variable Text" FontSize="12" Foreground="{DynamicResource ThemeTextStrongBrush}"/>
-                                    </StackPanel>
+                                <Grid Background="Transparent">
+                                    <Path local:Glass.Face="ThemeChipGlassBrush" local:Glass.FaceFrosted="IslandGlass"
+                                          Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                          IsHitTestVisible="False"/>
+                                    <Grid Margin="1.4">
+                                        <Border Style="{StaticResource HoverOverlayStyle}" Background="#3300FF88" CornerRadius="0"/>
+                                        <StackPanel Orientation="Horizontal" Margin="14,7">
+                                            <TextBlock Style="{StaticResource GlyphTextStyle}" Text="&#xEC4F;" FontSize="13"
+                                                       Foreground="{DynamicResource ThemeSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                                            <TextBlock Text="música" FontFamily="Segoe UI Variable Text" FontSize="12" Foreground="{DynamicResource ThemeTextStrongBrush}"/>
+                                        </StackPanel>
+                                    </Grid>
                                 </Grid>
                             </Border>
                         </StackPanel>
