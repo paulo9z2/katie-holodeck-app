@@ -16,13 +16,15 @@ namespace KatieHoloDeck
     /// F1 — ARO DE CRISTAL T2 (vidro vetorial). Substitui, nas 3 superfícies-alvo, o
     /// retângulo de fundo por um <see cref="Path"/> octogonal de verdade (R12) e desenha
     /// o aro num Adorner, em 3 camadas que NÃO se atropelam:
-    ///   · aro  = edge 1 px branca neutra 8-10%  (token ThemeGlassEdge, alpha via WithA)
+    ///   · aro  = edge 1 px branca neutra 30%  (token ThemeGlassEdge, alpha via WithA —
+    ///     F2.6: era 8-10% e sumia no AA; agora lê como polimento sem virar moldura)
     ///     — só nos lados RETOS: o canto é da faceta, não do aro (nada de contorno duplo)
     ///   · faceta = banda CHEIA de 1,5 px centrada 0,75 px dentro da diagonal do chanfro
     ///     (token ThemeGlassFacet) — a borda externa da banda coincide com a silhueta
     ///     (ZERO pixel fora) e ela não se sobrepõe ao aro (nada de "blob" no canto)
-    ///   · specular = 0x33 EXATO, SÓ na faceta superior-esquerda (luz da casa = −24°) e
-    ///     vindo do grupo do acento (AccentBrushFaint — mesmo token, mesma transição)
+    ///   · specular = 0x55, SÓ na faceta superior-esquerda (luz da casa = −24°), branco
+    ///     NEUTRO de token próprio (GlassEdgeHighlightBrush — F2.6: era o AccentBrushFaint
+    ///     0x33, que pintava o specular de ciano; agora pode subir sem acento)
     /// Sem sheen, sem véu iOS, sem glow: nada de acento na face nem no aro (R13/R14).
     ///
     /// Regras da casa respeitadas por construção:
@@ -190,7 +192,7 @@ namespace KatieHoloDeck
                 if (!ReferenceEquals(edge, _edge.Brush)) _edge.Brush = edge;
                 var facet = LivePalette.Instance.Get("GlassFacetBrush");
                 if (!ReferenceEquals(facet, _facet.Brush)) _facet.Brush = facet;
-                var spec = LivePalette.Instance.Get("AccentBrushFaint");   // 0x33 exato, grupo do acento
+                var spec = LivePalette.Instance.Get("GlassEdgeHighlightBrush"); // 0x55 neutro, token próprio
                 if (!ReferenceEquals(spec, _spec.Brush)) _spec.Brush = spec;
 
                 if (_edge.Brush == null || _facet.Brush == null || _spec.Brush == null) return;

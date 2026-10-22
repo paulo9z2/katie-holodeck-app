@@ -631,12 +631,14 @@
                 </Grid>
 
                 <!-- ===== BOTTOM BAR (F2.1) =====
-                     Chrome de faixa: hairline NEUTRA (GlassEdgeBrush), sem aro/bracket e
-                     sem Effect/blur (não há o que amostrar numa faixa de 44 px).
+                     Chrome de faixa: hairline NEUTRA (ChromeHairlineBrush — F2.6: token próprio,
+                     não o GlassEdgeBrush do aro; o aro subiu para 30% e o chrome tem de ficar
+                     pixel-idêntico com glass OFF), sem aro/bracket e sem Effect/blur (não há o
+                     que amostrar numa faixa de 44 px).
                      3 slots: [dot + versão] [status vivo] [espelho vazio].
                      O dot com glow continua sendo o acento da barra; a versão é NEUTRA
                      (R13/R14). O texto de tutorial saiu de vez — o canal virou StatusText. -->
-                <Border Grid.Row="2" BorderBrush="{DynamicResource GlassEdgeBrush}" BorderThickness="0,1,0,0">
+                <Border Grid.Row="2" BorderBrush="{DynamicResource ChromeHairlineBrush}" BorderThickness="0,1,0,0">
                     <Grid Margin="24,0" Grid.IsSharedSizeScope="True">
                         <Grid.ColumnDefinitions>
                             <!-- colunas laterais iguais (SharedSizeGroup) = status no centro óptico -->

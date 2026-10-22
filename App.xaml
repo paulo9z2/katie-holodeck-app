@@ -101,11 +101,20 @@
             <SolidColorBrush x:Key="ThemeFullscreenBrush" Color="#CC0A1322"/>
             <SolidColorBrush x:Key="ThemeFullscreenOpaqueBrush" Color="#F50A1322"/>
 
-            <!-- F1 — aro de cristal (T2). Brancos NEUTROS: o vidro não tem cor (R13/R14).
+            <!-- F1/F2.6 — aro de cristal (T2). Brancos NEUTROS: o vidro não tem cor (R13/R14).
                  São Brushes vivos: o LivePalette reescreve o Color in-place (alpha fica aqui).
-                 O specular NÃO tem chave própria de propósito — é o AccentBrushFaint (0x33). -->
-            <SolidColorBrush x:Key="GlassEdgeBrush"  Color="#19FFFFFF"/>
-            <SolidColorBrush x:Key="GlassFacetBrush" Color="#1FFFFFFF"/>
+                 F2.6 (feedback do dono: "não consigo ver o liquid glass"): o alpha do aro sobe
+                 de 9,8% para 30,2% e o da faceta de 12,2% para 34,1% — o aro passa a ler como
+                 polimento de vidro no fundo escuro sem virar moldura. O specular ganhou chave
+                 PRÓPRIA e NEUTRA (33,3%): não carrega mais o AccentBrushFaint ciano (parede
+                 do Codex) e por isso pode subir sem contaminar o vidro de acento. -->
+            <SolidColorBrush x:Key="GlassEdgeBrush"  Color="#4DFFFFFF"/>
+            <SolidColorBrush x:Key="GlassFacetBrush" Color="#57FFFFFF"/>
+            <SolidColorBrush x:Key="GlassEdgeHighlightBrush" Color="#55FFFFFF"/>
+            <!-- F2.6: a hairline do chrome (bottom bar) NÃO é o aro do vidro e não pode
+                 seguir o alpha dele — com glass OFF ela tem de ficar pixel-idêntica ao
+                 visual anterior. Token próprio, congelado no valor antigo do aro. -->
+            <SolidColorBrush x:Key="ChromeHairlineBrush" Color="#19FFFFFF"/>
 
             <!-- Reator: gradientes vivos (ApplyAccent troca em runtime) -->
             <LinearGradientBrush x:Key="ReactorRim" StartPoint="0.5,0" EndPoint="0.5,1">

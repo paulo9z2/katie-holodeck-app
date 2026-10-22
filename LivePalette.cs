@@ -23,7 +23,8 @@ namespace KatieHoloDeck
         public Color Scrim;
         public Color Fullscreen, FullscreenOpaque;
         // F1 — aro de cristal (T2). Opacos: Mix() descarta alpha em silêncio; o alpha
-        // (edge 8-10%, faceta ~12%) entra via WithA() na montagem do brush, no ApplyTheme.
+        // (edge 30%, faceta ~34%, specular 33% — F2.6) entra via WithA() na montagem do
+        // brush, no ApplyTheme. O specular é uma constante NEUTRA (não depende do tema).
         public Color ThemeGlassEdge, ThemeGlassFacet;
 
         public void CopyFrom(ThemeTokens o)
@@ -153,10 +154,12 @@ namespace KatieHoloDeck
         private SolidColorBrush _themePanelSolid = new();
         private SolidColorBrush _themeFullscreen = new();
         private SolidColorBrush _themeFullscreenOpaque = new();
-        // F1: aro de cristal — brancos neutros (R13: zero acento na face/aro). O specular
-        // não tem brush próprio: é o AccentBrushFaint (0x33 exato, grupo do acento).
+        // F1/F2.6: aro de cristal — brancos neutros (R13: zero acento na face/aro).
+        // O specular tem brush PRÓPRIO e constante (GlassEdgeHighlightBrush, branco 33%):
+        // não pertence a nenhum grupo vivo, então não é mutado por ApplyTheme/SetAccent.
         private SolidColorBrush _glassEdge = new();
         private SolidColorBrush _glassFacet = new();
+        private readonly SolidColorBrush _glassHighlight = new(WithA(Colors.White, 0x55));
         private LinearGradientBrush _islandGlass = new()
         { StartPoint = new Point(0, 0), EndPoint = new Point(0, 1) };
         private LinearGradientBrush _panelGlassStrong = new()
@@ -244,6 +247,7 @@ namespace KatieHoloDeck
             Dictionary["ThemeFullscreenOpaqueBrush"] = _themeFullscreenOpaque;
             Dictionary["GlassEdgeBrush"] = _glassEdge;
             Dictionary["GlassFacetBrush"] = _glassFacet;
+            Dictionary["GlassEdgeHighlightBrush"] = _glassHighlight;
             Dictionary["IslandGlass"] = _islandGlass;
             Dictionary["PanelGlassStrong"] = _panelGlassStrong;
             Dictionary["ScrimBrush"] = _scrim;
@@ -411,9 +415,11 @@ namespace KatieHoloDeck
             });
             Solid(ref _scrim, "ScrimBrush", WithA(t.Scrim, 0xF5));
 
-            // F1 — aro de cristal: tokens opacos + alpha na montagem (Mix descarta alpha).
-            Solid(ref _glassEdge, "GlassEdgeBrush", WithA(t.ThemeGlassEdge, 0x19));   // 9,8% — 8-10%
-            Solid(ref _glassFacet, "GlassFacetBrush", WithA(t.ThemeGlassFacet, 0x1F)); // 12,2% — faceta 45°
+            // F1/F2.6 — aro de cristal: tokens opacos + alpha na montagem (Mix descarta alpha).
+            // F2.6: 0x19→0x4D (30,2%) e 0x1F→0x57 (34,1%) — o aro 10% não sobrevivia ao AA
+            // de 1 px e o dono não o via (medido 1,57× o fundo; gate exige 2×).
+            Solid(ref _glassEdge, "GlassEdgeBrush", WithA(t.ThemeGlassEdge, 0x4D));   // 30,2%
+            Solid(ref _glassFacet, "GlassFacetBrush", WithA(t.ThemeGlassFacet, 0x57)); // 34,1% — faceta 45°
 
             Application.Current.Resources["ThemeSecondaryColor"] = Opaque(t.Secondary);
         }
