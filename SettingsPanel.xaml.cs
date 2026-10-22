@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using KatieHoloDeck.Core;
 
 namespace KatieHoloDeck
 {
@@ -90,8 +90,8 @@ namespace KatieHoloDeck
 
                 StartMinChk.IsChecked = settings.General.StartMinimized;
 
-                var v = Assembly.GetExecutingAssembly().GetName().Version;
-                InfoVersion.Text = $"K.A.T.I.E. Holodeck · v{(v != null ? v.ToString(3) : "1.0.0")} · WPF .NET 8 · este painel vem do ponto ciano do logo";
+                // F2.0: versão vem de Core/AppInfo (fonte única = csproj), nunca de literal aqui.
+                InfoVersion.Text = $"K.A.T.I.E. Holodeck · {AppInfo.VersionString} · WPF .NET 8 · este painel vem do ponto ciano do logo";
                 InfoPath.Text = $"settings.json → {settingsPath}";
             }
             finally { _loadingUi = false; }

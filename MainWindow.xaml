@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:KatieHoloDeck"
+        xmlns:core="clr-namespace:KatieHoloDeck.Core"
         Title="KATIE Holodeck"
         WindowStyle="SingleBorderWindow"
         Background="Transparent"
@@ -588,16 +589,41 @@
                     </Border>
                 </Grid>
 
-                <!-- ===== BOTTOM BAR ===== -->
-                <Border Grid.Row="2" BorderBrush="{DynamicResource AccentBrushGhost}" BorderThickness="0,1,0,0">
-                    <Grid Margin="24,0">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <!-- ===== BOTTOM BAR (F2.1) =====
+                     Chrome de faixa: hairline NEUTRA (GlassEdgeBrush), sem aro/bracket e
+                     sem Effect/blur (não há o que amostrar numa faixa de 44 px).
+                     3 slots: [dot + versão] [status vivo] [espelho vazio].
+                     O dot com glow continua sendo o acento da barra; a versão é NEUTRA
+                     (R13/R14). O texto de tutorial saiu de vez — o canal virou StatusText. -->
+                <Border Grid.Row="2" BorderBrush="{DynamicResource GlassEdgeBrush}" BorderThickness="0,1,0,0">
+                    <Grid Margin="24,0" Grid.IsSharedSizeScope="True">
+                        <Grid.ColumnDefinitions>
+                            <!-- colunas laterais iguais (SharedSizeGroup) = status no centro óptico -->
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="BarSide"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="BarSide"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- slot 1: dot (intacto: 7×7 + glow) e versão neutra -->
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                             <Ellipse Width="7" Height="7" Fill="{DynamicResource ThemeSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,8,0">
                                 <Ellipse.Effect><DropShadowEffect Color="{DynamicResource ThemeSecondaryColor}" BlurRadius="8" ShadowDepth="0" Opacity="0.8"/></Ellipse.Effect>
                             </Ellipse>
-                            <TextBlock x:Name="HintText" Text="KATIE Holodeck · digite no chat à direita · música no chip abaixo do reator"
-                                       FontFamily="Segoe UI Variable Text" FontSize="10" Foreground="{DynamicResource ThemeLabelBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{x:Static core:AppInfo.VersionString}"
+                                       FontFamily="Segoe UI Variable Text" FontSize="11"
+                                       Foreground="{DynamicResource ThemeLabelBrush}" VerticalAlignment="Center"/>
                         </StackPanel>
+
+                        <!-- slot 2: canal funcional (agenda/e-mail/música/state.json).
+                             Default VAZIO — nenhum tutorial volta aqui. -->
+                        <TextBlock x:Name="StatusText" Grid.Column="1" Text=""
+                                   FontFamily="Segoe UI Variable Text" FontSize="10"
+                                   Foreground="{DynamicResource ThemeLabelBrush}" VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" TextAlignment="Center"
+                                   TextTrimming="CharacterEllipsis" Margin="16,0"/>
+
+                        <!-- slot 3: espelho do slot 1 (mesma largura) — simetria -->
+                        <Border Grid.Column="2" IsHitTestVisible="False"/>
                     </Grid>
                 </Border>
             </Grid>

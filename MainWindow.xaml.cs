@@ -230,7 +230,7 @@ namespace KatieHoloDeck
             }
         }
 
-        private void SetBackdropBlur(double to, FrameworkElement keepFrame = null)
+        private void SetBackdropBlur(double to, FrameworkElement? keepFrame = null)
         {
             if (AppContent.Effect != _backdropBlur) AppContent.Effect = _backdropBlur;
             if (MotionEnabled)
@@ -728,7 +728,7 @@ namespace KatieHoloDeck
             }
 
             if (!SettingsService.Save(_settingsPath, s))
-                HintText.Text = "não consegui salvar settings.json (permissão?) — os ajustes valem nesta sessão";
+                StatusText.Text = "não consegui salvar settings.json (permissão?) — os ajustes valem nesta sessão";
         }
 
         /// <summary>FASE 4: preferências da roda/espectro — aplicadas na hora, persistidas pelas settings.</summary>
@@ -1509,7 +1509,7 @@ namespace KatieHoloDeck
             catch { }
             CmdInput.Text = "";
             if (_settings.Chat.KeepFocus) CmdInput.Focus();
-            HintText.Text = "mensagem enviada \u2192 KATIE responde via state.json";
+            StatusText.Text = "mensagem enviada \u2192 KATIE responde via state.json";
         }
 
         private void CmdInput_KeyDown(object sender, KeyEventArgs e)
@@ -2157,7 +2157,7 @@ namespace KatieHoloDeck
                 if (root.TryGetProperty("status", out var st) && st.ValueKind == JsonValueKind.String)
                     StatusLine.Text = st.GetString() ?? "";
                 if (root.TryGetProperty("message", out var msg) && msg.ValueKind == JsonValueKind.String)
-                    HintText.Text = msg.GetString() ?? "";
+                    StatusText.Text = msg.GetString() ?? "";
                 if (root.TryGetProperty("reply", out var rep) && rep.ValueKind == JsonValueKind.String)
                 {
                     string? text = rep.GetString();
@@ -2364,9 +2364,9 @@ namespace KatieHoloDeck
                 var text = Clipboard.GetText().Trim();
                 if (text.Length == 0 || text == _lastClip) return;
                 _lastClip = text;
-                // só um aviso sutil no HintText — NÃO é chat spam (o dado vai pro brain via state? fase futura)
+                // só um aviso sutil no StatusText — NÃO é chat spam (o dado vai pro brain via state? fase futura)
                 string preview = text.Length > 60 ? text[..60] + "…" : text;
-                HintText.Text = $"clipboard capturado ({text.Length} chars): {preview}";
+                StatusText.Text = $"clipboard capturado ({text.Length} chars): {preview}";
             }
             catch { /* clipboard pode estar ocupado com outro processo — best-effort */ }
         }

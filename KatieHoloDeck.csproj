@@ -10,8 +10,12 @@
     <ApplicationIcon>katie_holodeck.ico</ApplicationIcon>
     <AssemblyName>KatieHoloDeck</AssemblyName>
     <RootNamespace>KatieHoloDeck</RootNamespace>
-    <!-- snapshot de versão: Fluent Glass (fases 1-6) + reator v2 -->
-    <Version>0.6.0</Version>
+    <!-- FONTE ÚNICA da versão (F2.0): o display vem de Core/AppInfo.cs, que lê este
+         AssemblyVersion. Não existe constante de versão em C# nem em XAML. -->
+    <Version>9.8.2</Version>
+    <!-- A versão do binário é só a do csproj: sem SHA do git no InformationalVersion
+         (senão a aba Versão do .exe vira "9.8.2+<hash>" e o build depende do repo). -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
   <ItemGroup>
