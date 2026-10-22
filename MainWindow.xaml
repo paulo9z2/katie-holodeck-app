@@ -173,7 +173,11 @@
                             Padding="0" Background="{x:Null}" BorderThickness="0"
                             local:Chamfer.Size="18" CornerRadius="0" local:TechFrame.Enabled="True"
                             local:Glass.Ring="True">
-                        <Grid>
+                        <!-- F2C P2 (review Codex F2B): o Background=Transparent mora no Grid
+                             EXTERNO — a faixa de sangria do Path (IsHitTestVisible=False) passa a
+                             ter alvo de hit-test de tamanho cheio e o clique não vaza pro
+                             ReactorHost por baixo. Não pinta nada (Transparent). -->
+                        <Grid Background="Transparent">
                             <!-- F2.2: ÚNICO fill da ilha (vidro OFF e ON). Fill trocado só via
                                  Glass.SetFace — nunca Border.Background. -->
                             <Path x:Name="TelemetryFace" local:Glass.Face="IslandGlass"
@@ -546,7 +550,11 @@
                             Padding="0" Background="{x:Null}" BorderThickness="0"
                             local:Chamfer.Size="18" CornerRadius="0" local:TechFrame.Enabled="True"
                             local:Glass.Ring="True">
-                        <Grid>
+                        <!-- F2C P2 (review Codex F2B): Grid EXTERNO com fundo transparente cobre
+                             também a faixa de sangria de 13 DIP (onde só vive o Path Face, que é
+                             IsHitTestVisible=False). Sem isso, clicar nessa faixa no chat
+                             expandido atravessava até o ReactorHost e abria o player. -->
+                        <Grid Background="Transparent">
                             <!-- F2.3: fill único da ilha. Compacta = IslandGlass; expandida =
                                  ThemeChatExpandedBrush (Glass.SetFace no code-behind). -->
                             <Path x:Name="ChatFace" local:Glass.Face="IslandGlass"
