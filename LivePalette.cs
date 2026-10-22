@@ -149,6 +149,7 @@ namespace KatieHoloDeck
         private SolidColorBrush _themeCoverPlaceholder = new();
         private SolidColorBrush _themeChipGlass = new();
         private SolidColorBrush _themeChatExpanded = new();
+        private SolidColorBrush _themeChatExpandedDense = new(); // F2.4: face de leitura do chat expandido
         private SolidColorBrush _themePanelSolid = new();
         private SolidColorBrush _themeFullscreen = new();
         private SolidColorBrush _themeFullscreenOpaque = new();
@@ -237,6 +238,7 @@ namespace KatieHoloDeck
             Dictionary["ThemeCoverPlaceholderBrush"] = _themeCoverPlaceholder;
             Dictionary["ThemeChipGlassBrush"] = _themeChipGlass;
             Dictionary["ThemeChatExpandedBrush"] = _themeChatExpanded;
+            Dictionary["ThemeChatExpandedDenseBrush"] = _themeChatExpandedDense;
             Dictionary["ThemePanelSolidBrush"] = _themePanelSolid;
             Dictionary["ThemeFullscreenBrush"] = _themeFullscreen;
             Dictionary["ThemeFullscreenOpaqueBrush"] = _themeFullscreenOpaque;
@@ -391,6 +393,8 @@ namespace KatieHoloDeck
             Solid(ref _themeCoverPlaceholder, "ThemeCoverPlaceholderBrush", WithA(t.CoverPlaceholder, 0x33));
             Solid(ref _themeChipGlass, "ThemeChipGlassBrush", WithA(t.ChipGlass, 0x22));
             Solid(ref _themeChatExpanded, "ThemeChatExpandedBrush", WithA(t.ChatExpanded, 0x38));
+            // F2.4: mesma base do token, alpha de LEITURA (0xE6) — medido no composto.
+            Solid(ref _themeChatExpandedDense, "ThemeChatExpandedDenseBrush", WithA(t.ChatExpanded, 0xE6));
             Solid(ref _themePanelSolid, "ThemePanelSolidBrush", WithA(t.PanelSolid, 0xFF));
             Solid(ref _themeFullscreen, "ThemeFullscreenBrush", WithA(t.Fullscreen, 0xCC));
             Solid(ref _themeFullscreenOpaque, "ThemeFullscreenOpaqueBrush", WithA(t.FullscreenOpaque, 0xF5));

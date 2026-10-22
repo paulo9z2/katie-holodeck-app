@@ -91,6 +91,12 @@
             <SolidColorBrush x:Key="ThemeCoverPlaceholderBrush" Color="#331E4E8C"/>
             <SolidColorBrush x:Key="ThemeChipGlassBrush" Color="#22000C14"/>
             <SolidColorBrush x:Key="ThemeChatExpandedBrush" Color="#380E1B2E"/>
+            <!-- F2C/F2.4 — face DENSA do chat expandido (leitura sobre o véu blur 9 + reator
+                 @0,15 + grade). Alpha 0xE6 (90%) medido no pixel composto: contraste de
+                 ThemeTextStrongBrush (#F3F4F4) sobre a face > 4,5:1 até no pior caso (fundo
+                 claro). Não é véu iOS: é a única face de leitura do estado expandido; o blur
+                 ambiente segue vazando pelas margens da ilha. -->
+            <SolidColorBrush x:Key="ThemeChatExpandedDenseBrush" Color="#E60E1B2E"/>
             <SolidColorBrush x:Key="ThemePanelSolidBrush" Color="#FF070C14"/>
             <SolidColorBrush x:Key="ThemeFullscreenBrush" Color="#CC0A1322"/>
             <SolidColorBrush x:Key="ThemeFullscreenOpaqueBrush" Color="#F50A1322"/>

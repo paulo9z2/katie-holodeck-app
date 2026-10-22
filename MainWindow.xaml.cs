@@ -1773,7 +1773,10 @@ namespace KatieHoloDeck
                 // F2.3: vidro Mica-like do estado expandido agora é o FILL DA FACE (o Path é o
                 // único pintor da ilha desde a F2.3) — nada de Border.Background: o valor local
                 // no Border brigava com o Style e era a raiz do bug do null no recolher.
-                Glass.SetFace(ChatFace, "ThemeChatExpandedBrush");
+                // F2.4: face DENSA de leitura (alfa medido no composto) — a F2B trocava para
+                // o vidro @0x38 e as letras ficavam sobre blur 9 + reator @0,15 + grade.
+                // Zero véu iOS novo: só a face muda; o blur ambiente vaza pelas margens.
+                Glass.SetFace(ChatFace, "ThemeChatExpandedDenseBrush");
 
                 // v9.3.7: chat expansível ganha VÉU DE BLUR local. O backdrop-blur das Settings
                 // (SetBackdropBlur) cobre o AppContent inteiro e borraria o PRÓPRIO chat — aqui o

@@ -556,7 +556,7 @@
                              expandido atravessava até o ReactorHost e abria o player. -->
                         <Grid Background="Transparent">
                             <!-- F2.3: fill único da ilha. Compacta = IslandGlass; expandida =
-                                 ThemeChatExpandedBrush (Glass.SetFace no code-behind). -->
+                                 ThemeChatExpandedDenseBrush (Glass.SetFace no code-behind, F2.4). -->
                             <Path x:Name="ChatFace" local:Glass.Face="IslandGlass"
                                   Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                   IsHitTestVisible="False"/>
