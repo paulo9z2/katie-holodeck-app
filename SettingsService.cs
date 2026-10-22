@@ -77,7 +77,7 @@ namespace KatieHoloDeck
         public string EffectsProfile { get; set; } = "full";
         /// <summary>F1: aro de cristal T2 (vidro VETORIAL — o shader é F2). Default OFF:
         /// desligado o app fica com o visual aprovado do v9.8.2.</summary>
-        public bool EnableGlass { get; set; } = false;
+        public bool EnableGlass { get; set; } = true;
         public bool GameDetectionEnabled { get; set; } = true;
         public List<GameProfile> Games { get; set; } = new();
         public MusicPrefs Music { get; set; } = new();
