@@ -375,6 +375,17 @@ namespace KatieHoloDeck
         {
             if (p == null) return;
             double w = p.ActualWidth, h = p.ActualHeight;
+            // F2.7-fix (bootstrap da face): Path em sangria, Stretch=Fill e Data=null
+            // mede 0x0 e o Shape arranja Size.Empty (não há geometria esticável), então
+            // ActualWidth nunca saía de zero e esta guarda nunca deixava construir a
+            // geometria — a face jamais pintava em NENHUM host. O Path cobre exatamente
+            // a área do host, então herda o tamanho dele no primeiro passe; assim que
+            // Data existe, o próximo SizeChanged já reaplica com o tamanho real.
+            var hostEl = FindHost(p) as FrameworkElement;
+            if ((w < 4 || h < 4) && hostEl is { ActualWidth: >= 4, ActualHeight: >= 4 })
+            {
+                w = hostEl.ActualWidth; h = hostEl.ActualHeight;
+            }
             if (w < 4 || h < 4) return;
 
             bool glass = _mode != GlassMode.Off;

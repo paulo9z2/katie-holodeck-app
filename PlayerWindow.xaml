@@ -1,15 +1,31 @@
 ﻿<Window x:Class="KatieHoloDeck.PlayerWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:KatieHoloDeck"
         Title="KATIE Player" Height="112" Width="380"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         ResizeMode="NoResize" ShowInTaskbar="False" ShowActivated="False" Topmost="True"
         WindowStartupLocation="Manual" Left="0" Top="0">
-    <Border CornerRadius="16" Background="#E6101A30" BorderBrush="#3300FF88" BorderThickness="1">
+    <!-- F2.7 — host glass F2B (padrão 00705b4): o Border NÃO pinta fill nem traço
+         (Background={x:Null}, BorderThickness=0). O fill único é o Path em sangria, com
+         raio PURO de 16 (Chamfer=0 → Glass.ApplyFace lê host.CornerRadius e fecha o canto
+         arredondado). OFF = ThemePlayerSurfaceBrush (#E6101A30 original) + FallbackStroke
+         #3300FF88; ON = IslandGlass + aro de cristal. O Grid externo Transparent existe só
+         para hit-test/drag do TitleBar — ele não pinta nada. -->
+    <Border x:Name="PlayerGlassHost" CornerRadius="16" Background="{x:Null}"
+            BorderBrush="{DynamicResource ThemePlayerEdgeBrush}" BorderThickness="0" Padding="0"
+            local:Chamfer.Size="0" local:Glass.Ring="True">
         <Border.Effect>
             <DropShadowEffect Color="#00FF88" BlurRadius="26" ShadowDepth="0" Opacity="0.30"/>
         </Border.Effect>
-        <Grid>
+        <Grid Background="Transparent">
+            <Path local:Glass.Face="ThemePlayerSurfaceBrush"
+                  local:Glass.FaceFrosted="IslandGlass"
+                  local:Glass.FallbackStroke="ThemePlayerEdgeBrush"
+                  Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  IsHitTestVisible="False"/>
+            <!-- margem 1 = BorderThickness antigo; preserva a posição do conteúdo no OFF -->
+            <Grid Margin="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -69,6 +85,7 @@
                                 Thumb.DragStarted="Vol_DragStarted" Thumb.DragCompleted="Vol_DragCompleted" ValueChanged="Vol_Changed"/>
                     </StackPanel>
                 </StackPanel>
+            </Grid>
             </Grid>
         </Grid>
     </Border>

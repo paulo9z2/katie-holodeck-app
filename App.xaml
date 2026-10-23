@@ -98,6 +98,12 @@
                  ambiente segue vazando pelas margens da ilha. -->
             <SolidColorBrush x:Key="ThemeChatExpandedDenseBrush" Color="#E60E1B2E"/>
             <SolidColorBrush x:Key="ThemePanelSolidBrush" Color="#FF070C14"/>
+            <!-- F2.7 — mini-player flutuante: os DOIS valores originais do PlayerWindow v9.8.2
+                 (fill #E6101A30 e a borda verde #3300FF88) viram tokens ESTÁTICOS. Eles NÃO
+                 entram no LivePalette de propósito: o player é uma janela própria e não segue
+                 a capa; com vidro OFF o pixel tem de ser o mesmo de antes. -->
+            <SolidColorBrush x:Key="ThemePlayerSurfaceBrush" Color="#E6101A30"/>
+            <SolidColorBrush x:Key="ThemePlayerEdgeBrush" Color="#3300FF88"/>
             <SolidColorBrush x:Key="ThemeFullscreenBrush" Color="#CC0A1322"/>
             <SolidColorBrush x:Key="ThemeFullscreenOpaqueBrush" Color="#F50A1322"/>
 
