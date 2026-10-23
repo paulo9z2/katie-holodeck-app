@@ -249,7 +249,10 @@
             BorderThickness="0"
             CornerRadius="14"
             Padding="0" local:Chamfer.Size="16" local:TechFrame.Enabled="True" local:Glass.Ring="True">
-        <Grid>
+        <!-- F3.2: o Grid raiz recebe Background="Transparent" (padrão F2B) para o retângulo
+             inteiro do cartão ficar no hit-test — sem isto o clique nos cantos chanfrados
+             (fora do octógono) atravessava e caía no SettingsScrim, fechando o painel. -->
+        <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="*"/>
@@ -261,6 +264,7 @@
                  ChamferAdorner já pinta o contorno octogonal na silhueta. O FallbackStroke
                  (1 px a 0,5 px por dentro) duplicava a linha = contorno duplo. -->
             <Path local:Glass.Face="ThemePanelSolidBrush"
+                  local:Glass.FaceFrosted="IslandGlass"
                   Stretch="Fill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   IsHitTestVisible="False"/>
             <Rectangle Grid.ColumnSpan="2" Fill="{DynamicResource SurfaceTintBrush}" IsHitTestVisible="False"
