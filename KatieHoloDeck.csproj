@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <!-- offline: 100% WPF puro (Shapes/Effects/DispatcherTimer), zero pacotes NuGet -->
+    <ApplicationIcon>katie_holodeck.ico</ApplicationIcon>
+    <AssemblyName>KatieHoloDeck</AssemblyName>
+    <RootNamespace>KatieHoloDeck</RootNamespace>
+    <!-- FONTE ÚNICA da versão (F2.0): o display vem de Core/AppInfo.cs, que lê este
+         AssemblyVersion. Não existe constante de versão em C# nem em XAML. -->
+    <Version>9.8.2</Version>
+    <!-- A versão do binário é só a do csproj: sem SHA do git no InformationalVersion
+         (senão a aba Versão do .exe vira "9.8.2+<hash>" e o build depende do repo). -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Fonts\Orbitron.ttf" />
+  </ItemGroup>
+</Project>
