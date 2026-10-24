@@ -1,9 +1,26 @@
-# saída de build
+# Build outputs
 bin/
 obj/
+out/
+publish/
+*.dll
+*.exe
+*.pdb
+*.ilk
+*.log
 
-# estado de ferramentas/agentes
-.omo/
+# Visual Studio
 .vs/
 *.user
 *.suo
+*.userprefs
+*.tmp
+*.temp
+
+# IDE
+.idea/
+*.swp
+
+# OS
+Thumbs.db
+Desktop.ini
