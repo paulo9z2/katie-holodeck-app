@@ -9,7 +9,7 @@ using System.Windows.Shapes;
 
 namespace KatieHoloDeck
 {
-    /// <summary>Modo efetivo do material. F1 tem teto VETORIAL — Shader é F2.</summary>
+    /// <summary>Modo efetivo do material. F1/F2 = teto VETORIAL; T3 (24/10) liga o Shader quando ps_3_0 + bytecode carregam.</summary>
     public enum GlassMode { Off = 0, Vector = 1, Shader = 2 }
 
     /// <summary>
@@ -56,7 +56,14 @@ namespace KatieHoloDeck
             if (!enabled) return GlassMode.Off;
             if (string.Equals(effectsProfile, "none", StringComparison.OrdinalIgnoreCase))
                 return GlassMode.Vector;   // perfil "Sem animações" fica travado no vetorial
-            return GlassMode.Vector;       // F1: teto vetorial. F2 troca SÓ esta linha por Shader.
+            // T3 (24/10): degrau de shader de verdade — ps_3_0 + bytecode carregado.
+            // Sem GPU com ps_3_0 ou recurso ausente => continua no teto vetorial (F2).
+            // Tier aqui é IsPixelShaderVersionSupported (comparação RenderCapability.Tier
+            // < 2 é bug: Tier vem em <<16 — lição Codex, revisão F2C).
+            return Effects.LiquidGlassEffect.Available
+                && System.Windows.Media.RenderCapability.IsPixelShaderVersionSupported(3, 0)
+                ? GlassMode.Shader
+                : GlassMode.Vector;
         }
 
         public static string Describe(GlassMode mode) => mode switch
@@ -69,10 +76,23 @@ namespace KatieHoloDeck
         /// <summary>Aplica toggle+perfil. Se o modo mudou, reaponta todas as superfícies.</summary>
         public static void Apply(bool enabled, string? effectsProfile)
         {
+            _lastEnabled = enabled;
+            _lastProfile = effectsProfile;
             var next = Resolve(enabled, effectsProfile);
             if (next == _mode) return;
             _mode = next;
             Refresh();
+        }
+
+        private static bool _lastEnabled;
+        private static string? _lastProfile;
+
+        static Glass()
+        {
+            // GPU/tier mudou em runtime (driver, RDP, dock): re-resolve com o último
+            // toggle+perfil e reaplica SE o degrau mudou. Sem isso, quem habilitou o
+            // vidro numa sessão com ps_3_0 fica preso no modo antigo até reiniciar.
+            System.Windows.Media.RenderCapability.TierChanged += (_, _) => Apply(_lastEnabled, _lastProfile);
         }
 
         // =====================================================================
