@@ -349,6 +349,9 @@ namespace KatieHoloDeck
             Loaded += MainWindow_Loaded;
             SourceInitialized += MainWindow_SourceInitialized;
             StateChanged += MainWindow_StateChanged;
+            // T3.2: resize => relayout => o Viewbox do backdrop fica stale; re-monta
+            // (idempotente, ~zero custo: só recalcula rect e troca o brush).
+            SizeChanged += (_, _) => { if (_mediaPanelOpen && _mediaGlassFx is not null) MountMediaGlass(); };
 
             _statePath = IOPath.Combine(AppDomain.CurrentDomain.BaseDirectory, "state.json");
             try
@@ -1725,6 +1728,10 @@ namespace KatieHoloDeck
                 MediaScale.ScaleX = MediaScale.ScaleY = 1;
                 MediaPanel.Height = open ? MediaPanelHeight : 0;
                 MediaPanel.Opacity = open ? 1 : 0;
+                // T3.2: layout ainda não passou — monta post-layout (prioridade Loaded)
+                if (open) Dispatcher.BeginInvoke(() => { if (_mediaPanelOpen) MountMediaGlass(); },
+                    System.Windows.Threading.DispatcherPriority.Loaded);
+                else UnmountMediaGlass();
                 return;
             }
 
@@ -1743,6 +1750,70 @@ namespace KatieHoloDeck
             var scale = new DoubleAnimation { From = open ? 0.97 : MediaScale.ScaleX, To = open ? 1 : 0.98, Duration = dur, EasingFunction = ease };
             MediaScale.BeginAnimation(ScaleTransform.ScaleXProperty, scale);
             MediaScale.BeginAnimation(ScaleTransform.ScaleYProperty, scale.Clone());
+
+            // T3.2 (24/10): host do shader de vidro. Montar DEPOIS da animação (W6/R9);
+            // teardown ANTES do colapso (nunca lensar backdrop em movimento).
+            if (open)
+            {
+                h.Completed += (_, _) => { if (_mediaPanelOpen) MountMediaGlass(); };
+            }
+            else UnmountMediaGlass();
+        }
+
+        // ================= T3.2 (24/10): LIQUID GLASS — host do shader (MediaPanel piloto) =================
+        // Árvore (padrão F2B): MediaGlassHost é irmão de BAIXO da Face vetorial — o conteúdo
+        // vivo nunca entra no elemento com Effect (R9). Backdrop = VisualBrush do
+        // BackdropStack (grid+scan+vignette vivos), Viewbox = rect do host (overscan Pad).
+        private Effects.LiquidGlassEffect? _mediaGlassFx;
+        private const double MediaGlassPad = 12.0;   // ≥ Refraction(8)+4: dobra sem clamp
+
+        /// <summary>Monta o shader no painel (pós-layout; idempotente). Só em modo Shader.</summary>
+        private void MountMediaGlass()
+        {
+            if (Glass.Mode != GlassMode.Shader) return;
+            double w = MediaPanel.ActualWidth, h = MediaPanel.ActualHeight;
+            if (w < 1 || h < 1) return;
+
+            if (_mediaGlassFx is null)
+            {
+                _mediaGlassFx = new Effects.LiquidGlassEffect
+                {
+                    Radius = 14,        // CornerRadius do MediaPanel
+                    Chamfer = 12,       // Chamfer.Size do painel
+                    Bezel = 10,         // faixa refrativa
+                    Refraction = 8,     // dobra máxima ≤ MediaGlassPad-4
+                    Chromatic = 0.6     // fringing Liquify (0 = mono, 1 = pleno 1:0.925:0.875)
+                };
+                MediaGlassHost.Effect = _mediaGlassFx;
+            }
+
+            var fx = _mediaGlassFx;
+            fx.InnerSize = new Size(w, h);
+            fx.Pad = new Size(MediaGlassPad, MediaGlassPad);
+
+            // Viewbox em px de dispositivo (TranslatePoint a partir do host inflado)
+            var origin = MediaGlassHost.TranslatePoint(new Point(0, 0), BackdropStack);
+            var box = new Rect(
+                new Point(Math.Round(origin.X), Math.Round(origin.Y)),
+                new Size(Math.Round(MediaGlassHost.ActualWidth), Math.Round(MediaGlassHost.ActualHeight)));
+            fx.Input = new VisualBrush(BackdropStack)
+            {
+                Viewbox = box,
+                ViewboxUnits = BrushMappingMode.Absolute,
+                Viewport = new Rect(0, 0, 1, 1),
+                TileMode = TileMode.None,
+                Stretch = Stretch.None
+            };
+            MediaGlassHost.Opacity = 1;
+        }
+
+        /// <summary>Teardown síncrono: host para de lensar ANTES de soltar brush/effect.</summary>
+        private void UnmountMediaGlass()
+        {
+            if (_mediaGlassFx is null) return;
+            MediaGlassHost.Opacity = 0;
+            MediaGlassHost.Effect = null;   // nunca soltar o Input com o Effect vivo (implicit-input trap)
+            _mediaGlassFx = null;           // fx + VisualBrush morrem juntos (GC)
         }
 
         private void InlinePlay_Click(object sender, MouseButtonEventArgs e) => _ = _media.TogglePlayPauseAsync();

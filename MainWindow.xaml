@@ -76,12 +76,14 @@
                     <RowDefinition Height="44"/>
                 </Grid.RowDefinitions>                <!-- ===== CAMADAS DE FUNDO ===== -->
                 <!-- v3 (nitidez/densidade): grid VISÍVEL (contraste baixo, linhas 1px) sobre base densa -->
-                <Rectangle Grid.Row="0" Grid.RowSpan="3" x:Name="GridLayer" Opacity="0.5" IsHitTestVisible="False"
-                           Fill="{DynamicResource ThemeGridBrush}"/>
-                <Rectangle Grid.Row="0" Grid.RowSpan="3" x:Name="ScanLayer" Opacity="0.4" IsHitTestVisible="False"
-                           Fill="{DynamicResource ThemeScanBrush}"/>
-                <Rectangle Grid.Row="0" Grid.RowSpan="3" IsHitTestVisible="False"
-                           Fill="{DynamicResource ThemeVignetteBrush}"/>
+                <!-- T3.2 (24/10): pilha encapsulada — fonte do VisualBrush do shader de vidro.
+                     O shader refrata o que a tela mostra ATRÁS do painel: grid+scan+vignette
+                     vivos, fase real, zero duplicação de desenho (R15 morto na fonte). -->
+                <Grid x:Name="BackdropStack" Grid.Row="0" Grid.RowSpan="3" IsHitTestVisible="False">
+                    <Rectangle x:Name="GridLayer" Opacity="0.5" Fill="{DynamicResource ThemeGridBrush}"/>
+                    <Rectangle x:Name="ScanLayer" Opacity="0.4" Fill="{DynamicResource ThemeScanBrush}"/>
+                    <Rectangle Fill="{DynamicResource ThemeVignetteBrush}"/>
+                </Grid>
 
             
 
@@ -458,6 +460,13 @@
                                 </TransformGroup>
                             </Border.RenderTransform>
                             <Grid>
+                            <!-- T3.2 (24/10): HOST DO SHADER — irmão de BAIXO da Face (padrão F2B).
+                                 Pad 12px/lado = overscan: a dobra lê conteúdo além da borda (mata
+                                 o clamp, gargalo #1 do F0). Effect/Input montados no code-behind
+                                 (MountMediaGlass): backdrop = VisualBrush do BackdropStack,
+                                 NUNCA ImplicitInput (R9). -->
+                            <Border x:Name="MediaGlassHost" IsHitTestVisible="False" Background="#01000000"
+                                    Margin="-12" Opacity="0"/>
                             <!-- F1-PAINT: SEM FallbackStroke. Esta superfície TEM chanfro
                                  (Chamfer.Size=12), e o ChamferAdorner já desenha o contorno
                                  octogonal (1,2 px) na silhueta real. Com o FallbackStroke
