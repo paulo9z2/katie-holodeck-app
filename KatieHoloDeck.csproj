@@ -20,5 +20,8 @@
 
   <ItemGroup>
     <Resource Include="Assets\Fonts\Orbitron.ttf" />
+    <!-- T3: bytecode ps_3_0 compilado offline (D3DCompile). Editou o .hlsl =>
+         recompilar o .ps E rebuild no-incremental (o Resource é stale-friendly). -->
+    <Resource Include="Effects\LiquidGlass.ps" />
   </ItemGroup>
 </Project>
