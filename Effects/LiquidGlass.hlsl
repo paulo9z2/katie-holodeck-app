@@ -89,23 +89,15 @@ float4 main(float2 uv : TEXCOORD) : COLOR
     float deflect = sD / max(cD, 1e-4);           // tan(theta1 - theta2)
     float mag = deflect * (rf / 1.1031322746349106);  // px normalizados (pico ~ rf)
 
-    // ---- displacement: 1 fetch (mono) ou 3 (chromatic, razões Liquify) ----
-    // tex2Dlod (LOD 0, sem gradiente): tex2D implícito dentro de flow control
-    // é erro X4014 no ps_3_0; o Input do ShaderEffect não tem mips => LOD 0
-    // devolve EXATAMENTE o texel que tex2D devolveria.
-    float3 rgb;
-    if (cr > 0.001)
-    {
-        float kg = 1.0 - 0.075 * cr;              // G: 0.925 @ cr=1
-        float kb = 1.0 - 0.125 * cr;              // B: 0.875 @ cr=1
-        rgb.r = tex2Dlod(Input, float4(uv + n * (mag      / fz), 0.0, 0.0)).r;
-        rgb.g = tex2Dlod(Input, float4(uv + n * (mag * kg / fz), 0.0, 0.0)).g;
-        rgb.b = tex2Dlod(Input, float4(uv + n * (mag * kb / fz), 0.0, 0.0)).b;
-    }
-    else
-    {
-        rgb = tex2Dlod(Input, float4(uv + n * (mag / fz), 0.0, 0.0)).rgb;
-    }
+    // ---- displacement: SEM flow control (WPF ShaderEffect não roda branch
+    // dinâmico no ps_3_0: pipeline quebra e o sampler volta preto).
+    // Linear sempre: 3 fetches, cr=0 reduz a mono puro pelos fatores 1.
+    float kg = 1.0 - 0.075 * cr;              // G: 0.925 @ cr=1
+    float kb = 1.0 - 0.125 * cr;             // B: 0.875 @ cr=1
+    float3 tr = tex2D(Input, uv + n * (mag      / fz)).rgb;
+    float3 tg = tex2D(Input, uv + n * (mag * kg / fz)).rgb;
+    float3 tb = tex2D(Input, uv + n * (mag * kb / fz)).rgb;
+    float3 rgb = float3(tr.r, tg.g, tb.b);
 
     return float4(rgb, alpha);
 }

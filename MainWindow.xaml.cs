@@ -351,7 +351,7 @@ namespace KatieHoloDeck
             StateChanged += MainWindow_StateChanged;
             // T3.2: resize => relayout => o Viewbox do backdrop fica stale; re-monta
             // (idempotente, ~zero custo: só recalcula rect e troca o brush).
-            SizeChanged += (_, _) => { if (_mediaPanelOpen && _mediaGlassFx is not null) MountMediaGlass(); };
+            SizeChanged += (_, _) => { if (_mediaPanelOpen) MountMediaGlass(); };
 
             _statePath = IOPath.Combine(AppDomain.CurrentDomain.BaseDirectory, "state.json");
             try
@@ -1714,6 +1714,7 @@ namespace KatieHoloDeck
         /// <summary>Subida do cartão: opacity + translateY + escala, com visible/hit-test sincronizados.</summary>
         private void SetMediaPanel(bool open, bool instant)
         {
+            GlassLog($"SetMediaPanel open={open} instant={instant} motion={MotionEnabled} animOpen={_settings.Music?.AnimateOpen}");
             _mediaPanelOpen = open;
             MediaPanel.IsHitTestVisible = open;
 
@@ -1738,7 +1739,8 @@ namespace KatieHoloDeck
             var ease = new CubicEase { EasingMode = open ? EasingMode.EaseOut : EasingMode.EaseIn };
             var dur = TimeSpan.FromMilliseconds(open ? 280 : 190);
 
-            var h = new DoubleAnimation { To = open ? MediaPanelHeight : 0, Duration = dur, EasingFunction = ease };
+            var h = new DoubleAnimation { From = open ? 0 : MediaPanelHeight, To = open ? MediaPanelHeight : 0, Duration = dur, EasingFunction = ease };
+            GlassLog($"anim start: Height={MediaPanel.Height} Actual={MediaPanel.ActualHeight:F0} To={h.To} open={open}");
             MediaPanel.BeginAnimation(HeightProperty, h);
 
             var fade = new DoubleAnimation { To = open ? 1 : 0, Duration = dur, EasingFunction = ease };
@@ -1755,65 +1757,152 @@ namespace KatieHoloDeck
             // teardown ANTES do colapso (nunca lensar backdrop em movimento).
             if (open)
             {
-                h.Completed += (_, _) => { if (_mediaPanelOpen) MountMediaGlass(); };
+                h.Completed += (_, _) => { GlassLog("anim completed, open=" + _mediaPanelOpen); if (_mediaPanelOpen) MountMediaGlass(); };
+                // failsafe: Completed não é garantido (clock rejeitado/interrompido);
+                // Mount é idempotente — timer pós-layout garante o mount.
+                var t = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(650) };
+                t.Tick += (_, _) => { t.Stop(); GlassLog($"failsafe: open={_mediaPanelOpen} fx={_glassCpu != null}"); if (_mediaPanelOpen) MountMediaGlass(); };
+                t.Start();
             }
             else UnmountMediaGlass();
         }
 
-        // ================= T3.2 (24/10): LIQUID GLASS — host do shader (MediaPanel piloto) =================
-        // Árvore (padrão F2B): MediaGlassHost é irmão de BAIXO da Face vetorial — o conteúdo
-        // vivo nunca entra no elemento com Effect (R9). Backdrop = VisualBrush do
-        // BackdropStack (grid+scan+vignette vivos), Viewbox = rect do host (overscan Pad).
-        private Effects.LiquidGlassEffect? _mediaGlassFx;
+        // ================= T3.3 (25/10): LIQUID GLASS — CPU =================
+        // Árvore idêntica (host = irmão de BAIXO da Face; backdrop = BackdropStack
+        // via VisualBrush, NUNCA ImplicitInput — R9). A dobra agora é computada
+        // na CPU (LiquidGlassCpu: LUT Snell + fetch bilinear): o pipeline
+        // ShaderEffect desta máquina rasteriza bytecode custom em PRETO em toda
+        // variação testada (GlassProbe v1..v10, 25/10 — ps_2_0/2_a/3_0, fxc-43/47,
+        // sampler custom e implicit, branch e linear; InvalidPixelShaderEncountered
+        // no ps_2_a; efeitos nativos são software no .NET 8 e não contam como prova).
+        // Mesma óptica do LiquidGlass.hlsl, tuning T3.2 (R14/C12/B10/RF8/CR0.6).
+        private Effects.LiquidGlassCpu? _glassCpu;
+        private System.Windows.Threading.DispatcherTimer? _glassTimer;
+        private System.Windows.Media.Imaging.WriteableBitmap? _glassWb;
+        private System.Windows.Media.Imaging.RenderTargetBitmap? _glassRtb;
+        private System.Windows.Shapes.Rectangle? _glassProxy;   // offscreen: copia a região do backdrop
+        private byte[]? _glassSrc;
+        private double _glassInnerW = 0, _glassInnerH = 0;   // host no momento do mount (gatilho de remount)
+        private long _glassTickNo;
         private const double MediaGlassPad = 12.0;   // ≥ Refraction(8)+4: dobra sem clamp
 
-        /// <summary>Monta o shader no painel (pós-layout; idempotente). Só em modo Shader.</summary>
+        /// <summary>Monta a dobra no painel (pós-layout; idempotente). Só em modo Shader.</summary>
         private void MountMediaGlass()
         {
+            GlassLog($"mount: mode={Glass.Mode} cpu");
             if (Glass.Mode != GlassMode.Shader) return;
-            double w = MediaPanel.ActualWidth, h = MediaPanel.ActualHeight;
-            if (w < 1 || h < 1) return;
-
-            if (_mediaGlassFx is null)
+            if (_glassTimer != null)
             {
-                _mediaGlassFx = new Effects.LiquidGlassEffect
-                {
-                    Radius = 14,        // CornerRadius do MediaPanel
-                    Chamfer = 12,       // Chamfer.Size do painel
-                    Bezel = 10,         // faixa refrativa
-                    Refraction = 8,     // dobra máxima ≤ MediaGlassPad-4
-                    Chromatic = 0.6     // fringing Liquify (0 = mono, 1 = pleno 1:0.925:0.875)
-                };
-                MediaGlassHost.Effect = _mediaGlassFx;
+                // resize desde o mount (maximize / painel esticado): RTB/WB/LUT ficaram presos no
+                // tamanho velho — face preta esticada + pad transparente vazando (incidente 25/10).
+                // Remount pega o tamanho novo; sem isso o vidro nunca cobre o host atual.
+                if (Math.Abs(MediaGlassHost.ActualWidth - _glassInnerW) > 2 || Math.Abs(MediaGlassHost.ActualHeight - _glassInnerH) > 2)
+                { GlassLog($"remount: host {MediaGlassHost.ActualWidth:F0}x{MediaGlassHost.ActualHeight:F0} != mount {_glassInnerW:F0}x{_glassInnerH:F0}"); UnmountGlass(); }
+                else { GlassTickUpdate(); return; }
             }
+            double w = MediaPanel.ActualWidth, h = MediaPanel.ActualHeight;
+            // NaN/∞ passam em "< 1" (comparam false) e detonam o ctor — só tamanho REAL monta
+            if (!double.IsFinite(w) || !double.IsFinite(h) || w < 1 || h < 1) { GlassLog($"mount abort: painel {w}x{h}"); return; }
+            if (!double.IsFinite(MediaGlassHost.ActualWidth) || !double.IsFinite(MediaGlassHost.ActualHeight) || MediaGlassHost.ActualWidth < 1 || MediaGlassHost.ActualHeight < 1) { GlassLog("mount abort: host sem tamanho"); return; }
+            _glassInnerW = MediaGlassHost.ActualWidth; _glassInnerH = MediaGlassHost.ActualHeight;
 
-            var fx = _mediaGlassFx;
-            fx.InnerSize = new Size(w, h);
-            fx.Pad = new Size(MediaGlassPad, MediaGlassPad);
+            double dpi = 1.0;   // FATOR de escala (1.25/1.5), NUNCA 96*fator — o ctor espera fator
+            if (PresentationSource.FromVisual(this) is { } ps && ps.CompositionTarget != null)
+                dpi = ps.CompositionTarget.TransformToDevice.M11;
+            if (!double.IsFinite(dpi) || dpi < 0.25 || dpi > 4.0) dpi = 1.0;
 
-            // Viewbox em px de dispositivo (TranslatePoint a partir do host inflado)
-            var origin = MediaGlassHost.TranslatePoint(new Point(0, 0), BackdropStack);
-            var box = new Rect(
-                new Point(Math.Round(origin.X), Math.Round(origin.Y)),
-                new Size(Math.Round(MediaGlassHost.ActualWidth), Math.Round(MediaGlassHost.ActualHeight)));
-            fx.Input = new VisualBrush(BackdropStack)
+            _glassCpu = new Effects.LiquidGlassCpu(w, h, 14, 12, 10, 8, MediaGlassPad, dpi, 0.6);
+            int W = _glassCpu.Width, H = _glassCpu.Height;
+
+            _glassRtb = new System.Windows.Media.Imaging.RenderTargetBitmap(
+                W, H, 96 * dpi, 96 * dpi, PixelFormats.Pbgra32);
+            _glassWb = new System.Windows.Media.Imaging.WriteableBitmap(
+                W, H, 96 * dpi, 96 * dpi, PixelFormats.Pbgra32, null);
+            _glassSrc = new byte[W * H * 4];
+            _glassProxy = new System.Windows.Shapes.Rectangle
             {
-                Viewbox = box,
-                ViewboxUnits = BrushMappingMode.Absolute,
-                Viewport = new Rect(0, 0, 1, 1),
-                TileMode = TileMode.None,
-                Stretch = Stretch.None
+                Width = MediaGlassHost.ActualWidth,
+                Height = MediaGlassHost.ActualHeight,
+                Fill = new VisualBrush(BackdropStack)
+                {
+                    ViewboxUnits = BrushMappingMode.Absolute,
+                    Viewport = new Rect(0, 0, MediaGlassHost.ActualWidth, MediaGlassHost.ActualHeight),   // tile = tamanho do proxy (NUNCA 1x1: em Absolute, (0,0,1,1) é 1 dip e o brush pinta ~nada)
+                    ViewportUnits = BrushMappingMode.Absolute,
+                    TileMode = TileMode.None,
+                    Stretch = Stretch.None
+                }
             };
+            // proxy fora da árvore: RTB NÃO faz layout — sem isso o RTB renderiza vazio (gate 25/10)
+            var psz = new Size(MediaGlassHost.ActualWidth, MediaGlassHost.ActualHeight);
+            _glassProxy.Measure(psz);
+            _glassProxy.Arrange(new Rect(psz));
+
+            MediaGlassHost.Background = new ImageBrush(_glassWb);
             MediaGlassHost.Opacity = 1;
+
+            _glassTimer = new System.Windows.Threading.DispatcherTimer(
+                System.Windows.Threading.DispatcherPriority.Render)
+            { Interval = TimeSpan.FromMilliseconds(33) };
+            _glassTimer.Tick += (_, _) => GlassTickUpdate();
+            _glassTimer.Start();
+            GlassTickUpdate();
+            GlassLog($"mount ok cpu: {W}x{H} dpi={dpi:F2} panel={w:F0}x{h:F0}");
         }
 
-        /// <summary>Teardown síncrono: host para de lensar ANTES de soltar brush/effect.</summary>
+        /// <summary>Um frame: região do backdrop → RTB → distorção → WriteableBitmap.</summary>
+        private void GlassTickUpdate()
+        {
+            var cpu = _glassCpu;
+            if (cpu == null || _glassRtb == null || _glassWb == null || _glassProxy == null) return;
+
+            // box AO VIVO: painel/janela podem ter movido desde o mount
+            var origin = MediaGlassHost.TranslatePoint(new Point(0, 0), BackdropStack);
+            var vb = (VisualBrush)_glassProxy.Fill;
+            var hw = MediaGlassHost.ActualWidth; var hh = MediaGlassHost.ActualHeight;
+            vb.Viewbox = new Rect(origin, new Size(hw, hh));
+            vb.Viewport = new Rect(0, 0, hw, hh);
+            var psz = new Size(hw, hh);
+            if (_glassProxy.RenderSize != psz) { _glassProxy.Measure(psz); _glassProxy.Arrange(new Rect(psz)); }
+
+            var rtb = _glassRtb;
+            rtb.Clear();
+            rtb.Render(_glassProxy);
+
+            int W = cpu.Width, H = cpu.Height;
+            var src = _glassSrc;
+            if (src == null || src.Length < W * H * 4) src = _glassSrc = new byte[W * H * 4];
+            rtb.CopyPixels(new Int32Rect(0, 0, W, H), src, W * 4, 0);
+
+            cpu.Distort(src);
+            _glassWb.WritePixels(new Int32Rect(0, 0, W, H), cpu.Output, W * 4, 0);
+            if (++_glassTickNo % 150 == 0)   // 1 amostra ~5s: pulso do vidro ao vivo
+                GlassLog($"tick#{_glassTickNo} origin=({origin.X:F0},{origin.Y:F0}) host={hw:F0}x{hh:F0} buf={W}x{H}");
+        }
+
+        private void UnmountGlass()
+        {
+            if (_glassTimer != null) { _glassTimer.Stop(); _glassTimer = null; }
+            _glassCpu = null; _glassRtb = null; _glassWb = null; _glassProxy = null; _glassSrc = null;
+            MediaGlassHost.Background = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0));   // original do XAML
+            MediaGlassHost.Opacity = 1;
+            GlassLog("unmount");
+        }
+
+        private static void GlassLog(string s)
+        {
+            try { File.AppendAllText(IOPath.Combine(AppDomain.CurrentDomain.BaseDirectory, "glass_debug.jsonl"),
+                DateTime.Now.ToString("HH:mm:ss.fff") + " " + s + Environment.NewLine); } catch { }
+        }
+
+        /// <summary>Teardown síncrono: timer para, buffers soltos, host volta ao neutro.</summary>
         private void UnmountMediaGlass()
         {
-            if (_mediaGlassFx is null) return;
+            GlassLog("unmount");
+            if (_glassTimer != null) { _glassTimer.Stop(); _glassTimer = null; }
+            if (_glassCpu != null) { _glassCpu.Dispose(); _glassCpu = null; }
             MediaGlassHost.Opacity = 0;
-            MediaGlassHost.Effect = null;   // nunca soltar o Input com o Effect vivo (implicit-input trap)
-            _mediaGlassFx = null;           // fx + VisualBrush morrem juntos (GC)
+            MediaGlassHost.ClearValue(System.Windows.Controls.Border.BackgroundProperty);   // volta ao #01000000 do XAML
+            _glassWb = null; _glassRtb = null; _glassProxy = null; _glassSrc = null;
         }
 
         private void InlinePlay_Click(object sender, MouseButtonEventArgs e) => _ = _media.TogglePlayPauseAsync();
@@ -2326,6 +2415,7 @@ namespace KatieHoloDeck
                 }
                 if (root.TryGetProperty("panel", out var pnl) && pnl.ValueKind == JsonValueKind.String)
                 {
+                    GlassLog($"state: panel={pnl.GetString()} open={_mediaPanelOpen} instant={InstantMedia}");
                     if (pnl.GetString() == "music" && !_mediaPanelOpen) SetMediaPanel(true, InstantMedia);
                     else if (pnl.GetString() == "none" && _mediaPanelOpen) SetMediaPanel(false, InstantMedia);
                 }
