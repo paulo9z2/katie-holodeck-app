@@ -4,65 +4,77 @@ using System.Runtime.InteropServices;
 
 namespace KatieHoloDeck.LiquidGlass;
 
+/// <summary>Constantes de material Oyenza v0.2.6 (tuning do spike 26/10).
+/// Tints: cor STRAIGHT + opacidade — o shader faz o premultiply.</summary>
+public static class GlassConsts
+{
+    public const float FrostLodLo = 1.35f;  // mip LOD ~ σ3 (frost fino)
+    public const float FrostLodHi = 2.70f; // mip LOD ~ σ9 (frost grosso)
+    public const float ChromaticK = 0.125f; // dispersão px = mag * chromatic * K
+
+    /// <summary>Vidro escuro (fundo claro): cor straight + opacidade.</summary>
+    public static readonly Vector4 TintDark = new(0.10f, 0.10f, 0.12f, 0.62f);
+    /// <summary>Vidro claro (fundo escuro): cor straight + opacidade.</summary>
+    public static readonly Vector4 TintLight = new(0.88f, 0.90f, 0.94f, 0.55f);
+    /// <summary>Direção da luz (normalizada): canto superior esquerdo.</summary>
+    public static readonly Vector3 LightDir = Vector3.Normalize(new Vector3(-0.35f, -0.80f, 0.49f));
+}
+
 /// <summary>
-/// Parâmetros do liquid glass — espelha poni_core::glass + glass.rs GlassParams.
-/// Port Oyenza 26/10: stdlib pura (sem Vortice — os using do spike não eram
-/// usados nos corpos). Correções de port: MathF.Lerp não existe em .NET 8
-/// (helper Lerp local); float2 é HLSL, não C# (Vector2).
+/// Constant buffer do shader glass — byte-a-byte com o cbuffer HLSL (rows de 16).
+/// Layout explícito porque o HLSL empacota float3+float em rows de 16 (pads
+/// 24-31 e 100-111); LayoutKind.Sequential leria lixo no driver.
+/// 27/10: struct flat original promovido a Explicit (port do spike validado).
 /// </summary>
-[StructLayout(LayoutKind.Sequential)]
+[StructLayout(LayoutKind.Explicit, Size = 176)]
 public readonly struct GlassParams
 {
-    // Body
-    public readonly Vector2 Body;           // island size (DIPs)
-    public readonly float CornerRadius;     // DIPs
-    public readonly float ShoulderDepth;    // concave shoulder depth (DIPs)
-    public readonly float PxPerDip;         // dpi/96
-
-    // Lens
-    public readonly float Bevel;            // border band width (DIPs)
-    public readonly float Magnitude;        // lens magnitude (DIPs)
-    public readonly float RimPower;         // 1.6
-    public readonly float FrostMix;         // 0..1 (thin→thick)
-
-    // Tint
-    public readonly Vector4 TintDark;       // premultiplied RGBA
-    public readonly Vector4 TintLight;      // premultiplied RGBA
-
-    // Light
-    public readonly Vector3 LightDir;       // normalized
-    public readonly float LightRim;
-    public readonly float LightGlow;
-
-    // Shadow
-    public readonly float ShadowAlpha;
-    public readonly float ShadowReach;
-    public readonly float ShadowDrop;
-    public readonly float LightMix;         // 0=dark glass .. 1=light glass
-
-    // Copy/backdrop
-    public readonly Vector2 CopySize;       // texture size (px)
-    public readonly float Saturation;       // 1.45
-    public readonly float Dispersion;       // 0.03 chromatic aberration
-
-    // Probe (anti-self-capture)
-    public readonly float ProbeX;
-    public readonly int ProbeDraw;
-    public readonly int ProbeLens;
-    public readonly int ProbeSmoked;
-
-    // Origin
-    public readonly Vector2 Origin;         // copy top-left in window px
-
-    // Use copy
-    public readonly int UseCopy;
-
-    // Computed constants
+    // Computed constants (não ocupam layout — consts)
     public const float RIM_FOLD_GUARD = 0.85f;
     public const float SATURATION = 1.45f;
     public const float DISPERSION = 0.03f;
     public const float RIM_POWER = 1.6f;
     public const float SMOKED_OPACITY = 0.82f;
+
+    // Row 0 (0-15)
+    [FieldOffset(0)]  public readonly Vector2 Body;      // tamanho da FACE em px
+    [FieldOffset(8)]  public readonly Vector2 Shape;     // .x = corner radius px, .y = shoulder px
+
+    // Row 16
+    [FieldOffset(16)] public readonly float PxPerDip;    // dpi/96
+    [FieldOffset(20)] public readonly int UseCopy;       // 1 = backdrop disponível
+    // pad 24-31
+
+    // Rows 32-79
+    [FieldOffset(32)] public readonly Vector4 Lens;      // .x=bevel px, .y=mag px, .z=rimPower, .w=frostMix
+    [FieldOffset(48)] public readonly Vector4 TintDark;   // cor straight + alpha
+    [FieldOffset(64)] public readonly Vector4 TintLight;  // cor straight + alpha
+
+    // Row 80-99
+    [FieldOffset(80)] public readonly Vector3 LightDir;   // normalizada
+    [FieldOffset(92)] public readonly float LightRim;
+    [FieldOffset(96)] public readonly float LightGlow;
+    // pad 100-111
+
+    // Rows 112-159
+    [FieldOffset(112)] public readonly Vector4 Shadow;    // .x=alpha, .y=reach px, .z=drop, .w=lightMix (CPU flip)
+    [FieldOffset(128)] public readonly Vector4 Copy;      // .x=W px, .y=H px, .z=saturation, .w=dispersão px
+    [FieldOffset(144)] public readonly Vector4 Probe;     // twin sem captura de tela → zeros
+
+    // Row 160
+    [FieldOffset(160)] public readonly Vector2 Origin;    // top-left da FACE no RT (pad px)
+    // pad 168-175
+
+    public GlassParams(Vector2 body, Vector2 shape, float pxPerDip, int useCopy,
+        Vector4 lens, Vector4 tintDark, Vector4 tintLight, Vector3 lightDir,
+        float lightRim, float lightGlow, Vector4 shadow, Vector4 copy,
+        Vector4 probe, Vector2 origin)
+    {
+        Body = body; Shape = shape; PxPerDip = pxPerDip; UseCopy = useCopy;
+        Lens = lens; TintDark = tintDark; TintLight = tintLight; LightDir = lightDir;
+        LightRim = lightRim; LightGlow = lightGlow; Shadow = shadow; Copy = copy;
+        Probe = probe; Origin = origin;
+    }
 }
 
 /// <summary>
@@ -132,7 +144,6 @@ public static class GlassMath
         for (int i = 0; i < 20; i++) {
             float mid = (lo + hi) * 0.5f;
             Vector4 test = Lerp4(material, toward, mid);
-            // Luminância relativa (WCAG)
             float L1 = RelativeLuminance(test);
             float L2 = RelativeLuminance(ink);
             float contrast = (MathF.Max(L1, L2) + 0.05f) / (MathF.Min(L1, L2) + 0.05f);
@@ -143,7 +154,6 @@ public static class GlassMath
 
     private static float RelativeLuminance(Vector4 c)
     {
-        // sRGB -> linear
         float R = Linearize(c.X);
         float G = Linearize(c.Y);
         float B = Linearize(c.Z);

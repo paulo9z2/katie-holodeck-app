@@ -1777,6 +1777,8 @@ namespace KatieHoloDeck
         // no ps_2_a; efeitos nativos são software no .NET 8 e não contam como prova).
         // Mesma óptica do LiquidGlass.hlsl, tuning T3.2 (R14/C12/B10/RF8/CR0.6).
         private Effects.LiquidGlassCpu? _glassCpu;
+        private KatieHoloDeck.LiquidGlass.LiquidGlassGpu? _glassGpu;   // motor GPU Oyenza (rota B), twin do CPU
+        private double _glassPanelW = 0, _glassPanelH = 0, _glassDpi = 1.0;   // pro fallback CPU mid-flight
         private System.Windows.Threading.DispatcherTimer? _glassTimer;
         private System.Windows.Media.Imaging.WriteableBitmap? _glassWb;
         private System.Windows.Media.Imaging.RenderTargetBitmap? _glassRtb;
@@ -1811,8 +1813,23 @@ namespace KatieHoloDeck
                 dpi = ps.CompositionTarget.TransformToDevice.M11;
             if (!double.IsFinite(dpi) || dpi < 0.25 || dpi > 4.0) dpi = 1.0;
 
-            _glassCpu = new Effects.LiquidGlassCpu(w, h, 14, 12, 10, 8, MediaGlassPad, dpi, 0.6);
-            int W = _glassCpu.Width, H = _glassCpu.Height;
+            _glassPanelW = w; _glassPanelH = h; _glassDpi = dpi;
+
+            // GPU-first (Oyenza rota B): twin D3D11/P-Invoke, zero-NuGet.
+            // Falhou (sem device, sem d3dcompiler, shader bugado)? CPU T3.3 assume.
+            var gpuNew = new KatieHoloDeck.LiquidGlass.LiquidGlassGpu(w, h, 14, 12, 10, 8, MediaGlassPad, dpi, 0.6);
+            if (gpuNew.Ready)
+            {
+                _glassGpu = gpuNew;
+                GlassLog($"mount: GPU ok ({gpuNew.Width}x{gpuNew.Height})");
+            }
+            else
+            {
+                GlassLog($"mount: GPU falhou ({gpuNew.FailReason}) — CPU T3.3 assume");
+                gpuNew.Dispose();
+                _glassCpu = new Effects.LiquidGlassCpu(w, h, 14, 12, 10, 8, MediaGlassPad, dpi, 0.6);
+            }
+            int W = _glassGpu?.Width ?? _glassCpu!.Width, H = _glassGpu?.Height ?? _glassCpu!.Height;
 
             _glassRtb = new System.Windows.Media.Imaging.RenderTargetBitmap(
                 W, H, 96 * dpi, 96 * dpi, PixelFormats.Pbgra32);
@@ -1846,14 +1863,15 @@ namespace KatieHoloDeck
             _glassTimer.Tick += (_, _) => GlassTickUpdate();
             _glassTimer.Start();
             GlassTickUpdate();
-            GlassLog($"mount ok cpu: {W}x{H} dpi={dpi:F2} panel={w:F0}x{h:F0}");
+            GlassLog($"mount ok {(_glassGpu != null ? "gpu" : "cpu")}: {W}x{H} dpi={dpi:F2} panel={w:F0}x{h:F0}");
         }
 
         /// <summary>Um frame: região do backdrop → RTB → distorção → WriteableBitmap.</summary>
         private void GlassTickUpdate()
         {
             var cpu = _glassCpu;
-            if (cpu == null || _glassRtb == null || _glassWb == null || _glassProxy == null) return;
+            var gpu = _glassGpu;
+            if ((cpu == null && gpu == null) || _glassRtb == null || _glassWb == null || _glassProxy == null) return;
 
             // box AO VIVO: painel/janela podem ter movido desde o mount
             var origin = MediaGlassHost.TranslatePoint(new Point(0, 0), BackdropStack);
@@ -1868,12 +1886,31 @@ namespace KatieHoloDeck
             rtb.Clear();
             rtb.Render(_glassProxy);
 
-            int W = cpu.Width, H = cpu.Height;
+            int W = gpu?.Width ?? cpu!.Width, H = gpu?.Height ?? cpu!.Height;
             var src = _glassSrc;
             if (src == null || src.Length < W * H * 4) src = _glassSrc = new byte[W * H * 4];
             rtb.CopyPixels(new Int32Rect(0, 0, W, H), src, W * 4, 0);
 
-            cpu.Distort(src);
+            if (gpu != null)
+            {
+                if (gpu.TryDistort(src))
+                {
+                    _glassWb.WritePixels(new Int32Rect(0, 0, W, H), gpu.Output, W * 4, 0);
+                    if (++_glassTickNo % 150 == 0)
+                        GlassLog($"tick#{_glassTickNo} gpu origin=({origin.X:F0},{origin.Y:F0}) host={hw:F0}x{hh:F0} buf={W}x{H}");
+                    return;
+                }
+                // GPU caiu mid-flight (device removed, driver reset): degrada pro
+                // CPU T3.3 NO MESMO TICK — o usuário nunca vê o painel sem vidro.
+                GlassLog($"gpu caiu mid-flight ({gpu.FailReason}) — degradando pro CPU T3.3");
+                gpu.Dispose();
+                _glassGpu = null;
+                cpu = _glassCpu = new Effects.LiquidGlassCpu(_glassPanelW, _glassPanelH, 14, 12, 10, 8, MediaGlassPad, _glassDpi, 0.6);
+            }
+
+            // Aqui cpu é sempre não-null: ou veio do mount, ou foi criado na
+            // degradação acima (o early-return garantiu cpu|gpu != null).
+            cpu!.Distort(src);
             _glassWb.WritePixels(new Int32Rect(0, 0, W, H), cpu.Output, W * 4, 0);
             if (++_glassTickNo % 150 == 0)   // 1 amostra ~5s: pulso do vidro ao vivo
                 GlassLog($"tick#{_glassTickNo} origin=({origin.X:F0},{origin.Y:F0}) host={hw:F0}x{hh:F0} buf={W}x{H}");
@@ -1882,6 +1919,7 @@ namespace KatieHoloDeck
         private void UnmountGlass()
         {
             if (_glassTimer != null) { _glassTimer.Stop(); _glassTimer = null; }
+            _glassGpu?.Dispose(); _glassGpu = null;
             _glassCpu = null; _glassRtb = null; _glassWb = null; _glassProxy = null; _glassSrc = null;
             MediaGlassHost.Background = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0));   // original do XAML
             MediaGlassHost.Opacity = 1;

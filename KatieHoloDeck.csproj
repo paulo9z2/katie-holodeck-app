@@ -24,4 +24,11 @@
          recompilar o .ps E rebuild no-incremental (o Resource é stale-friendly). -->
     <Resource Include="Effects\LiquidGlass.ps" />
   </ItemGroup>
+
+  <ItemGroup>
+    <!-- Oyenza rota B: HLSL-fonte ao lado do exe, compilado EM RUNTIME via
+         d3dcompiler_47 (tuning de vidro sem rebuild; se sumir, twin falha e
+         o mount cai pro CPU T3.3 sozinho). -->
+    <None Update="Effects\Oyenza\GlassGpu.hlsl" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>
