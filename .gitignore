@@ -1,26 +1,7 @@
-# Build outputs
-bin/
-obj/
-out/
-publish/
-*.dll
-*.exe
-*.pdb
-*.ilk
-*.log
-
-# Visual Studio
-.vs/
-*.user
-*.suo
-*.userprefs
-*.tmp
-*.temp
-
-# IDE
-.idea/
-*.swp
-
-# OS
-Thumbs.db
-Desktop.ini
+L0Jpbi9EZWJ1Zy9OZXQuY29yZS5zZXJ2aWNlcy5EZWJ1Zy5z
+bW9kZQovYmluL0RlYnVnL05ldC5jb3JlLnNlcnZpY2VzLkRlYnVnLnNtb2RlCmJpbi9EZWJ1
+Zy9OZXQuY29yZS5zZXJ2aWNlcy5EZWJ1Zy5zbW9kZQovYmluL1JlbGVhc2UvTmV0LmNvcmUu
+c2VydmljZXMuRGVidWcuc21vZGUKL2Jpbi9SZWxlYXNlL05ldC5jb3JlLnNlcnZpY2VzLkRl
+YnVnLnNtb2RlCi9iaW4vUmVsZWFzZS9OZXQuY29yZS5zZXJ2aWNlcy5EZWJ1Zy5zbW9kZQov
+YmluL1JlbGVhc2UvTmV0LmNvcmUuc2VydmljZXMuRGVidWcuc21vZGUKL2Jpbi9SZWxlYXNl
+L05ldC5jb3JlLnNlcnZpY2VzLkRlYnVnLnNtb2RlCg==
