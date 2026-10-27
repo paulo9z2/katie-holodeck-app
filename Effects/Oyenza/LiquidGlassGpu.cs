@@ -22,6 +22,9 @@ public sealed class LiquidGlassGpu : IDisposable
     /// <summary>false se qualquer passo do init falhou — caller usa o CPU.</summary>
     public bool Ready { get; private set; }
     public string? FailReason { get; private set; }
+    /// <summary>Device/contexto D3D11 crus — o BackdropDuplication compartilha (zero cópia inter-device).</summary>
+    public IntPtr DevicePtr => _device;
+    public IntPtr ContextPtr => _ctx;
 
     // D3D
     private IntPtr _device;

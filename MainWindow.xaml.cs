@@ -1787,6 +1787,11 @@ namespace KatieHoloDeck
         private double _glassInnerW = 0, _glassInnerH = 0;   // host no momento do mount (gatilho de remount)
         private long _glassTickNo;
         private const double MediaGlassPad = 12.0;   // ≥ Refraction(8)+4: dobra sem clamp
+        // LIQUID REAL: tela ATRÁS da janela (DXGI Output Duplication — rota Oyenza).
+        // Nulo/falhou → proxy RTB (conteúdo do app) assume, sem mudar o resto do fluxo.
+        private KatieHoloDeck.LiquidGlass.BackdropDuplication? _glassBackdrop;
+        private byte[]? _glassScreenBuf;   // região física W×H (buf já é px físico)
+        private bool _glassWdaSet;          // WDA_EXCLUDEFROMCAPTURE ativo no hwnd
 
         /// <summary>Monta a dobra no painel (pós-layout; idempotente). Só em modo Shader.</summary>
         private void MountMediaGlass()
@@ -1857,6 +1862,33 @@ namespace KatieHoloDeck
             MediaGlassHost.Background = new ImageBrush(_glassWb);
             MediaGlassHost.Opacity = 1;
 
+            // LIQUID REAL: captura da tela ATRÁS (DXGI Output Duplication). Compartilha o
+            // device do motor GPU (zero cópia inter-device); sem GPU, cria device próprio.
+            // WDA_EXCLUDEFROMCAPTURE exclui o app da captura → o vidro refrata só o que
+            // está embaixo (jogo/wallpaper), sem feedback loop. Falhou → proxy RTB assume.
+            try
+            {
+                var probe = MediaGlassHost.PointToScreen(new Point(0, 0));
+                var bd = new KatieHoloDeck.LiquidGlass.BackdropDuplication(
+                    _glassGpu?.DevicePtr ?? IntPtr.Zero, _glassGpu?.ContextPtr ?? IntPtr.Zero,
+                    (int)Math.Round(probe.X), (int)Math.Round(probe.Y));
+                if (bd.Ready)
+                {
+                    _glassBackdrop = bd;
+                    var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+                    if (hwnd != IntPtr.Zero && KatieHoloDeck.LiquidGlass.Interop.DXGI.SetWindowDisplayAffinity(
+                            hwnd, KatieHoloDeck.LiquidGlass.Interop.DXGI.WDA_EXCLUDEFROMCAPTURE))
+                        _glassWdaSet = true;
+                    GlassLog($"backdrop: dup ok {bd.ScreenW}x{bd.ScreenH} (wda={_glassWdaSet})");
+                }
+                else
+                {
+                    GlassLog($"backdrop: indisponível ({bd.FailReason}) — proxy RTB assume");
+                    bd.Dispose();
+                }
+            }
+            catch (Exception ex) { GlassLog($"backdrop: exceção {ex.GetType().Name} — proxy assume"); }
+
             _glassTimer = new System.Windows.Threading.DispatcherTimer(
                 System.Windows.Threading.DispatcherPriority.Render)
             { Interval = TimeSpan.FromMilliseconds(33) };
@@ -1873,23 +1905,34 @@ namespace KatieHoloDeck
             var gpu = _glassGpu;
             if ((cpu == null && gpu == null) || _glassRtb == null || _glassWb == null || _glassProxy == null) return;
 
-            // box AO VIVO: painel/janela podem ter movido desde o mount
-            var origin = MediaGlassHost.TranslatePoint(new Point(0, 0), BackdropStack);
-            var vb = (VisualBrush)_glassProxy.Fill;
-            var hw = MediaGlassHost.ActualWidth; var hh = MediaGlassHost.ActualHeight;
-            vb.Viewbox = new Rect(origin, new Size(hw, hh));
-            vb.Viewport = new Rect(0, 0, hw, hh);
-            var psz = new Size(hw, hh);
-            if (_glassProxy.RenderSize != psz) { _glassProxy.Measure(psz); _glassProxy.Arrange(new Rect(psz)); }
-
-            var rtb = _glassRtb;
-            rtb.Clear();
-            rtb.Render(_glassProxy);
-
             int W = gpu?.Width ?? cpu!.Width, H = gpu?.Height ?? cpu!.Height;
-            var src = _glassSrc;
-            if (src == null || src.Length < W * H * 4) src = _glassSrc = new byte[W * H * 4];
-            rtb.CopyPixels(new Int32Rect(0, 0, W, H), src, W * 4, 0);
+            byte[] src;
+            string srcKind;
+            var backdrop = _glassBackdrop;
+            bool useBackdrop = backdrop != null && backdrop.Ready
+                && (backdrop.HasFrame || backdrop.PollFirstFrame());
+            if (useBackdrop)
+            {
+                // LIQUID REAL: região FÍSICA do BUF inteiro (canto do host menos pad físico —
+                // PointToScreen já devolve px físico, buf também é físico: sem escala).
+                // O WDA excluiu o app da captura → isto é o que está EMBAIXO do overlay.
+                var ptBuf = MediaGlassHost.PointToScreen(new Point(-MediaGlassPad, -MediaGlassPad));
+                var sb = _glassScreenBuf;
+                if (sb == null || sb.Length < W * H * 4) sb = _glassScreenBuf = new byte[W * H * 4];
+                if (backdrop!.TryGetRegion((int)Math.Round(ptBuf.X), (int)Math.Round(ptBuf.Y), W, H, sb, out string bf))
+                { src = sb; srcKind = "screen"; }
+                else
+                {
+                    // caiu (access_lost, secure desktop): desmonta e segue NO PROXY neste tick
+                    GlassLog($"backdrop caiu ({bf}) — proxy RTB assume");
+                    _glassBackdrop = null;
+                    backdrop.Dispose();
+                    ClearGlassWda();
+                    src = RenderProxy(W, H);
+                    srcKind = "proxy";
+                }
+            }
+            else { src = RenderProxy(W, H); srcKind = "proxy"; }
 
             if (gpu != null)
             {
@@ -1897,7 +1940,7 @@ namespace KatieHoloDeck
                 {
                     _glassWb.WritePixels(new Int32Rect(0, 0, W, H), gpu.Output, W * 4, 0);
                     if (++_glassTickNo % 150 == 0)
-                        GlassLog($"tick#{_glassTickNo} gpu origin=({origin.X:F0},{origin.Y:F0}) host={hw:F0}x{hh:F0} buf={W}x{H}");
+                        GlassLog($"tick#{_glassTickNo} {srcKind} gpu buf={W}x{H}");
                     return;
                 }
                 // GPU caiu mid-flight (device removed, driver reset): degrada pro
@@ -1913,12 +1956,52 @@ namespace KatieHoloDeck
             cpu!.Distort(src);
             _glassWb.WritePixels(new Int32Rect(0, 0, W, H), cpu.Output, W * 4, 0);
             if (++_glassTickNo % 150 == 0)   // 1 amostra ~5s: pulso do vidro ao vivo
-                GlassLog($"tick#{_glassTickNo} origin=({origin.X:F0},{origin.Y:F0}) host={hw:F0}x{hh:F0} buf={W}x{H}");
+                GlassLog($"tick#{_glassTickNo} {srcKind} cpu buf={W}x{H}");
+        }
+
+        /// <summary>
+        /// Fallback (e antes do backdrop real, única fonte): região do backdrop DO APP via
+        /// VisualBrush offscreen → RTB → bytes. Box recalculado AO VIVO — janela/painel
+        /// podem ter movido desde o mount (incidente 25/10).
+        /// </summary>
+        private byte[] RenderProxy(int W, int H)
+        {
+            var origin = MediaGlassHost.TranslatePoint(new Point(0, 0), BackdropStack);
+            var vb = (VisualBrush)_glassProxy!.Fill;
+            var hw = MediaGlassHost.ActualWidth; var hh = MediaGlassHost.ActualHeight;
+            vb.Viewbox = new Rect(origin, new Size(hw, hh));
+            vb.Viewport = new Rect(0, 0, hw, hh);
+            var psz = new Size(hw, hh);
+            if (_glassProxy.RenderSize != psz) { _glassProxy.Measure(psz); _glassProxy.Arrange(new Rect(psz)); }
+            var rtb = _glassRtb!;
+            rtb.Clear();
+            rtb.Render(_glassProxy);
+            var src = _glassSrc;
+            if (src == null || src.Length < W * H * 4) src = _glassSrc = new byte[W * H * 4];
+            rtb.CopyPixels(new Int32Rect(0, 0, W, H), src, W * 4, 0);
+            return src;
+        }
+
+        /// <summary>Solta o WDA_EXCLUDEFROMCAPTURE do hwnd (vidro desligado = captura normal).</summary>
+        private void ClearGlassWda()
+        {
+            if (!_glassWdaSet) return;
+            _glassWdaSet = false;
+            try
+            {
+                var h = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+                if (h != IntPtr.Zero) _ = KatieHoloDeck.LiquidGlass.Interop.DXGI.SetWindowDisplayAffinity(
+                    h, KatieHoloDeck.LiquidGlass.Interop.DXGI.WDA_NONE);
+            }
+            catch { }
         }
 
         private void UnmountGlass()
         {
             if (_glassTimer != null) { _glassTimer.Stop(); _glassTimer = null; }
+            if (_glassBackdrop != null) { _glassBackdrop.Dispose(); _glassBackdrop = null; }
+            ClearGlassWda();
+            _glassScreenBuf = null;
             _glassGpu?.Dispose(); _glassGpu = null;
             _glassCpu = null; _glassRtb = null; _glassWb = null; _glassProxy = null; _glassSrc = null;
             MediaGlassHost.Background = new SolidColorBrush(Color.FromArgb(1, 0, 0, 0));   // original do XAML
@@ -1937,6 +2020,9 @@ namespace KatieHoloDeck
         {
             GlassLog("unmount");
             if (_glassTimer != null) { _glassTimer.Stop(); _glassTimer = null; }
+            if (_glassBackdrop != null) { _glassBackdrop.Dispose(); _glassBackdrop = null; }
+            ClearGlassWda();
+            _glassScreenBuf = null;
             if (_glassCpu != null) { _glassCpu.Dispose(); _glassCpu = null; }
             MediaGlassHost.Opacity = 0;
             MediaGlassHost.ClearValue(System.Windows.Controls.Border.BackgroundProperty);   // volta ao #01000000 do XAML
