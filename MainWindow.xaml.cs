@@ -1875,11 +1875,15 @@ namespace KatieHoloDeck
                 if (bd.Ready)
                 {
                     _glassBackdrop = bd;
+                    // print mode: KATIE_GLASS_NO_WDA=1 desliga a exclusão de captura —
+                    // a janela aparece em screenshots (o WDA de fora NÃO pode ser
+                    // alterado por outro processo; só o dono da janela muda affinity)
+                    bool noWda = Environment.GetEnvironmentVariable("KATIE_GLASS_NO_WDA") == "1";
                     var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
-                    if (hwnd != IntPtr.Zero && KatieHoloDeck.LiquidGlass.Interop.DXGI.SetWindowDisplayAffinity(
+                    if (!noWda && hwnd != IntPtr.Zero && KatieHoloDeck.LiquidGlass.Interop.DXGI.SetWindowDisplayAffinity(
                             hwnd, KatieHoloDeck.LiquidGlass.Interop.DXGI.WDA_EXCLUDEFROMCAPTURE))
                         _glassWdaSet = true;
-                    GlassLog($"backdrop: dup ok {bd.ScreenW}x{bd.ScreenH} (wda={_glassWdaSet})");
+                    GlassLog($"backdrop: dup ok {bd.ScreenW}x{bd.ScreenH} (wda={_glassWdaSet}, printmode={noWda})");
                 }
                 else
                 {
@@ -1940,7 +1944,10 @@ namespace KatieHoloDeck
                 {
                     _glassWb.WritePixels(new Int32Rect(0, 0, W, H), gpu.Output, W * 4, 0);
                     if (++_glassTickNo % 150 == 0)
+                    {
                         GlassLog($"tick#{_glassTickNo} {srcKind} gpu buf={W}x{H}");
+                        DumpGlassWb();
+                    }
                     return;
                 }
                 // GPU caiu mid-flight (device removed, driver reset): degrada pro
@@ -1956,7 +1963,30 @@ namespace KatieHoloDeck
             cpu!.Distort(src);
             _glassWb.WritePixels(new Int32Rect(0, 0, W, H), cpu.Output, W * 4, 0);
             if (++_glassTickNo % 150 == 0)   // 1 amostra ~5s: pulso do vidro ao vivo
+            {
                 GlassLog($"tick#{_glassTickNo} {srcKind} cpu buf={W}x{H}");
+                DumpGlassWb();
+            }
+        }
+
+        /// <summary>Print mode debug: KATIE_GLASS_DUMP=1 exporta o buffer do vidro
+        /// (pixels finais pós-refração) a cada amostra de log — prova do backdrop real
+        /// sem o problema do observador (WDA continua ON, sem eco).</summary>
+        private int _glassDumpNo;
+        private void DumpGlassWb()
+        {
+            try
+            {
+                if (Environment.GetEnvironmentVariable("KATIE_GLASS_DUMP") != "1") return;
+                var fbe = new System.Windows.Media.Imaging.FormatConvertedBitmap(
+                    _glassWb, System.Windows.Media.PixelFormats.Bgra32, null, 0);
+                var enc = new System.Windows.Media.Imaging.PngBitmapEncoder();
+                enc.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(fbe));
+                var path = IOPath.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                    $"glass_dump_{++_glassDumpNo}.png");
+                using (var fs = File.Create(path)) enc.Save(fs);
+            }
+            catch (Exception ex) { GlassLog("dump fail: " + ex.Message); }
         }
 
         /// <summary>
