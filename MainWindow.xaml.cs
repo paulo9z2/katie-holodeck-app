@@ -1820,9 +1820,16 @@ namespace KatieHoloDeck
 
             _glassPanelW = w; _glassPanelH = h; _glassDpi = dpi;
 
+            // Parâmetros por página (tabela Oyenza — GlassMath.Thickness): bevel/mag
+            // vêm da ALTURA da island — pill (37 DIP) fino → page (220 DIP) grosso.
+            // O engine já deriva frost/sombra da mesma curva; aqui alinharamos a
+            // óptica (antes fixa em 10/8 da era T3.3).
+            var th = KatieHoloDeck.LiquidGlass.GlassMath.Thickness((float)h);
+            GlassLog($"mount: espessura h={h:F0} bevel={th.bevel:F1} mag={th.magnitude:F1} frost={th.frostMix:F2}");
+
             // GPU-first (Oyenza rota B): twin D3D11/P-Invoke, zero-NuGet.
             // Falhou (sem device, sem d3dcompiler, shader bugado)? CPU T3.3 assume.
-            var gpuNew = new KatieHoloDeck.LiquidGlass.LiquidGlassGpu(w, h, 14, 12, 10, 8, MediaGlassPad, dpi, 0.6);
+            var gpuNew = new KatieHoloDeck.LiquidGlass.LiquidGlassGpu(w, h, 14, 12, th.bevel, th.magnitude, MediaGlassPad, dpi, 0.6);
             if (gpuNew.Ready)
             {
                 _glassGpu = gpuNew;
@@ -1832,7 +1839,7 @@ namespace KatieHoloDeck
             {
                 GlassLog($"mount: GPU falhou ({gpuNew.FailReason}) — CPU T3.3 assume");
                 gpuNew.Dispose();
-                _glassCpu = new Effects.LiquidGlassCpu(w, h, 14, 12, 10, 8, MediaGlassPad, dpi, 0.6);
+                _glassCpu = new Effects.LiquidGlassCpu(w, h, 14, 12, th.bevel, th.magnitude, MediaGlassPad, dpi, 0.6);
             }
             int W = _glassGpu?.Width ?? _glassCpu!.Width, H = _glassGpu?.Height ?? _glassCpu!.Height;
 
@@ -1955,7 +1962,8 @@ namespace KatieHoloDeck
                 GlassLog($"gpu caiu mid-flight ({gpu.FailReason}) — degradando pro CPU T3.3");
                 gpu.Dispose();
                 _glassGpu = null;
-                cpu = _glassCpu = new Effects.LiquidGlassCpu(_glassPanelW, _glassPanelH, 14, 12, 10, 8, MediaGlassPad, _glassDpi, 0.6);
+                var thDeg = KatieHoloDeck.LiquidGlass.GlassMath.Thickness((float)_glassPanelH);
+                cpu = _glassCpu = new Effects.LiquidGlassCpu(_glassPanelW, _glassPanelH, 14, 12, thDeg.bevel, thDeg.magnitude, MediaGlassPad, _glassDpi, 0.6);
             }
 
             // Aqui cpu é sempre não-null: ou veio do mount, ou foi criado na
